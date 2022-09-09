@@ -5,8 +5,6 @@ import {
     createUserWithEmailAndPassword,
     onAuthStateChanged,
   } from "firebase/auth";
-  import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { auth } from "../firebase-config";
 import Logo from "../Logo.jpg"
@@ -77,14 +75,13 @@ const WelcomeScreen = ({ navigation }) => {
         />
         
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity 
+      <TouchableOpacity onPress={register} style={styles.buttonContainer}>
         
-        onPress={register}>
+        
+        
           <Text style={styles.registerButton}> Register</Text>
-        </TouchableOpacity>
         
-        </View>
+      </TouchableOpacity>
         <TouchableOpacity 
         
         onPress={() => navigation.navigate('Login')}>
