@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const ReceiptComponent = ({ navigation }) => {
+const RecipeComponent = () => {
   return (
     <View>
-      <Text>saff</Text>
+      <Text>RecipeComponent</Text>
     </View>
   )
 }
 
-export default ReceiptComponent
+export default RecipeComponent
 
 const styles = StyleSheet.create({})

@@ -11,6 +11,7 @@ import Logo from "../Logo.jpg"
 const WelcomeScreen = ({ navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmpassword, setConfirmPassword] = useState("");
     const [user, setUser] = useState({});
     const [message, setMessage] = useState(["Success","User successfully created"]);
     const createAlert = () =>
@@ -72,6 +73,13 @@ const WelcomeScreen = ({ navigation }) => {
           placeholder="Password..."
           placeholderTextColor="#fd5a43" 
           onChangeText={text => setPassword(text)}
+        />
+        <TextInput
+          value={confirmpassword}
+          style={styles.input}
+          placeholder="Confirm Password..."
+          placeholderTextColor="#fd5a43" 
+          onChangeText={text => setConfirmPassword(text)}
         />
         
       </View>

@@ -13,8 +13,8 @@ import Logo from "../Logo.jpg"
 
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("smarton0614@gmail.com");
+  const [password, setPassword] = useState("farkas1070");
   const [user, setUser] = useState({});
 
   const createAlert = () =>

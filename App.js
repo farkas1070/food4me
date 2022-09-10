@@ -11,7 +11,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 function App() {
-  const Drawer = createDrawerNavigator();
+  const Stack = createNativeStackNavigator();
   
   const logout = async () => {
     await signOut(auth);
@@ -19,11 +19,11 @@ function App() {
 
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Register">
-        <Drawer.Screen options={{headerShown:false}}  name="Register" component={WelcomeScreen} />
-        <Drawer.Screen  options={{headerShown:false}} name="Login" component={LoginScreen} />
-        <Drawer.Screen  options={{headerShown:false}}  name="Home" component={HomeScreen} />
-      </Drawer.Navigator>
+      <Stack.Navigator initialRouteName="Register">
+        <Stack.Screen options={{headerShown:false}}  name="Register" component={WelcomeScreen} />
+        <Stack.Screen  options={{headerShown:false}} name="Login" component={LoginScreen} />
+        <Stack.Screen  options={{headerShown:false}}  name="Home" component={HomeScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
