@@ -23,6 +23,8 @@ const HomeScreen = ({ navigation }) => {
             title: 'Home',
             headerStyle: {
               backgroundColor: '#fd5a43',
+              shadowColor: 'transparent', // this covers iOS
+              elevation: 0, // this covers Android
             },
             headerTintColor: 'white',
             headerTitleStyle: {
@@ -48,7 +50,7 @@ const HomeScreen = ({ navigation }) => {
             
             
           }}
-          component={Homepage}
+          component={RecipeComponent}
         />
       </Drawer.Navigator>
   )

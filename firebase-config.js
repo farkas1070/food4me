@@ -3,6 +3,7 @@ import { getAuth } from "firebase/auth";
 import {
   getFirestore, collection,getDocs
 } from "firebase/firestore";
+import React from "react"
 const firebaseConfig = {
     apiKey: "AIzaSyC0IUoCVDZEsY4f07C6cZZL7l4y4xxwy8k",
     authDomain: "food4me-e0a60.firebaseapp.com",
@@ -17,10 +18,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 //init service
-const db = getFirestore()
+export const db = getFirestore()
 
 //collection reference
 const colRef = collection(db,"foods")
+//add to collection
 
 // get collection data
 getDocs(colRef)
@@ -29,9 +31,11 @@ getDocs(colRef)
     snapshot.docs.forEach((doc) =>{
       foods.push({...doc.data(),id:doc.id})
     })
-    console.log(foods)
+    
   })
   .catch(error =>{
     console.log(error)
   })
+
+  
 export const auth = getAuth(app);
