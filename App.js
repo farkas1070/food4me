@@ -9,7 +9,7 @@ import HomeScreen from "./Components/HomeScreen"
 import { DataProvider } from "./Components/SetData.js"
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { StatusBar } from 'react-native';
 function App() {
   const Stack = createNativeStackNavigator();
   

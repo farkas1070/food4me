@@ -19,19 +19,7 @@ const HomeScreen = ({ navigation }) => {
         <Drawer.Screen
           name="Homepage"
           options={{
-            headerTitleAlign: 'center',
-            title: 'Home',
-            headerStyle: {
-              backgroundColor: '#fd5a43',
-              shadowColor: 'transparent', // this covers iOS
-              elevation: 0, // this covers Android
-            },
-            headerTintColor: 'white',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-            
-            
+            headerShown:false
           }}
           component={Homepage}
         />
