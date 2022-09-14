@@ -3,19 +3,17 @@ import React from 'react'
 import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
-  browserSessionPersistence,
-  setPersistence,
 
 } from "firebase/auth";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { auth } from "../firebase-config";
 import Logo from "../Logo.jpg"
-
+import { userContext } from "../Components/SetData.js"
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("smarton0614@gmail.com");
   const [password, setPassword] = useState("farkas1070");
-  const [user, setUser] = useState({});
+  const [user, setUser] = useContext(userContext);
 
   const createAlert = () =>
     Alert.alert(

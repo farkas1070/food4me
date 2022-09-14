@@ -7,7 +7,7 @@ import WelcomeScreen from "./Components/WelcomeScreen"
 import LoginScreen from "./Components/LoginScreen"
 import HomeScreen from "./Components/HomeScreen"
 import { DataProvider } from "./Components/SetData.js"
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer,DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'react-native';
 function App() {
@@ -19,7 +19,7 @@ function App() {
 
   return (
     <DataProvider>
-      <NavigationContainer>
+      <NavigationContainer theme={DarkTheme}>
         <Stack.Navigator initialRouteName="Register">
           <Stack.Screen options={{headerShown:false}}  name="Register" component={WelcomeScreen} />
           <Stack.Screen  options={{headerShown:false}} name="Login" component={LoginScreen} />

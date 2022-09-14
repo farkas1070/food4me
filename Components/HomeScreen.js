@@ -5,10 +5,9 @@ import { useState } from "react";
 import { auth } from "../firebase-config";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Homepage from "./HomePage"
-import { NavigationContainer } from '@react-navigation/native';
+
 import ProfileComponent from "./ProfileComponent"
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { MaterialIcons } from '@expo/vector-icons'; 
+
 import RecipeComponent from "./RecipeComponent"
 
 const HomeScreen = ({ navigation }) => {
@@ -26,8 +25,9 @@ const HomeScreen = ({ navigation }) => {
         <Drawer.Screen
           name="ProfileComponent"
           options={{
+            headerShown:false,
             title: 'Profile',
-            
+            headerTitleAlign: 'center',
           }}
           component={ProfileComponent}
         />
@@ -35,6 +35,17 @@ const HomeScreen = ({ navigation }) => {
           name="RecipeComponent"
           options={{
             headerShown:false
+           // headerTitleAlign: 'center',
+           //  headerStyle: {
+             //  title: 'Home',
+             //    backgroundColor: '#fd5a43',
+           //   shadowColor: 'transparent', // this covers iOS
+           //   elevation: 0, // this covers Android
+          //  },
+         //   headerTintColor: 'white',
+         //   headerTitleStyle: {
+          //    fontWeight: 'bold',
+        //    },
             
             
           }}
