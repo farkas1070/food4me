@@ -7,6 +7,8 @@ import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 const ProfileComponent = ({ navigation }) => {
 
@@ -25,7 +27,7 @@ const ProfileComponent = ({ navigation }) => {
   const updateProfilePicture = async () => {
     console.log("inside update function")
     await updateProfile(auth.currentUser, {
-      photoURL: "https://us-tuna-sounds-images.voicemod.net/80acc95b-e18a-48cb-8e31-9cd5b770d49d-1647869397227.jpg"
+      photoURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn7n_hjrfOEgfm7CTRjgTURpIw1IN0Yp4pBQ&usqp=CAU"
     }).then(() => {
       console.log("user modified")
     }).catch((error) => {
@@ -52,18 +54,20 @@ const ProfileComponent = ({ navigation }) => {
     <ScrollView style={{ width: '100%' }}>
 
       <View style={styles.headerContainer(darkTheme)}>
-        <TouchableOpacity onPress={() => { openMenu() }}><Feather style={styles.feathericon} name="menu" size={35} color="black" /></TouchableOpacity>
+        <TouchableOpacity onPress={() => { openMenu() }}><Feather style={styles.feathericon} name="menu" size={35} color="white" /></TouchableOpacity>
 
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-          {darkTheme ? <Feather name="moon" size={24} color="black" style={{ marginTop: 35, marginRight: 10 }} /> : <Feather name="sun" size={24} color="black" style={{ marginTop: 35, marginRight: 10 }} />}
-          <Switch trackColor={{ false: "#767577", true: "#81b0ff" }} onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
+          {darkTheme ? <Feather name="moon" size={25} color="white" style={{ marginTop: 25, marginRight: 10 }} /> : <Feather name="sun" size={25} color="white" style={{ marginTop: 25, marginRight: 10 }} />}
+          <Switch trackColor={{ false: "#767577", true: "#661b1c" }} thumbColor="white" onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
 
           </Switch>
         </View>
       </View>
       <View style={styles.bodyContainer(darkTheme)}>
         <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+
           <View style={styles.innerbody}>
+            
             {user.photoURL == null ? <MaterialIcons name="account-circle" size={200} color="black" /> : <Image
               style={styles.profileimage}
               source={{ uri: user.photoURL }}
@@ -71,28 +75,34 @@ const ProfileComponent = ({ navigation }) => {
           </View>
 
           <View style={styles.bottomBody(darkTheme)}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <View style={{ alignItems: 'center', marginTop: 40 }}>
                 <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { updateProfilePicture() }}>
                   <AntDesign name="picture" size={50} color={darkTheme ? "white" : "#36454F"} />
                 </TouchableOpacity>
-                <Text style={styles.buttonText(darkTheme)}> Change Profile Picture </Text>
+                <Text style={styles.buttonText(darkTheme)}> Change Profile Pic </Text>
               </View>
               <View style={{ alignItems: 'center', marginTop: 40 }} >
                 <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { verifyEmail() }}>
-                  <MaterialIcons name="email" size={50} color={darkTheme ? "white" : "#36454F"} />
+
+                  <FontAwesome name="envelope-o" size={50} color={darkTheme ? "white" : "#36454F"} />
                 </TouchableOpacity>
                 <Text style={styles.buttonText(darkTheme)}> Verify Email</Text>
               </View>
               <View style={{ alignItems: 'center', marginTop: 40 }}>
                 <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { updatePassword() }}>
-                  <Entypo name="lock" size={50} color={darkTheme ? "white" : "#36454F"} />
+                  <Feather name="lock" size={50} color={darkTheme ? "white" : "#36454F"} />
+
                 </TouchableOpacity>
                 <Text style={styles.buttonText(darkTheme)}> Change Password </Text>
               </View>
             </View>
-            <TouchableOpacity><Text>asfaf</Text></TouchableOpacity>
-           
+            <View style={{ width: '100%', marginTop: 50, alignItems: 'center' }}>
+              
+              <TouchableOpacity style={styles.optionButton(darkTheme)}><MaterialIcons name="alternate-email" size={24} color={darkTheme? "white":"black" } style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Change E-mail</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.optionButton(darkTheme)}><MaterialCommunityIcons name="account-outline" size={24} color={darkTheme? "white":"black" } style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Change Username</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.optionButton(darkTheme)}><AntDesign name="delete" size={24} color={darkTheme? "white":"black" } style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Delete Account</Text></TouchableOpacity>
+            </View>
           </View>
 
         </View>
@@ -107,11 +117,11 @@ const styles = StyleSheet.create({
 
   headerContainer: (darkTheme) => ({
     width: '100%',
-    height: 110,
+    height: 80,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: darkTheme ? '#36454F' : "#A9A9A9",
+    backgroundColor: darkTheme ? '#1b222c' : "#fd5a43",
 
 
   }),
@@ -124,11 +134,11 @@ const styles = StyleSheet.create({
   },
 
   feathericon: {
-    marginTop: 35,
+    marginTop: 25,
     marginLeft: 30
   },
   switch: {
-    marginTop: 35,
+    marginTop: 25,
     marginRight: 25,
     transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }]
   },
@@ -137,14 +147,14 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
 
-    backgroundColor: darkTheme ? 'black' : "white"
+    backgroundColor: darkTheme ? '#661b1c' : "white"
   }),
   innerbody: (darkTheme) => ({
     width: "100%",
     height: 500,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: darkTheme ? "black" : "white"
+    backgroundColor: darkTheme ? "#661b1c" : "white"
   }),
   text: {
     fontWeight: "700",
@@ -156,7 +166,7 @@ const styles = StyleSheet.create({
   buttonText: (darkTheme) => ({
     fontWeight: "700",
     color: darkTheme ? "white" : "black",
-    fontSize: 10,
+    fontSize: 9,
     marginTop: 10,
   }),
   profileimage: {
@@ -168,10 +178,10 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   Button: (darkTheme) => ({
-    height: 100,
-    backgroundColor: darkTheme ? "black" : "white",
-    width: 100,
-    borderRadius: 30,
+    height: 80,
+    backgroundColor: darkTheme ? "#661b1c" : "white",
+    width: 80,
+    borderRadius: 20,
     marginTop: "20%",
     marginLeft: 5,
     marginRight: 5,
@@ -192,13 +202,32 @@ const styles = StyleSheet.create({
 
   },
   bottomBody: (darkTheme) => ({
-    
+
     width: "100%",
     height: 600,
-    backgroundColor: darkTheme ? "#36454F" : "#A9A9A9",
+    backgroundColor: darkTheme ? "#1b222c" : "#fd5a43",
     alignItems: 'center',
     borderTopEndRadius: 50,
     borderTopStartRadius: 50,
   }),
+  optionButton: (darkTheme) => ({
+    width: "80%",
+    borderRadius: 20,
+    height: 60,
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+
+    backgroundColor: darkTheme ? "#661b1c" : "white",
+
+  }),
+  optionText: (darkTheme) => ({
+    fontWeight: "700",
+    color: darkTheme ? "white" : "black",
+    fontFamily: 'Roboto',
+    fontSize: 15,
+    marginRight: 20,
+  })
 
 })
