@@ -6,6 +6,8 @@ import { themeContext, userContext } from "../Components/SetData.js"
 import { useState, useContext } from "react";
 import SecondLogo from "../second.png"
 import FirstLogo from "../first.jpeg"
+
+
 export default function ScreenOne({ navigation }) {
 
   const [darkTheme, setDarkTheme] = useContext(themeContext)

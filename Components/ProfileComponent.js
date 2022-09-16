@@ -2,24 +2,23 @@ import { StyleSheet, Text, View, TouchableOpacity, Switch, Image, ScrollView,Mod
 import React from 'react'
 import { useContext,useState } from "react";
 import {  themeContext } from "../Components/SetData.js"
-import { getAuth, updateProfile, sendEmailVerification,updateEmail } from "firebase/auth";
+import { getAuth, updateProfile, sendEmailVerification } from "firebase/auth";
 import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-
+import ChangePasswordModal from "./ChangePasswordModal"
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-
-
+import ChangeUsernameModal from "./ChangeUsernameModal"
+import DeleteUserModal from "./DeleteUserModal"
 const ProfileComponent = ({ navigation }) => {
 
   const [darkTheme, setDarkTheme] = useContext(themeContext)
   const auth = getAuth();
   const user = auth.currentUser
-  const [modalVisible, setModalVisible] = useState(false);
-
-
-
+  const [passwordmodalVisible, setpasswordModalVisible] = useState(false);
+  const [usernamemodalVisible, setusernameModalVisible] = useState(false);
+  const [deleteusermodalVisible, setdeleteusermodalVisible] = useState(false);
 
   const toggleSwitch = () => setDarkTheme(previousState => !previousState);
 
@@ -47,44 +46,32 @@ const ProfileComponent = ({ navigation }) => {
       });
   }
  
-  const updatePassword = () => {
+  const signOut = () => {
     
   }
-  const signOut = () => {
-    putModal()
-  }
-  const updateUsername = () => {
-
-  }
   const deleteAccount = () => {
-
+    
   }
   
 
 
   return (
     <ScrollView style={{ width: '100%' }}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <TouchableOpacity
-              style={{backgroundColor: '#fd5a43',width:50,height:50}}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+      {/* Setting Up modals*/} 
+
+
+      <Modal animationType="slide" transparent={true} visible={passwordmodalVisible} onRequestClose={() => {setpasswordModalVisible(!passwordmodalVisible);}}>
+        <ChangePasswordModal/>
       </Modal>
+      <Modal animationType="slide" transparent={true} visible={usernamemodalVisible} onRequestClose={() => {setusernameModalVisible(!usernamemodalVisible);}}>
+        <ChangeUsernameModal/>
+      </Modal>
+      <Modal animationType="slide" transparent={true} visible={deleteusermodalVisible} onRequestClose={() => {setdeleteusermodalVisible(!deleteusermodalVisible);}}>
+        <DeleteUserModal/>
+      </Modal>
+
+
+      {/* Setting Up modals*/} 
 
       <View style={styles.headerContainer(darkTheme)}>
         <TouchableOpacity onPress={() => { openMenu() }}><Feather style={styles.feathericon} name="menu" size={35} color={darkTheme?"#fd5a43" :"white"} /></TouchableOpacity>
@@ -116,14 +103,14 @@ const ProfileComponent = ({ navigation }) => {
                 <Text style={styles.buttonText(darkTheme)}> Change Profile Pic </Text>
               </View>
               <View style={{ alignItems: 'center', marginTop: 40 }} >
-                <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { verifyEmail() }}>
+                <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { setusernameModalVisible(true) }}>
                 <MaterialCommunityIcons name="account-outline" size={50} color={darkTheme? "#fd5a43":"black" }  />
                   
                 </TouchableOpacity>
                 <Text style={styles.buttonText(darkTheme)}> Change Username</Text>
               </View>
               <View style={{ alignItems: 'center', marginTop: 40 }}>
-                <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { updatePassword() }}>
+                <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { setpasswordModalVisible(true) }}>
                   <Feather name="lock" size={50} color={darkTheme ? "#fd5a43" : "#36454F"} />
 
                 </TouchableOpacity>
@@ -133,8 +120,8 @@ const ProfileComponent = ({ navigation }) => {
             <View style={{ width: '100%', marginTop: 50, alignItems: 'center' }}>
               
              
-              <TouchableOpacity style={styles.optionButton(darkTheme)} onPress={() => { setModalVisible(true) }} ><FontAwesome name="envelope-o" size={24} color={darkTheme ? "#fd5a43" : "#36454F"} style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Verify Email</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.optionButton(darkTheme)} onPress={() => { deleteAccount() }} ><AntDesign name="delete" size={24} color={darkTheme? "#fd5a43":"black" } style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Delete Account</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.optionButton(darkTheme)} onPress={() => { verifyEmail() }} ><FontAwesome name="envelope-o" size={24} color={darkTheme ? "#fd5a43" : "#36454F"} style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Verify Email</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.optionButton(darkTheme)} onPress={() => { setdeleteusermodalVisible(true) }} ><AntDesign name="delete" size={24} color={darkTheme? "#fd5a43":"black" } style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Delete Account</Text></TouchableOpacity>
               <TouchableOpacity style={styles.optionButton(darkTheme)} onPress={() => { signOut() }} ><Feather name="log-out" size={24} color={darkTheme? "#fd5a43":"black" } style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Log Out</Text></TouchableOpacity>
             </View>
           </View>
@@ -263,29 +250,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     fontSize: 15,
     marginRight: 20,
-  }),
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
-  },
-  modalView: {
-    width:300,
-    height:300,
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
-  },
+  })
 
 })
