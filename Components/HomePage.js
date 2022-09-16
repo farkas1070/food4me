@@ -1,15 +1,15 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Switch,Image } from 'react-native';
-
+import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Switch, Image } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import { themeContext } from "../Components/SetData.js"
+import { themeContext, userContext } from "../Components/SetData.js"
 import { useState, useContext } from "react";
 import SecondLogo from "../second.png"
 import FirstLogo from "../first.jpeg"
 export default function ScreenOne({ navigation }) {
 
   const [darkTheme, setDarkTheme] = useContext(themeContext)
-
+  const [user, setUser] = useContext(userContext)
 
   const toggleSwitch = () => setDarkTheme(previousState => !previousState);
 
@@ -33,17 +33,56 @@ export default function ScreenOne({ navigation }) {
       </View>
       <View style={styles.bodyContainer(darkTheme)}>
         <View style={styles.innerbody}>
-          <Text style={styles.text}>Welcome Back User!</Text>
+          <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginTop: 20, height: 150 }}>
+            {user.photoURL == null ? <MaterialIcons name="account-circle" size={100} color="black" /> : <Image
+              style={styles.profileImage}
+              source={{ uri: user.photoURL }}
+            />}
+            <Text style={styles.text}>Welcome Back {user.displayName}</Text>
+          </View>
+          <Text style={{ marginTop: 50, marginLeft: 30 }} >What will you do today?</Text>
           <SafeAreaView style={styles.container}>
-            <ScrollView horizontal="true" style={styles.scrollView(darkTheme)}>
-              <View style={styles.innerBox(darkTheme)}>
-                <Image
-                  style={styles.image}
-                  source={FirstLogo}
-                />
-                <View style={{backgroundColor: 'white', width:"100%", height:80,justifyContent: 'center',alignItems: 'center',borderBottomLeftRadius:20,borderBottomRightRadius:20}}></View>
-              </View>
-              
+            <ScrollView horizontal={true} style={styles.scrollView(darkTheme)}>
+              <TouchableOpacity>
+                <View style={styles.innerBox(darkTheme)}>
+                  <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
+                    <Image
+                      style={styles.image}
+                      source={FirstLogo}
+                    />
+                  </View>
+                  <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
+                    <Text>Find A recipe</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <View style={styles.innerBox(darkTheme)}>
+                  <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
+                    <Image
+                      style={styles.image}
+                      source={FirstLogo}
+                    />
+                  </View>
+                  <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
+                    <Text>Find A recipe</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <View style={styles.innerBox(darkTheme)}>
+                  <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
+                    <Image
+                      style={styles.image}
+                      source={FirstLogo}
+                    />
+                  </View>
+                  <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
+                    <Text>Find A recipe</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+
             </ScrollView>
           </SafeAreaView>
         </View>
@@ -60,7 +99,7 @@ const styles = StyleSheet.create({
   }),
   headerContainer: (darkTheme) => ({
     width: '100%',
-    height: '12%',
+    height: 80,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -82,7 +121,7 @@ const styles = StyleSheet.create({
 
   },
   switch: {
-    marginTop: 35,
+    marginTop: 25,
     marginRight: 25,
     transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }]
   },
@@ -99,25 +138,36 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "700",
     fontSize: 20,
-    marginLeft: 40,
-    marginTop: 50
+    marginLeft: 30,
+
   },
   scrollView: (darkTheme) => ({
-    marginTop: 50,
-    padding: 20,
+    marginTop: 10,
+    padding: 10,
     height: 250,
-    backgroundColor: darkTheme ? "black" : '#fd5a43',
+
     marginHorizontal: 20,
     borderRadius: 20,
   }),
   innerBox: (darkTheme) => ({
-    
-    width: 150,
+
+    width: 160,
     height: "100%",
   }),
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 400 / 2,
+
+  },
   image: {
-    width:"100%",
-    height:130,
+    width: "100%",
+    height: 130,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+
   }
 
 

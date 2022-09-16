@@ -5,13 +5,14 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
-
+import { updateProfile } from "firebase/auth";
 import { auth } from "../firebase-config";
 import Logo from "../Logo.jpg"
 const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmpassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
+
   const [user, setUser] = useState({});
   const [message, setMessage] = useState(["Success", "User successfully created"]);
   const createAlert = () =>
@@ -38,7 +39,15 @@ const WelcomeScreen = ({ navigation }) => {
         auth,
         email,
         password
-      );
+      ).then(() => {
+        updateProfile(auth.currentUser, {
+          displayName: name,
+        }).then(() => {
+          console.log("user created")
+        }).catch((error) => {
+          console.log(error)
+        });
+      })
       createAlert()
       navigation.navigate('Login')
       console.log(user);
@@ -61,6 +70,14 @@ const WelcomeScreen = ({ navigation }) => {
       <View style={styles.formContainer}>
 
         <TextInput
+          value={name}
+          style={styles.input}
+          placeholder="Username..."
+          placeholderTextColor="#fd5a43"
+          onChangeText={text => setName(text)}
+        />
+
+        <TextInput
           style={styles.input}
           placeholder="Email..."
           placeholderTextColor="#fd5a43"
@@ -74,13 +91,7 @@ const WelcomeScreen = ({ navigation }) => {
           placeholderTextColor="#fd5a43"
           onChangeText={text => setPassword(text)}
         />
-        <TextInput
-          value={confirmpassword}
-          style={styles.input}
-          placeholder="Confirm Password..."
-          placeholderTextColor="#fd5a43"
-          onChangeText={text => setConfirmPassword(text)}
-        />
+
 
       </View>
       <TouchableOpacity onPress={register} style={styles.buttonContainer}>
