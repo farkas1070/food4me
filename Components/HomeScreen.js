@@ -5,7 +5,7 @@ import { useState } from "react";
 import { auth } from "../firebase-config";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Homepage from "./HomePage"
-
+import RecipeBrowser from "./RecipeBrowser"
 import ProfileComponent from "./ProfileComponent"
 
 import RecipeComponent from "./RecipeComponent"
@@ -35,21 +35,21 @@ const HomeScreen = ({ navigation }) => {
           name="RecipeComponent"
           options={{
             headerShown:false
-           // headerTitleAlign: 'center',
-           //  headerStyle: {
-             //  title: 'Home',
-             //    backgroundColor: '#fd5a43',
-           //   shadowColor: 'transparent', // this covers iOS
-           //   elevation: 0, // this covers Android
-          //  },
-         //   headerTintColor: 'white',
-         //   headerTitleStyle: {
-          //    fontWeight: 'bold',
-        //    },
+           
             
             
           }}
           component={RecipeComponent}
+        />
+        <Drawer.Screen
+          name="RecipeBrowser"
+          options={{
+            headerShown:false
+           
+            
+            
+          }}
+          component={RecipeBrowser}
         />
       </Drawer.Navigator>
   )

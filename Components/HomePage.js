@@ -6,6 +6,7 @@ import { themeContext, userContext } from "../Components/SetData.js"
 import { useState, useContext } from "react";
 import SecondLogo from "../second.png"
 import FirstLogo from "../first.jpeg"
+import ThirdLogo from "../third.jpg"
 
 
 export default function ScreenOne({ navigation }) {
@@ -42,7 +43,7 @@ export default function ScreenOne({ navigation }) {
             />}
             <Text style={styles.text}>Welcome Back {user.displayName}</Text>
           </View>
-          <Text style={{ marginTop: 50, marginLeft: 30 }} >What will you do today?</Text>
+          <Text style={{ marginTop: 50, marginLeft: 30,fontSize:15,fontWeight: '700' }} >What will you do today?</Text>
           <SafeAreaView style={styles.container}>
             <ScrollView horizontal={true} style={styles.scrollView(darkTheme)}>
               <TouchableOpacity>
@@ -54,7 +55,7 @@ export default function ScreenOne({ navigation }) {
                     />
                   </View>
                   <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
-                    <Text>Find A recipe</Text>
+                    <Text style={{color: 'white', fontWeight: 'bold'}}>Find A recipe</Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -63,11 +64,11 @@ export default function ScreenOne({ navigation }) {
                   <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
                     <Image
                       style={styles.image}
-                      source={FirstLogo}
+                      source={SecondLogo}
                     />
                   </View>
                   <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
-                    <Text>Find A recipe</Text>
+                    <Text style={{color: 'white', fontWeight: 'bold'}}>Create a Menu</Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -76,11 +77,11 @@ export default function ScreenOne({ navigation }) {
                   <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
                     <Image
                       style={styles.image}
-                      source={FirstLogo}
+                      source={ThirdLogo}
                     />
                   </View>
                   <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
-                    <Text>Find A recipe</Text>
+                    <Text style={{color: 'white', fontWeight: 'bold'}}>Browse Recipes</Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -145,14 +146,14 @@ const styles = StyleSheet.create({
   },
   scrollView: (darkTheme) => ({
     marginTop: 10,
-    padding: 10,
+    
     height: 250,
 
     marginHorizontal: 20,
     borderRadius: 20,
   }),
   innerBox: (darkTheme) => ({
-
+    padding:5,
     width: 160,
     height: "100%",
   }),
@@ -160,6 +161,8 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 400 / 2,
+    borderWidth: 2,
+    borderColor: "black"
 
   },
   image: {
@@ -169,6 +172,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+    
 
   }
 
