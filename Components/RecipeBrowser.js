@@ -9,16 +9,35 @@ import { AntDesign } from '@expo/vector-icons';
 
 
 const RecipeBrowser = ({ navigation }) => {
+
     const [darkTheme, setDarkTheme] = useContext(themeContext)
     const [show, setShow] = useState(false)
     const [foodarray, setFoodArray] = useContext(foodContext)
     const [searchvalue, setSearchValue] = useState("")
-    var showarray = foodarray.slice(0, 10);
-    let pagecount = 0
+    const [showarray, setShowArray] = useState(foodarray.slice(pagestart, pageend))
+    const [pagestart, setPageStart] = useState(0)
+    const [pageend, setPageEnd] = useState(9)
+    const [pagecount,setPageCount] = useState(0)
+    
+    
     const toggleSwitch = () => setDarkTheme(previousState => !previousState);
 
     const openMenu = () => {
         navigation.openDrawer();
+    }
+    const pagebackwards = () => {
+        setPageStart(pagestart -= 10)
+        setPageEnd(pageend -= 10)
+        setPageCount(pagecount -= 1)
+        let newarray = foodarray.slice(pagestart, pageend)
+        setShowArray( newarray )
+    }
+    const pageforward = () => {
+        setPageStart(pagestart += 10)
+        setPageEnd(pageend += 10)
+        setPageCount(pagecount += 1)
+        let newarray = foodarray.slice(pagestart, pageend)
+        setShowArray( newarray )
     }
 
     return (
@@ -52,10 +71,16 @@ const RecipeBrowser = ({ navigation }) => {
                     )
                 })}
                 <View style={styles.pagingview}>
-                    
-                    <AntDesign name="arrowleft" size={30} color="black" />
+                    <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pagebackwards() }}>
+                        <AntDesign name="arrowleft" size={30} color="black" />
+                    </TouchableOpacity>
+
                     <Text>{pagecount}</Text>
-                    <AntDesign name="arrowright" size={30} color="black" />
+
+                    <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageforward() }}>
+                        <AntDesign name="arrowright" size={30} color="black" />
+                    </TouchableOpacity>
+
 
                 </View>
             </ScrollView>
@@ -69,7 +94,7 @@ export default RecipeBrowser
 const styles = StyleSheet.create({
     mainContainer: (darkTheme) => ({
         width: '100%',
-        height: 1600,
+        height: 1420,
         alignItems: 'center',
         backgroundColor: darkTheme ? "black" : "white"
     }),
@@ -133,6 +158,17 @@ const styles = StyleSheet.create({
         marginTop: 25,
         alignItems: 'center',
         flexDirection: 'row',
-    }
+    },
+    Button: (darkTheme) => ({
+        justifyContent: 'center',
+        marginLeft:20,
+        marginRight:20,
+        alignItems: 'center',
+        height: 50,
+        backgroundColor: darkTheme ? "#181616" : "white",
+        width: 50,
+        borderRadius: 20,
+        
+    })
 
 })
