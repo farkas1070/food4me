@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View, TextInput,TouchableOpacity, Alert } from 'react-native'
-import React,{useState} from 'react'
+import React,{useContext} from 'react'
 import { getAuth,deleteUser    } from "firebase/auth";
+import {  themeContext } from "../Components/SetData.js"
 
 const ChangePasswordModal = () => {
-    
+    const [darkTheme, setDarkTheme] = useContext(themeContext)
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -19,8 +20,8 @@ const ChangePasswordModal = () => {
     return (
 
         <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-                <Text style={styles.modalText}>Are you sure about this?</Text>
+            <View style={styles.modalView(darkTheme)}>
+                <Text style={styles.modaltext(darkTheme)}>Are you sure about this?</Text>
                 <View style={styles.formContainer}>
 
                     <Text style={styles.warningtext}>Warning, This action is IRREVERSIBLE! if you continue, your account will be deleted forever!</Text>
@@ -44,11 +45,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
        
     },
-    modalView: {
+    modalView:(darkTheme) => ({
         width: 300,
         height: 500,
         margin: 20,
-        backgroundColor: "white",
+        backgroundColor: darkTheme? "black":"white",
         borderRadius: 20,
         borderColor: "#fd5a43",
         borderWidth: 3,
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5
-    },
+    }),
     formContainer: {
         width: "100%",
         padding: 20,
@@ -85,6 +86,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop:40,
+        borderRadius: 30,
+        
         width:100,
         height:100,
         backgroundColor: '#fd5a43',
@@ -93,6 +96,9 @@ const styles = StyleSheet.create({
     warningtext:{
         fontWeight: 'bold',
         fontSize:30,
-        color: 'red'
-    }
+        color:"red"
+    },
+    modaltext: (darkTheme) => ({
+        color:darkTheme? "white": "black"
+    }),
 })

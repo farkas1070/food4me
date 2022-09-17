@@ -11,6 +11,9 @@ import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import ChangeUsernameModal from "./ChangeUsernameModal"
 import DeleteUserModal from "./DeleteUserModal"
+
+
+
 const ProfileComponent = ({ navigation }) => {
 
   const [darkTheme, setDarkTheme] = useContext(themeContext)
@@ -78,7 +81,7 @@ const ProfileComponent = ({ navigation }) => {
 
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
           {darkTheme ? <Feather name="moon" size={25} color={darkTheme?"#fd5a43" :"white"} style={{ marginTop: 25, marginRight: 10 }} /> : <Feather name="sun" size={25} color={darkTheme?"#fd5a43" :"white"} style={{ marginTop: 25, marginRight: 10 }} />}
-          <Switch trackColor={{ false: "#767577", true: "white" }} color={darkTheme?"#fd5a43" :"#fd5a43"} onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
+          <Switch trackColor={{ false: "#767577", true: "white" }} thumbColor={darkTheme?"#fd5a43" :"white"} onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
 
           </Switch>
         </View>
@@ -142,7 +145,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: darkTheme ? '#181616' : "#fd5a43",
+    backgroundColor: darkTheme ? 'black' : "#fd5a43",
+    borderBottomWidth: darkTheme? 5:0,
+    borderColor: darkTheme? "#181616":"transparent",
 
 
   }),
@@ -207,7 +212,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
     borderWidth: darkTheme? 3:0,
-    borderColor: darkTheme? "#443737":"transparent",
+    borderColor: darkTheme? "#313131":"transparent",
     justifyContent: 'center',
     alignItems: 'center',
   }),
@@ -241,7 +246,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
 
-    backgroundColor: darkTheme ? "#443737" : "white",
+    backgroundColor: darkTheme ? "#313131" : "white",
 
   }),
   optionText: (darkTheme) => ({

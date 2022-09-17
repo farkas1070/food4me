@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Switch, Image } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Switch, Image, ImageBackground } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { themeContext, userContext } from "../Components/SetData.js"
@@ -8,6 +8,8 @@ import SecondLogo from "../second.png"
 import FirstLogo from "../first.jpeg"
 import ThirdLogo from "../third.jpg"
 
+import background3 from "../background3.png"
+import background4 from "../background4.png"
 
 export default function ScreenOne({ navigation }) {
 
@@ -34,19 +36,20 @@ export default function ScreenOne({ navigation }) {
           </Switch>
         </View>
       </View>
-      <View style={styles.bodyContainer(darkTheme)}>
-        <View style={styles.innerbody}>
+      <ScrollView style={styles.bodyContainer(darkTheme)}>
+        <View>
+          
           <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginTop: 20, height: 150 }}>
             {user.photoURL == null ? <MaterialIcons name="account-circle" size={100} color="black" /> : <Image
-              style={styles.profileImage}
+              style={styles.profileImage(darkTheme)}
               source={{ uri: user.photoURL }}
             />}
-            <Text style={styles.text}>Welcome Back {user.displayName}</Text>
+            <Text style={styles.text(darkTheme)}>Welcome Back {user.displayName}</Text>
           </View>
-          <Text style={{ marginTop: 50, marginLeft: 30,fontSize:15,fontWeight: '700' }} >What will you do today?</Text>
+          <Text style={styles.whatwillyoudotext(darkTheme)} >What will you do today?</Text>
           <SafeAreaView style={styles.container}>
-            <ScrollView horizontal={true} style={styles.scrollView(darkTheme)}>
-              <TouchableOpacity>
+            <ScrollView horizontal={true} style={styles.scrollView}>
+              <TouchableOpacity onPress={() => { navigation.navigate("RecipeComponent") }}>
                 <View style={styles.innerBox(darkTheme)}>
                   <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
                     <Image
@@ -55,11 +58,11 @@ export default function ScreenOne({ navigation }) {
                     />
                   </View>
                   <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
-                    <Text style={{color: 'white', fontWeight: 'bold'}}>Find A recipe</Text>
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>Find A recipe</Text>
                   </View>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => { navigation.navigate("MenuCreator") }} >
                 <View style={styles.innerBox(darkTheme)}>
                   <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
                     <Image
@@ -68,11 +71,11 @@ export default function ScreenOne({ navigation }) {
                     />
                   </View>
                   <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
-                    <Text style={{color: 'white', fontWeight: 'bold'}}>Create a Menu</Text>
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>Create a Menu</Text>
                   </View>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => { navigation.navigate("RecipeBrowser") }} >
                 <View style={styles.innerBox(darkTheme)}>
                   <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
                     <Image
@@ -81,15 +84,20 @@ export default function ScreenOne({ navigation }) {
                     />
                   </View>
                   <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
-                    <Text style={{color: 'white', fontWeight: 'bold'}}>Browse Recipes</Text>
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>Browse Recipes</Text>
                   </View>
                 </View>
               </TouchableOpacity>
 
             </ScrollView>
+
+            <View style={styles.quoteview}>
+              <Text>sd</Text>
+            </View>
+
           </SafeAreaView>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -106,7 +114,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: darkTheme ? '#fd5a43' : "#fd5a43",
+    backgroundColor: darkTheme ? 'black' : "#fd5a43",
 
 
   }),
@@ -129,42 +137,39 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }]
   },
   bodyContainer: (darkTheme) => ({
-
     width: "100%",
-    height: "88%",
+    backgroundColor: darkTheme ? 'black' : "white"
 
-    backgroundColor: darkTheme ? '#fd5a43' : "white"
   }),
-  innerbody: {
-
-  },
-  text: {
+  text: (darkTheme) => ({
     fontWeight: "700",
     fontSize: 20,
     marginLeft: 30,
+    color: darkTheme ? "white" : "black",
 
-  },
-  scrollView: (darkTheme) => ({
-    marginTop: 10,
-    
+  }),
+
+  scrollView: {
+    marginTop: 30,
+
     height: 250,
 
     marginHorizontal: 20,
     borderRadius: 20,
-  }),
+  },
   innerBox: (darkTheme) => ({
-    padding:5,
+    padding: 5,
     width: 160,
     height: "100%",
   }),
-  profileImage: {
+  profileImage: (darkTheme) => ({
     width: 100,
     height: 100,
     borderRadius: 400 / 2,
     borderWidth: 2,
-    borderColor: "black"
+    borderColor: darkTheme ? "white" : "black"
 
-  },
+  }),
   image: {
     width: "100%",
     height: 130,
@@ -172,10 +177,23 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    
-
+  },
+  whatwillyoudotext: (darkTheme) => ({
+    marginTop: 50,
+    marginLeft: 30,
+    fontSize: 15,
+    fontWeight: '700',
+    color: darkTheme ? "white" : "black"
+  }),
+  posterimage: {
+    width: "100%",
+    height: 200,
+  },
+  quoteview: {
+    alignItems: 'center',
+    width: '100%',
+    height: 400,
+    marginTop: 40,
+    backgroundImage: 'url'
   }
-
-
-
 });
