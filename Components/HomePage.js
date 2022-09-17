@@ -27,10 +27,10 @@ export default function ScreenOne({ navigation }) {
     <View style={styles.container}>
 
       <View style={styles.headerContainer(darkTheme)}>
-        <TouchableOpacity onPress={() => { openMenu() }}><Feather style={styles.feathericon} name="menu" size={35} color="white" /></TouchableOpacity>
+        <TouchableOpacity onPress={() => { openMenu() }}><Feather style={styles.feathericon} name="menu" size={35} color={darkTheme?"#fd5a43" :"white"} /></TouchableOpacity>
 
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-          {darkTheme ? <Feather name="moon" size={25} color="white" style={{ marginTop: 25, marginRight: 10 }} /> : <Feather name="sun" size={25} color="white" style={{ marginTop: 25, marginRight: 10 }} />}
+          {darkTheme ? <Feather name="moon" size={25} color={darkTheme?"#fd5a43" :"white"} style={{ marginTop: 25, marginRight: 10 }} /> : <Feather name="sun" size={25} color={darkTheme?"#fd5a43" :"white"} style={{ marginTop: 25, marginRight: 10 }} />}
           <Switch trackColor={{ false: "#767577", true: "#661b1c" }} thumbColor="white" onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
 
           </Switch>
@@ -115,7 +115,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: darkTheme ? 'black' : "#fd5a43",
-
+    borderBottomWidth: darkTheme? 5:0,
+    borderColor: darkTheme? "#181616":"transparent",
 
   }),
   headerText: {
