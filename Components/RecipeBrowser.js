@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react'
 import { StyleSheet, Text, View, KeyboardAvoidingView, Image, TouchableOpacity, ScrollView, TextInput, ImageBackground, Switch } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { themeContext, foodContext } from "../Components/SetData.js"
-import Background from "../background.png"
+
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -16,23 +16,23 @@ const RecipeBrowser = ({ navigation }) => {
     const [pageend, setPageEnd] = useState(9)
     const [pagecount, setPageCount] = useState(0)
 
-    const getTextStyle = (item) =>{
-        if(item.difficulty ==="Easy") {
-         return {
-            color: 'green', fontSize:10,fontWeight:"700",textAlign: 'right'
-         }
-        } 
-        if (item.difficulty ==="Intermediate"){
-          return {
-            color: 'orange', fontSize:10,fontWeight:"700",textAlign: 'right'
-          }
-        }
-        if (item.difficulty ==="Hard"){
+    const getTextStyle = (item) => {
+        if (item.difficulty === "Easy") {
             return {
-            color: 'red', fontSize:10,fontWeight:"700",textAlign: 'right'
+                color: 'green', fontSize: 10, fontWeight: "700", textAlign: 'right'
             }
-          }
-       }
+        }
+        if (item.difficulty === "Intermediate") {
+            return {
+                color: 'orange', fontSize: 10, fontWeight: "700", textAlign: 'right'
+            }
+        }
+        if (item.difficulty === "Hard") {
+            return {
+                color: 'red', fontSize: 10, fontWeight: "700", textAlign: 'right'
+            }
+        }
+    }
 
     const toggleSwitch = () => setDarkTheme(previousState => !previousState);
 
@@ -72,14 +72,15 @@ const RecipeBrowser = ({ navigation }) => {
                 {foodarray.map((data, i) => {
                     if (i >= pagestart && i <= pageend) {
                         return (
-                            <TouchableOpacity style={styles.singlefood(darkTheme)} key={i}>
+                            <TouchableOpacity onPress={() => { navigation.navigate("SingleElement", { item: data }) }} style={styles.singlefood(darkTheme)} key={i}>
 
                                 <Image source={{ uri: data.image }} style={styles.image} />
-                                
-                                <View style={{marginRight:20}}>
-                                <Text style={{color:"black",fontSize:10,fontWeight:"700", textAlign: 'right'}}>{data.name}</Text>
-                                <Text style={{color:"black",fontSize:10,fontWeight:"700",textAlign: 'right'}}>{data.kcalories}</Text>
-                                <Text style={getTextStyle(data)}>{data.difficulty}</Text>
+
+                                <View style={{ marginRight: 20 }}>
+                                    {data.healthy == true ? <Ionicons name="md-heart-sharp" size={18} color="green" style={{textAlign:'right',marginBottom:10}} /> : <Ionicons name="md-heart-dislike-sharp" size={18} color="red" style={{textAlign:'right',marginBottom:10}} />}
+                                    <Text style={{ color: "black", fontSize: 10, fontWeight: "700", textAlign: 'right',textDecorationLine: 'underline',marginBottom:5 }}>{data.name}</Text>
+                                    <Text style={{ color: "black", fontSize: 10, fontWeight: "700", textAlign: 'right' }}>{data.kcalories} Kcal / 100g</Text>
+                                    <Text style={getTextStyle(data)}> {data.difficulty}</Text>
                                 </View>
 
                             </TouchableOpacity>
@@ -95,7 +96,7 @@ const RecipeBrowser = ({ navigation }) => {
 
                     <Text>{pagecount}</Text>
 
-                    <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend  > foodarray.length ? true : false} >
+                    <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > foodarray.length ? true : false} >
                         <AntDesign name="arrowright" size={30} color="black" />
                     </TouchableOpacity>
 
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
         height: 80,
         borderRadius: 10,
         marginLeft: 20,
-        
+
     },
     headerContainer: (darkTheme) => ({
         width: '100%',
@@ -166,8 +167,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: darkTheme ? "black" : "white",
         borderColor: darkTheme ? "grey" : "#fd5a43",
-        borderBottomWidth:1,
-        
+        borderBottomWidth: 1,
+
     }),
     pagingview: {
         marginTop: 25,
@@ -185,5 +186,5 @@ const styles = StyleSheet.create({
         borderRadius: 20,
 
     }),
-    
+
 })

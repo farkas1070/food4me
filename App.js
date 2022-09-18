@@ -9,7 +9,7 @@ import HomeScreen from "./Components/HomeScreen"
 import { DataProvider } from "./Components/SetData.js"
 import { NavigationContainer,DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import SingleElement from "./Components/SingleElement"
 
 function App() {
   
@@ -24,6 +24,7 @@ function App() {
           <Stack.Screen options={{headerShown:false}}  name="Register" component={WelcomeScreen} />
           <Stack.Screen  options={{headerShown:false}} name="Login" component={LoginScreen} />
           <Stack.Screen  options={{headerShown:false}}  name="Home" component={HomeScreen} />
+          <Stack.Screen  options={{headerShown:false}}  name="SingleElement" component={SingleElement} />
         </Stack.Navigator>
       </NavigationContainer>
     </DataProvider>

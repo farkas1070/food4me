@@ -8,8 +8,7 @@ import SecondLogo from "../second.png"
 import FirstLogo from "../first.jpeg"
 import ThirdLogo from "../third.jpg"
 
-import background3 from "../background3.png"
-import background4 from "../background4.png"
+
 
 export default function ScreenOne({ navigation }) {
 
