@@ -9,19 +9,12 @@ import { AntDesign } from '@expo/vector-icons';
 
 
 const RecipeBrowser = ({ navigation }) => {
-
-
-
     const [darkTheme, setDarkTheme] = useContext(themeContext)
-    const [show, setShow] = useState(false)
     const [foodarray, setFoodArray] = useContext(foodContext)
     const [searchvalue, setSearchValue] = useState("")
     const [pagestart, setPageStart] = useState(0)
     const [pageend, setPageEnd] = useState(9)
     const [pagecount, setPageCount] = useState(0)
-
-
-    const [showarray, setShowArray] = useState(foodarray.slice(pagestart, pageend))
 
     const getTextStyle = (item) =>{
         if(item.difficulty ==="Easy") {
@@ -50,15 +43,11 @@ const RecipeBrowser = ({ navigation }) => {
         setPageStart(pagestart - 10)
         setPageEnd(pageend - 10)
         setPageCount(pagecount - 1)
-
-
     }
     const pageForward = () => {
         setPageStart(pagestart + 10)
         setPageEnd(pageend + 10)
         setPageCount(pagecount + 1)
-
-
     }
 
     return (
@@ -106,7 +95,7 @@ const RecipeBrowser = ({ navigation }) => {
 
                     <Text>{pagecount}</Text>
 
-                    <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend + 10 > foodarray.length ? true : false} >
+                    <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend  > foodarray.length ? true : false} >
                         <AntDesign name="arrowright" size={30} color="black" />
                     </TouchableOpacity>
 
@@ -177,7 +166,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: darkTheme ? "black" : "white",
         borderColor: darkTheme ? "grey" : "#fd5a43",
-        borderBottomWidth:2,
+        borderBottomWidth:1,
         
     }),
     pagingview: {

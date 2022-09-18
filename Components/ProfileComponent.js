@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Switch, Image, ScrollView,Mod
 import React from 'react'
 import { useContext,useState } from "react";
 import {  themeContext } from "../Components/SetData.js"
-import { getAuth, updateProfile, sendEmailVerification } from "firebase/auth";
+import { getAuth, updateProfile, sendEmailVerification,signOut  } from "firebase/auth";
 import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -11,7 +11,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import ChangeUsernameModal from "./ChangeUsernameModal"
 import DeleteUserModal from "./DeleteUserModal"
-
+import * as ImagePicker from 'expo-image-picker';
 
 
 const ProfileComponent = ({ navigation }) => {
@@ -22,47 +22,59 @@ const ProfileComponent = ({ navigation }) => {
   const [passwordmodalVisible, setpasswordModalVisible] = useState(false);
   const [usernamemodalVisible, setusernameModalVisible] = useState(false);
   const [deleteusermodalVisible, setdeleteusermodalVisible] = useState(false);
+  const [image, setImage] = useState(null);
 
   const toggleSwitch = () => setDarkTheme(previousState => !previousState);
 
   const openMenu = () => {
     navigation.openDrawer();
   }
-
-
-  const updateProfilePicture = () => {
-    console.log("inside update function")
-    updateProfile(auth.currentUser, {
-      photoURL: "https://i.pinimg.com/originals/cb/b6/1d/cbb61dc9f560a4e96c2c64f41a90ce3f.jpg"
-    }).then(() => {
-      console.log("user modified")
-    }).catch((error) => {
-      console.log(error)
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
     });
-    
 
-  }
+    console.log(result);
+
+    if (!result.cancelled) {
+      updateProfile(auth.currentUser, {
+        photoURL: result.uri
+      }).then(() => {
+        Alert.alert("Successfully updated profile pic,Login and logout to see your new pic")
+      }).catch((error) => {
+        console.log(error)
+      });
+      console.log(user)
+    }
+    
+  };
+
   const verifyEmail = () => {
     sendEmailVerification(auth.currentUser)
       .then(() => {
-        console.log("verification sent")
+        Alert.alert("Email Sent!")
       });
   }
  
-  const signOut = () => {
-    
+  const signUserOut = () => {
+    signOut(auth).then(() => {
+      Alert.alert("Success")
+    }).catch((error) => {
+      console.log(error)
+    });
+    navigation.navigate("Register")
   }
-  const deleteAccount = () => {
-    
-  }
+  
   
 
 
   return (
     <ScrollView style={{ width: '100%' }}>
       {/* Setting Up modals*/} 
-
-
       <Modal animationType="slide" transparent={true} visible={passwordmodalVisible} onRequestClose={() => {setpasswordModalVisible(!passwordmodalVisible);}}>
         <ChangePasswordModal/>
       </Modal>
@@ -70,19 +82,15 @@ const ProfileComponent = ({ navigation }) => {
         <ChangeUsernameModal/>
       </Modal>
       <Modal animationType="slide" transparent={true} visible={deleteusermodalVisible} onRequestClose={() => {setdeleteusermodalVisible(!deleteusermodalVisible);}}>
-        <DeleteUserModal/>
+        <DeleteUserModal nav={"Register"} />
       </Modal>
-
-
       {/* Setting Up modals*/} 
 
       <View style={styles.headerContainer(darkTheme)}>
         <TouchableOpacity onPress={() => { openMenu() }}><Feather style={styles.feathericon} name="menu" size={35} color={darkTheme?"#fd5a43" :"white"} /></TouchableOpacity>
-
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
           {darkTheme ? <Feather name="moon" size={25} color={darkTheme?"#fd5a43" :"white"} style={{ marginTop: 25, marginRight: 10 }} /> : <Feather name="sun" size={25} color={darkTheme?"#fd5a43" :"white"} style={{ marginTop: 25, marginRight: 10 }} />}
           <Switch trackColor={{ false: "#767577", true: "white" }} thumbColor={darkTheme?"#fd5a43" :"white"} onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
-
           </Switch>
         </View>
       </View>
@@ -100,7 +108,7 @@ const ProfileComponent = ({ navigation }) => {
           <View style={styles.bottomBody(darkTheme)}>
             <View style={{ flexDirection: 'row' }}>
               <View style={{ alignItems: 'center', marginTop: 40 }}>
-                <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { updateProfilePicture() }}>
+                <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pickImage() }}>
                   <AntDesign name="picture" size={50} color={darkTheme ? "#fd5a43" : "#36454F"} />
                 </TouchableOpacity>
                 <Text style={styles.buttonText(darkTheme)}> Change Profile Pic </Text>
@@ -125,7 +133,7 @@ const ProfileComponent = ({ navigation }) => {
              
               <TouchableOpacity style={styles.optionButton(darkTheme)} onPress={() => { verifyEmail() }} ><FontAwesome name="envelope-o" size={24} color={darkTheme ? "#fd5a43" : "#36454F"} style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Verify Email</Text></TouchableOpacity>
               <TouchableOpacity style={styles.optionButton(darkTheme)} onPress={() => { setdeleteusermodalVisible(true) }} ><AntDesign name="delete" size={24} color={darkTheme? "#fd5a43":"black" } style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Delete Account</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.optionButton(darkTheme)} onPress={() => { signOut() }} ><Feather name="log-out" size={24} color={darkTheme? "#fd5a43":"black" } style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Log Out</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.optionButton(darkTheme)} onPress={() => { signUserOut() }} ><Feather name="log-out" size={24} color={darkTheme? "#fd5a43":"black" } style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Log Out</Text></TouchableOpacity>
             </View>
           </View>
 

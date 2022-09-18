@@ -3,7 +3,7 @@ import React,{useContext} from 'react'
 import { getAuth,deleteUser    } from "firebase/auth";
 import {  themeContext } from "../Components/SetData.js"
 
-const ChangePasswordModal = () => {
+const ChangePasswordModal = ({nav}) => {
     const [darkTheme, setDarkTheme] = useContext(themeContext)
     const auth = getAuth();
     const user = auth.currentUser;
@@ -15,6 +15,7 @@ const ChangePasswordModal = () => {
           }).catch((error) => {
             console.log(error)
           });
+          navigation.navigate(nav)
         
     }
     return (

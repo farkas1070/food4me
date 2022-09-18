@@ -1,44 +1,21 @@
-import { StyleSheet, Text, View,KeyboardAvoidingView,Image,TouchableOpacity,ScrollView } from 'react-native'
-import React, { useEffect } from 'react'
+import { StyleSheet, Text,KeyboardAvoidingView,TouchableOpacity } from 'react-native'
+import React from 'react'
 
-import {useState,useContext} from "react";
-import { themeContext,foodContext } from "../Components/SetData.js"
+import {useContext} from "react";
+import { showContext } from "../Components/SetData.js"
+import SingleElement from "./SingleElement"
 
-
-const Homepage = ({ navigation }) => {
+const Homepage = () => {
   
-  const [darkTheme] = useContext(themeContext)
-  const [show, setShow] = useState(false)
-  const [foodarray, setFoodArray] = useContext(foodContext)
+  //const [darkTheme] = useContext(themeContext)
+  const [show, setShow] = useContext(showContext)
+  
   
    
   const showComponent = () =>{
     setShow(true)
   }
-  const hideComponent = () => {
-    setShow(false)
-  }
-  const getRandomElement = () => {
-    return foodarray[Math.floor(Math.random() * foodarray.length)]
-  }
-
-  const GetRandomFood = () => { 
-    var randelement = getRandomElement();
-    
-    
-    return ( 
-      <View style={styles.randomContainer}>
-        <Text style={styles.quoteText}>{randelement.name}</Text>
-        <Image source={{ uri: randelement.image }} style={styles.image}/>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.subButton} onPress={() =>{hideComponent()}}><Text>Go Back</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.subButton}><Text>Go to Recipe</Text></TouchableOpacity>
-        </View>
-       <ScrollView style={styles.recipeContainer}><Text style={styles.recipeText}>{randelement.recipe}</Text></ScrollView>
-        
-      </View>
-    )
-  }
+  
 
 
   return (
@@ -46,7 +23,7 @@ const Homepage = ({ navigation }) => {
       
       { !show && <Text style={styles.quoteText}>Welcome to Food4Me, What can I help you with today?</Text>}
       { !show && <TouchableOpacity style={styles.button} onPress={()=>{showComponent()}}><Text style={styles.text}>What should I cook today?</Text></TouchableOpacity>}
-      {show && <GetRandomFood/>}
+      {show && <SingleElement showvalue={show} />}
       
     </KeyboardAvoidingView>
   )
