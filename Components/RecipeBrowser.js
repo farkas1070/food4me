@@ -3,9 +3,10 @@ import React, { useContext, useState } from 'react'
 import { StyleSheet, Text, View, KeyboardAvoidingView, Image, TouchableOpacity, ScrollView, TextInput, ImageBackground, Switch } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { themeContext, foodContext } from "../Components/SetData.js"
-
+import { useRef } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+
 
 
 const RecipeBrowser = ({ navigation }) => {
@@ -15,7 +16,8 @@ const RecipeBrowser = ({ navigation }) => {
     const [pagestart, setPageStart] = useState(0)
     const [pageend, setPageEnd] = useState(9)
     const [pagecount, setPageCount] = useState(0)
-
+    const scrollRef = useRef();
+    
     const getTextStyle = (item) => {
         if (item.difficulty === "Easy") {
             return {
@@ -43,11 +45,19 @@ const RecipeBrowser = ({ navigation }) => {
         setPageStart(pagestart - 10)
         setPageEnd(pageend - 10)
         setPageCount(pagecount - 1)
+        scrollRef.current?.scrollTo({
+            y: 0,
+            animated: true,
+          });
     }
     const pageForward = () => {
         setPageStart(pagestart + 10)
         setPageEnd(pageend + 10)
         setPageCount(pagecount + 1)
+        scrollRef.current?.scrollTo({
+            y: 0,
+            animated: true,
+          });
     }
 
     return (
@@ -68,7 +78,7 @@ const RecipeBrowser = ({ navigation }) => {
                     </Switch>
                 </View>
             </View>
-            <ScrollView contentContainerStyle={styles.mainContainer(darkTheme)}>
+            <ScrollView contentContainerStyle={styles.mainContainer(darkTheme)} ref={scrollRef} >
                 {foodarray.map((data, i) => {
                     if (i >= pagestart && i <= pageend) {
                         return (
