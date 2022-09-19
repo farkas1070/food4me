@@ -77,9 +77,9 @@ const RecipeBrowser = ({ navigation }) => {
                                 <Image source={{ uri: data.image }} style={styles.image} />
 
                                 <View style={{ marginRight: 20 }}>
-                                    {data.healthy == true ? <Ionicons name="md-heart-sharp" size={18} color="green" style={{textAlign:'right',marginBottom:10}} /> : <Ionicons name="md-heart-dislike-sharp" size={18} color="red" style={{textAlign:'right',marginBottom:10}} />}
-                                    <Text style={{ color: "black", fontSize: 10, fontWeight: "700", textAlign: 'right',textDecorationLine: 'underline',marginBottom:5 }}>{data.name}</Text>
-                                    <Text style={{ color: "black", fontSize: 10, fontWeight: "700", textAlign: 'right' }}>{data.kcalories} Kcal / 100g</Text>
+                                    {data.healthy == true ? <Ionicons name="md-heart-sharp" size={18} color="green" style={{ textAlign: 'right', marginBottom: 10 }} /> : <Ionicons name="md-heart-dislike-sharp" size={18} color="red" style={{ textAlign: 'right', marginBottom: 10 }} />}
+                                    <Text style={styles.nametext(darkTheme)}>{data.name}</Text>
+                                    <Text style={styles.kcalorietext(darkTheme)}>{data.kcalories} Kcal / 100g</Text>
                                     <Text style={getTextStyle(data)}> {data.difficulty}</Text>
                                 </View>
 
@@ -94,7 +94,7 @@ const RecipeBrowser = ({ navigation }) => {
                         <AntDesign name="arrowleft" size={30} color="black" />
                     </TouchableOpacity>
 
-                    <Text>{pagecount}</Text>
+                    <Text style={styles.pagecounttext(darkTheme)}>{pagecount}</Text>
 
                     <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > foodarray.length ? true : false} >
                         <AntDesign name="arrowright" size={30} color="black" />
@@ -112,7 +112,7 @@ export default RecipeBrowser
 const styles = StyleSheet.create({
     mainContainer: (darkTheme) => ({
         width: '100%',
-        height: 1370,
+        height: 1390,
         alignItems: 'center',
         backgroundColor: darkTheme ? "black" : "white"
     }),
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
 
     }),
     pagingview: {
-        marginTop: 25,
+        marginTop: 30,
         alignItems: 'center',
         flexDirection: 'row',
     },
@@ -181,10 +181,31 @@ const styles = StyleSheet.create({
         marginRight: 20,
         alignItems: 'center',
         height: 50,
-        backgroundColor: darkTheme ? "#181616" : "white",
+        backgroundColor: darkTheme ? "#181616" : "#fd5a43",
         width: 50,
         borderRadius: 20,
 
     }),
+    nametext: (darkTheme) => ({
+        color: "black",
+        fontSize: 10,
+        fontWeight: "700",
+        textAlign: 'right',
+        textDecorationLine: 'underline',
+        marginBottom: 5,
+        color: darkTheme ? "white" : "black"
+    }),
+    kcalorietext: (darkTheme) => ({
+        color: "black",
+        fontSize: 10,
+        fontWeight: "700",
+        textAlign: 'right',
+        color: darkTheme ? "white" : "black"
+    }),
+    pagecounttext: (darkTheme) => ({
+        color: darkTheme ? "white" : "black",
+        fontWeight:"700",
+        fontSize:20
+    })
 
 })
