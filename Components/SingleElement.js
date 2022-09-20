@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, ImageBackground, Dimensions, KeyboardAvoidingView } from 'react-native'
-import React, { useState, useContext } from 'react'
-import { themeContext, foodContext, showContext } from "../Components/SetData.js"
+import React, {  useContext } from 'react'
+import { themeContext } from "../Components/SetData.js"
 import Svg, { Path } from 'react-native-svg';
 
 const WavyHeaderComponent = ({ customStyles }) => {
@@ -23,10 +23,10 @@ const WavyHeaderComponent = ({ customStyles }) => {
     )
 }
 
-const GetRandomFood = ({ navigation: { goBack }, route }) => {
+const GetRandomFood = ({ navigation, route }) => {
     const { item } = route.params;
     const [darkTheme] = useContext(themeContext)
-    const [show, setShow] = useState(showContext)
+    
 
 
     return (
@@ -49,7 +49,8 @@ const GetRandomFood = ({ navigation: { goBack }, route }) => {
                 <Text style={styles.recipeText(darkTheme)}>{item.recipe}</Text>
 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.gobackButton(darkTheme)} onPress={() => { goBack() }}><Text style={styles.gobackbuttontext(darkTheme)}>Go back</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.gobackButton(darkTheme)} onPress={() => { navigation.navigate("Homepage") }}><Text style={styles.gobackbuttontext(darkTheme)}>Go back</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.gobackButton(darkTheme)} onPress={() => { navigation.navigate("RecipeBrowser") }}><Text style={styles.gobackbuttontext(darkTheme)}>Go To Browser</Text></TouchableOpacity>
 
                 </View>
             </ScrollView>
@@ -141,7 +142,8 @@ const styles = StyleSheet.create({
       },
       gobackButton: (darkTheme) => ({
     
-    
+        marginLeft:20,
+        marginRight:20,
         width: "40%",
         height: 50,
         backgroundColor: darkTheme ? "white" : "#fd5a43",
@@ -160,7 +162,8 @@ const styles = StyleSheet.create({
       gobackbuttontext: (darkTheme) => ({
         color: darkTheme ? "black" : "white",
         fontSize: 16,
-        fontWeight: "700"
+        fontWeight: "700",
+        
       }),
       descriptiontext: (darkTheme) => ({
         marginTop: 30,

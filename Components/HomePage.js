@@ -48,7 +48,7 @@ export default function ScreenOne({ navigation }) {
           <Text style={styles.whatwillyoudotext(darkTheme)} >What will you do today?</Text>
           <SafeAreaView style={styles.container}>
             <ScrollView horizontal={true} style={styles.scrollView}>
-              <TouchableOpacity onPress={() => { navigation.navigate("RecipeComponent") }}>
+              <TouchableOpacity onPress={() => { navigation.navigate("RecipeFinder") }}>
                 <View style={styles.innerBox(darkTheme)}>
                   <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
                     <Image

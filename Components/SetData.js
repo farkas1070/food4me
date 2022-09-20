@@ -5,14 +5,14 @@ import React, { useEffect } from 'react'
 export const themeContext = createContext();
 export const foodContext = createContext();
 export const userContext = createContext();
-export const showContext = createContext();
+
 
 
 export const DataProvider = (props) => {
   const [darkTheme, setDarkTheme] = useState(false)
   const [foodarray, setFoodArray] = useState([])
   const [user, setUser] = useState({})
-  const [show, setShow] = useState(false)
+  
 
   const foodCollectionRef = collection(db, 'foods')
 
@@ -36,7 +36,7 @@ export const DataProvider = (props) => {
   }, [])
 
   return (
-    <showContext.Provider value={[show, setShow]} >
+    
       <userContext.Provider value={[user, setUser]} >
         <foodContext.Provider value={[foodarray, setFoodArray]}>
           <themeContext.Provider value={[darkTheme, setDarkTheme]}>
@@ -44,6 +44,6 @@ export const DataProvider = (props) => {
           </themeContext.Provider>
         </foodContext.Provider>
       </userContext.Provider>
-    </showContext.Provider>
+    
   )
 }

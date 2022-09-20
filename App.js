@@ -1,8 +1,4 @@
 import 'react-native-gesture-handler';
-import {
-  signOut,
-} from "firebase/auth";
-import { auth } from "./firebase-config";
 import WelcomeScreen from "./Components/WelcomeScreen"
 import LoginScreen from "./Components/LoginScreen"
 import HomeScreen from "./Components/HomeScreen"
