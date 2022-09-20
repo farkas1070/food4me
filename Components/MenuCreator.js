@@ -5,14 +5,19 @@ import { useContext } from "react";
 import Carousel from 'react-native-reanimated-carousel';
 
 import Recipelight1 from "../recipelight1.png"
-import RecipeDark1 from "../recipedark1.png"
+import Recipedark1 from "../recipedark1.png"
+import Recipelight2 from "../recipelight2.png"
+import Recipedark2 from "../recipedark2.png"
+import Recipelight3 from "../recipelight3.png"
+import Recipedark3 from "../recipedark3.png"
 import { Ionicons } from '@expo/vector-icons'; 
 
 
 const MenuCreator = ({navigation}) => {
   const [darkTheme, setDarkTheme] = useContext(themeContext)
   const [foodarray, setFoodArray] = useContext(foodContext)
-  
+  const darkpictures = [Recipedark1,Recipedark2,Recipedark3]
+  const lightpictures = [Recipelight1,Recipelight2,Recipelight3]
 
 
   const lunchfood = foodarray.filter(food => food.type === "Lunch");
@@ -46,7 +51,7 @@ const MenuCreator = ({navigation}) => {
           renderItem={({ index }) => (
             <View
               style={styles.carouselcontainer(darkTheme)}>
-              <ImageBackground source={darkTheme? RecipeDark1:Recipelight1} style={styles.backgroundimage}>
+              <ImageBackground source={darkTheme? darkpictures[index]:lightpictures[index]} style={styles.backgroundimage}>
                 <View style={styles.leftbuttoncontainer(darkTheme)}>
                   <TouchableOpacity onPress={() => { goBack(index)  }} style={styles.leftbutton(darkTheme)}><Ionicons name="return-up-back" size={24} color="black" style={{}} /></TouchableOpacity>
                 
