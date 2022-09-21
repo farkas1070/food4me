@@ -13,22 +13,13 @@ import Recipedark3 from "../recipedark3.png"
 import { Ionicons } from '@expo/vector-icons'; 
 
 
-const MenuCreator = ({navigation}) => {
+const MenuCreator = ({navigation,route}) => {
   const [darkTheme, setDarkTheme] = useContext(themeContext)
-  const [foodarray, setFoodArray] = useContext(foodContext)
   const darkpictures = [Recipedark1,Recipedark2,Recipedark3]
   const lightpictures = [Recipelight1,Recipelight2,Recipelight3]
+  const { item } = route.params;
 
-
-  const lunchfood = foodarray.filter(food => food.type === "Lunch");
-  const breakfastfood = foodarray.filter(food => food.type === "Breakfast");
-  const dinnerfood = foodarray.filter(food => food.type === "Dinner");
-
-  var randlunchelement = lunchfood[Math.floor(Math.random() * lunchfood.length)]
-  var randbreakfastelement = breakfastfood[Math.floor(Math.random() * breakfastfood.length)]
-  var randdinnerelement = dinnerfood[Math.floor(Math.random() * dinnerfood.length)]
-
-  let finallist = [randbreakfastelement,randlunchelement,  randdinnerelement]
+  
 
   
   const width = Dimensions.get('window').width;
@@ -46,8 +37,8 @@ const MenuCreator = ({navigation}) => {
           width={width}
           height="100%"
           autoPlay={true}
-          data={finallist}
-          scrollAnimationDuration={5000}
+          data={item}
+          scrollAnimationDuration={7000}
           renderItem={({ index }) => (
             <View
               style={styles.carouselcontainer(darkTheme)}>
@@ -58,23 +49,23 @@ const MenuCreator = ({navigation}) => {
                 </View>
                 <View style={{width:'80%'}}>
                 <Text style={styles.toptext(darkTheme)}>
-                  For {finallist[index].type}, We suggest Today you cook: {finallist[index].name}
+                  For {item[index].type}, We suggest Today you cook: {item[index].name}
                 </Text>
                 <View style={{alignItems: 'center'}}>
                   <Image
                     style={styles.image}
-                    source={{ uri: finallist[index].image }}
+                    source={{ uri: item[index].image }}
                   />
                 </View>
                 <View style={{alignItems: 'center',padding:40 }}>
-                <Text style={styles.difficultytext(darkTheme)}>Difficulty: {finallist[index].difficulty}</Text>
-                <Text style={styles.descriptiontext(darkTheme)} >Descripion: {finallist[index].description}</Text>
+                <Text style={styles.difficultytext(darkTheme)}>Difficulty: {item[index].difficulty}</Text>
+                <Text style={styles.descriptiontext(darkTheme)} >Descripion: {item[index].description}</Text>
                 </View>
-                <View style={{flex:1,alignItems: 'center',justifyContent: 'flex-end'}}><TouchableOpacity onPress={() => { navigation.navigate("SingleElement", { item: finallist[index] })  }} style={styles.recipebutton(darkTheme)}><Text style={{textAlign:"center"}}>Click Here For the Recipe</Text></TouchableOpacity></View>
+                <View style={{flex:1,alignItems: 'center',justifyContent: 'flex-end'}}><TouchableOpacity onPress={() => { navigation.navigate("SingleElement", { item: item[index] })  }} style={styles.recipebutton(darkTheme)}><Text style={{textAlign:"center"}}>Click Here For the Recipe</Text></TouchableOpacity></View>
                   
                 </View>
                 <View style={styles.rightbuttoncontainer(darkTheme)} >
-                  <View onPress={() => { navigation.navigate("Singleelement", { item: finallist[index] })  }} style={styles.rightbutton(darkTheme)}><Ionicons name="return-up-forward" size={24} color="black" style={{}} /></View>
+                  <View onPress={() => { }} style={styles.rightbutton(darkTheme)}><Ionicons name="return-up-forward" size={24} color="black" style={{}} /></View>
                 
                 </View>
                 

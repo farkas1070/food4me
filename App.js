@@ -6,7 +6,7 @@ import { DataProvider } from "./Components/SetData.js"
 import { NavigationContainer,DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SingleElement from "./Components/SingleElement"
-
+import MenuCreator from "./Components/MenuCreator"
 function App() {
   
   const Stack = createNativeStackNavigator();
@@ -21,6 +21,7 @@ function App() {
           <Stack.Screen  options={{headerShown:false}} name="Login" component={LoginScreen} />
           <Stack.Screen  options={{headerShown:false}}  name="Home" component={HomeScreen} />
           <Stack.Screen  options={{headerShown:false}}  name="SingleElement" component={SingleElement} />
+          <Stack.Screen  options={{headerShown:false}}  name="MenuElement" component={MenuCreator} />
         </Stack.Navigator>
       </NavigationContainer>
     </DataProvider>

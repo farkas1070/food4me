@@ -1,49 +1,92 @@
-import { StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity, View, Image, ScrollView, Dimensions, ImageBackground } from 'react-native'
+import { StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity, View,Switch } from 'react-native'
 import React from 'react'
 import { useContext } from "react";
 import { foodContext, themeContext } from "../Components/SetData.js"
+import { Feather } from '@expo/vector-icons';
 
 
-import Svg, { Path } from 'react-native-svg';
 
 
 
-const Homepage = ({navigation}) => {
-
-  //const [darkTheme] = useContext(themeContext)
+const Homepage = ({ navigation }) => {
+  
 
   const [foodarray, setFoodArray] = useContext(foodContext)
   const [darkTheme, setDarkTheme] = useContext(themeContext)
 
   const getRandomElement = () => {
     var randelement = foodarray[Math.floor(Math.random() * foodarray.length)]
-    navigation.navigate("SingleElement",{ item: randelement })
+    navigation.navigate("SingleElement", { item: randelement })
 
+  }
+  const toggleSwitch = () => setDarkTheme(previousState => !previousState);
+
+  const openMenu = () => {
+    navigation.openDrawer();
   }
 
   return (
-    <KeyboardAvoidingView style={styles.mainContainer(darkTheme)}>
+    <View>
+      <View style={styles.headerContainer(darkTheme)}>
+        <TouchableOpacity onPress={() => { openMenu() }}><Feather style={styles.feathericon} name="menu" size={35} color={darkTheme ? "#fd5a43" : "white"} /></TouchableOpacity>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+          {darkTheme ? <Feather name="moon" size={25} color={darkTheme ? "#fd5a43" : "white"} style={{ marginTop: 25, marginRight: 10 }} /> : <Feather name="sun" size={25} color={darkTheme ? "#fd5a43" : "white"} style={{ marginTop: 25, marginRight: 10 }} />}
+          <Switch trackColor={{ false: "#767577", true: "white" }} thumbColor={darkTheme ? "#fd5a43" : "white"} onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
+          </Switch>
+        </View>
+      </View>
+      <KeyboardAvoidingView style={styles.mainContainer(darkTheme)}>
 
 
-      
+
 
         <View style={styles.questioncontainer(darkTheme)}>
           <Text style={styles.dontshowtext(darkTheme)}>Click on the Button below, And we will give you a recipe suggestion!</Text>
-          <TouchableOpacity style={styles.button(darkTheme)} onPress={() => { getRandomElement()  }}>
+          <TouchableOpacity style={styles.button(darkTheme)} onPress={() => { getRandomElement() }}>
             <Text style={styles.text}>What should I cook today?</Text>
           </TouchableOpacity>
         </View>
-      
 
-    </KeyboardAvoidingView>
+
+      </KeyboardAvoidingView>
+    </View>
   )
 }
 
 export default Homepage
 
 const styles = StyleSheet.create({
+  headerContainer: (darkTheme) => ({
+    width: '100%',
+    height: "9%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: darkTheme ? 'black' : "#fd5a43",
+    borderBottomWidth: darkTheme? 5:0,
+    borderColor: darkTheme? "#181616":"transparent",
+
+
+  }),
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
+    textAlign: 'center',
+    marginTop: 35
+  },
+
+  feathericon: {
+    marginTop: 25,
+    marginLeft: 30
+  },
+  switch: {
+    marginTop: 25,
+    marginRight: 25,
+    transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }]
+  },
   mainContainer: (darkTheme) => ({
-    flex: 1,
+    height: "91%",
     backgroundColor: darkTheme ? "black" : "white",
   }),
   questioncontainer: (darkTheme) => ({
@@ -53,23 +96,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: darkTheme ? "black" : "white"
   }),
-  headerContainer: {
-    marginTop: 20,
-    marginHorizontal: 10
-  },
-  svgCurve: {
-    position: 'absolute',
-    width: Dimensions.get('window').width
-  },
-  headerText: {
-    fontSize: 25,
-    fontWeight: 'bold',
-
-    color: '#fff',
-    textAlign: 'center',
-    marginTop: 35,
-    marginBottom: 100
-  },
+  
+ 
+  
 
   quoteText: (darkTheme) => ({
     fontSize: 25,
@@ -132,7 +161,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   }),
 
-  recipeText:(darkTheme) => ({
+  recipeText: (darkTheme) => ({
     marginLeft: 30,
     marginRight: 20,
     marginTop: 20,
@@ -175,9 +204,9 @@ const styles = StyleSheet.create({
   dontshowtext: (darkTheme) => ({
     textAlign: "center",
     fontWeight: "700",
-     marginLeft: 50,
-      marginRight: 50,
-       fontSize: 18,
-       color: darkTheme ? "white" : "black"
+    marginLeft: 50,
+    marginRight: 50,
+    fontSize: 18,
+    color: darkTheme ? "white" : "black"
   })
 })

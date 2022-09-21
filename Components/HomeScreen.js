@@ -7,7 +7,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Homepage from "./HomePage"
 import RecipeBrowser from "./RecipeBrowser"
 import ProfileComponent from "./ProfileComponent"
-import MenuCreator from './MenuCreator';
+import MenuElement from './MenuElement';
 import RecipeComponent from "./RecipeComponent"
 
 const HomeScreen = ({ navigation }) => {
@@ -56,10 +56,8 @@ const HomeScreen = ({ navigation }) => {
           options={{
             headerShown:false
            
-            
-            
           }}
-          component={MenuCreator}
+          component={MenuElement}
         />
       </Drawer.Navigator>
   )
