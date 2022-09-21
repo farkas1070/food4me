@@ -28,9 +28,9 @@ const MenuCreator = ({navigation}) => {
   var randbreakfastelement = breakfastfood[Math.floor(Math.random() * breakfastfood.length)]
   var randdinnerelement = dinnerfood[Math.floor(Math.random() * dinnerfood.length)]
 
-  let finallist = [randlunchelement, randbreakfastelement, randdinnerelement]
+  let finallist = [randbreakfastelement,randlunchelement,  randdinnerelement]
 
-  console.log(foodarray)
+  
   const width = Dimensions.get('window').width;
 
   const goBack= (index) => {
@@ -45,20 +45,20 @@ const MenuCreator = ({navigation}) => {
           loop
           width={width}
           height="100%"
-          autoPlay={false}
+          autoPlay={true}
           data={finallist}
-          scrollAnimationDuration={2000}
+          scrollAnimationDuration={5000}
           renderItem={({ index }) => (
             <View
               style={styles.carouselcontainer(darkTheme)}>
               <ImageBackground source={darkTheme? darkpictures[index]:lightpictures[index]} style={styles.backgroundimage}>
                 <View style={styles.leftbuttoncontainer(darkTheme)}>
-                  <TouchableOpacity onPress={() => { goBack(index)  }} style={styles.leftbutton(darkTheme)}><Ionicons name="return-up-back" size={24} color="black" style={{}} /></TouchableOpacity>
+                  <View onPress={() => { goBack(index)  }} style={styles.leftbutton(darkTheme)}><Ionicons name="return-up-back" size={24} color="black" style={{}} /></View>
                 
                 </View>
                 <View style={{width:'80%'}}>
                 <Text style={styles.toptext(darkTheme)}>
-                  {finallist[index].name}
+                  For {finallist[index].type}, We suggest Today you cook: {finallist[index].name}
                 </Text>
                 <View style={{alignItems: 'center'}}>
                   <Image
@@ -74,7 +74,7 @@ const MenuCreator = ({navigation}) => {
                   
                 </View>
                 <View style={styles.rightbuttoncontainer(darkTheme)} >
-                  <TouchableOpacity onPress={() => { navigation.navigate("Singleelement", { item: finallist[index] })  }} style={styles.rightbutton(darkTheme)}><Ionicons name="return-up-forward" size={24} color="black" style={{}} /></TouchableOpacity>
+                  <View onPress={() => { navigation.navigate("Singleelement", { item: finallist[index] })  }} style={styles.rightbutton(darkTheme)}><Ionicons name="return-up-forward" size={24} color="black" style={{}} /></View>
                 
                 </View>
                 
@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     width:'10%',
     alignItems: 'center',
     justifyContent: 'center'
+
   }),
   rightbuttoncontainer: (darkTheme) => ({
     width:'10%',
@@ -129,7 +130,9 @@ const styles = StyleSheet.create({
   toptext: (darkTheme) => ({
     textAlign: 'center',
      fontSize: 20,
-     marginTop:50,color: 'white' 
+     marginTop:50,
+     fontWeight: 'bold',
+     color:darkTheme? "white" : "black"
   }),
   leftbutton: (darkTheme) => ({
     backgroundColor:'white',
@@ -154,14 +157,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom:10,
     fontWeight: 'bold',
-    color: 'white' 
+    color:darkTheme? "white" : "black"
   }),
   descriptiontext: (darkTheme) => ({
     alignItems: 'center',
     marginTop: 20,
     marginBottom:10,
     fontWeight: 'bold',
-    color: 'white' 
+    color:darkTheme? "white" : "black"
   }),
   recipebutton: (darkTheme) => ({
     backgroundColor:"white",
