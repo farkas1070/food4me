@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { auth } from "../firebase-config";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Homepage from "./HomePage"
@@ -9,8 +9,10 @@ import RecipeBrowser from "./RecipeBrowser"
 import ProfileComponent from "./ProfileComponent"
 import MenuElement from './MenuElement';
 import RecipeComponent from "./RecipeComponent"
+import { foodContext } from "../Components/SetData.js"
 
 const HomeScreen = ({ navigation }) => {
+  const [foodarray,setFoodarray] = useContext(foodContext)
   const Drawer = createDrawerNavigator();
 
   return (
@@ -45,10 +47,11 @@ const HomeScreen = ({ navigation }) => {
           name="RecipeBrowser"
           options={{
             headerShown:false
-           
+            
             
             
           }}
+          initialParams={{ item: foodarray }}
           component={RecipeBrowser}
         />
         <Drawer.Screen

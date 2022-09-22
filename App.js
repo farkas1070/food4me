@@ -7,10 +7,11 @@ import { NavigationContainer,DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SingleElement from "./Components/SingleElement"
 import MenuCreator from "./Components/MenuCreator"
+import FilteredRecipeBrowser from "./Components/FilteredRecipeBrowser"
+
 function App() {
   
   const Stack = createNativeStackNavigator();
-  
   
 
   return (
@@ -22,6 +23,7 @@ function App() {
           <Stack.Screen  options={{headerShown:false}}  name="Home" component={HomeScreen} />
           <Stack.Screen  options={{headerShown:false}}  name="SingleElement" component={SingleElement} />
           <Stack.Screen  options={{headerShown:false}}  name="MenuElement" component={MenuCreator} />
+          <Stack.Screen  options={{headerShown:false}}  name="FilteredRecipeBrowser" component={FilteredRecipeBrowser} />
         </Stack.Navigator>
       </NavigationContainer>
     </DataProvider>

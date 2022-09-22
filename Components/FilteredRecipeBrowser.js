@@ -1,8 +1,8 @@
 
 import React, { useContext, useState } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput, Switch, Alert } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput, Switch } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import { themeContext, foodContext } from "../Components/SetData.js"
+import { themeContext } from "../Components/SetData.js"
 import { useRef } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -10,11 +10,10 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 
 
-const RecipeBrowser = ({ navigation }) => {
-    
+
+const RecipeBrowser = ({ navigation,route }) => {
+    const { item } = route.params;
     const [darkTheme, setDarkTheme] = useContext(themeContext)
-    const [foodarray, setFoodArray] = useContext(foodContext)
-    const [searchvalue, setSearchValue] = useState("")
     
     const [pagestart, setPageStart] = useState(0)
     const [pageend, setPageEnd] = useState(9)
@@ -43,7 +42,7 @@ const RecipeBrowser = ({ navigation }) => {
     const toggleSwitch = () => setDarkTheme(previousState => !previousState);
 
     const openMenu = () => {
-        navigation.openDrawer();
+        navigation.goBack();
     }
     const pageBackwards = () => {
         setPageStart(pagestart - 10)
@@ -63,30 +62,12 @@ const RecipeBrowser = ({ navigation }) => {
             animated: true,
           });
     }
-    const filterAndNavigate = () => {
-        let filteredlist = foodarray.filter(item => {
-            if (item.name.toLowerCase().includes(searchvalue.toLowerCase())) {
-                return item;
-            }
-        })
-        navigation.navigate("FilteredRecipeBrowser", { item: filteredlist });
-    }
 
     return (
         <View>
             <View style={styles.headerContainer(darkTheme)}>
-                <TouchableOpacity onPress={() => { openMenu() }}><Feather style={styles.feathericon} name="menu" size={25} color={darkTheme ? "#fd5a43" : "white"} /></TouchableOpacity>
-                <View style={{ flexDirection: 'row',alignItems:"center",justifyContent: 'center',width: '60%',height:40,marginTop:25,borderRadius:20,backgroundColor: darkTheme? "#fd5a43":"white"}}>
-                <TextInput
-                    style={styles.input(darkTheme)}
-                    placeholder="Search for something"
-                    placeholderTextColor={darkTheme ? "white" : "black"}
-                    value={searchvalue}
-                    onChangeText={text => setSearchValue(text)}
-                    
-                />
-                <TouchableOpacity style={styles.searchbutton(darkTheme)} onPress={() => { filterAndNavigate() }}><FontAwesome5 name="search" disabled={searchvalue === "" ? true : false} size={20} color={darkTheme ? "#fd5a43" : "black"} style={styles.searchicon} /></TouchableOpacity>
-                </View>
+                <TouchableOpacity onPress={() => { openMenu() }}><AntDesign name="back" size={25} color={darkTheme ? "#fd5a43" : "white"} /></TouchableOpacity>
+                
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
 
                     <Switch trackColor={{ false: "#767577", true: "white" }} thumbColor={darkTheme ? "#fd5a43" : "white"} onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
@@ -95,7 +76,7 @@ const RecipeBrowser = ({ navigation }) => {
                 </View>
             </View>
             <ScrollView contentContainerStyle={styles.mainContainer(darkTheme)} ref={scrollRef} >
-                {foodarray.map((data, i) => {
+                {item.map((data, i) => {
                     if (i >= pagestart && i <= pageend) {
                         return (
                             <TouchableOpacity onPress={() => { navigation.navigate("SingleElement", { item: data }) }} style={styles.singlefood(darkTheme)} key={i}>
@@ -122,7 +103,7 @@ const RecipeBrowser = ({ navigation }) => {
 
                     <Text style={styles.pagecounttext(darkTheme)}>{pagecount}</Text>
 
-                    <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > foodarray.length ? true : false} >
+                    <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > item.length ? true : false} >
                         <AntDesign name="arrowright" size={30} color="black" />
                     </TouchableOpacity>
 

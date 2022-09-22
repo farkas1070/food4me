@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Dimensions, KeyboardAvoidingView } from 'react-native'
-
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import React, { useContext } from 'react'
 import { themeContext } from "../Components/SetData.js"
 import Svg, { Path } from 'react-native-svg';
@@ -48,17 +48,23 @@ const GetRandomFood = ({ navigation, route }) => {
         <Text style={styles.typetext(darkTheme)}>Dish Type: {item.type}</Text>
 
         <Text style={styles.typetext(darkTheme)}>Ingredients Required:</Text>
-        <View style={{ marginTop: 20 }}>
+        <View style={{ marginTop: 30 }}>
           {item.ingredients.map((data, i) => {
 
             return (
-              <View style={{ flexDirection: 'row' }} key={i}>
+              <View style={{ flexDirection: 'row',marginBottom: 20}} key={i}>
+                <BouncyCheckbox
+                  size={25}
+                  fillColor={darkTheme? "white" :"#fd5a43"}
+                  unfillColor={darkTheme? "black":"#FFFFFF"}
+                  iconStyle={{ borderColor: "black" }}
+                  innerIconStyle={{ borderWidth: 2 }}
+                  text={data}
+                  style={{marginLeft:50}}
+                />
                 
-                <Text style={styles.ingredienttext(darkTheme)}>{data}</Text>
               </View>
             )
-
-
           })}
         </View>
         <Text style={styles.upperrecipetext(darkTheme)}>Recipe for this Meal:</Text>
@@ -187,7 +193,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
     fontSize: 15,
-    color: darkTheme ? "white" : "black"
+    color: darkTheme ? "white" : "black",
+    
   }),
   difficultytext: (darkTheme) => ({
     marginTop: 40,
@@ -219,7 +226,8 @@ const styles = StyleSheet.create({
     color: darkTheme ? "white" : "black"
   }),
   ingredienttext: (darkTheme) => ({
-    marginLeft: 45,
+    marginLeft: 5,
+    
 
   })
 })
