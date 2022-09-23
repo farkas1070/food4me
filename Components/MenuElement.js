@@ -120,7 +120,6 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     backgroundColor: darkTheme ? "white" : "#fd5a43",
     borderRadius: 20,
-
     justifyContent: "center",
     alignItems: "center"
   }),

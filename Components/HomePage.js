@@ -35,7 +35,7 @@ export default function ScreenOne({ navigation }) {
           </Switch>
         </View>
       </View>
-      <View style={{height: "88%", width: "100%"}}>
+      <View style={{ height: "88%", width: "100%" }}>
         <ScrollView style={styles.bodyContainer(darkTheme)}>
           <View>
 
@@ -50,41 +50,47 @@ export default function ScreenOne({ navigation }) {
             <SafeAreaView style={styles.container}>
               <ScrollView horizontal={true} style={styles.scrollView}>
                 <TouchableOpacity onPress={() => { navigation.navigate("RecipeFinder") }}>
-                  <View style={styles.innerBox(darkTheme)}>
-                    <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
-                      <Image
-                        style={styles.image}
-                        source={FirstLogo}
-                      />
-                    </View>
-                    <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
-                      <Text style={{ color: 'white', fontWeight: 'bold' }}>Find A recipe</Text>
+                  <View style={styles.innerBox}>
+                    <View style={{ backgroundColor: '#fd5a43', borderRadius: 30 }}>
+                      <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
+                        <Image
+                          style={styles.image}
+                          source={FirstLogo}
+                        />
+                      </View>
+                      <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
+                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Find A recipe</Text>
+                      </View>
                     </View>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => { navigation.navigate("MenuCreator") }} >
-                  <View style={styles.innerBox(darkTheme)}>
-                    <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
-                      <Image
-                        style={styles.image}
-                        source={SecondLogo}
-                      />
-                    </View>
-                    <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
-                      <Text style={{ color: 'white', fontWeight: 'bold' }}>Create a Menu</Text>
+                  <View style={styles.innerBox}>
+                    <View style={{ backgroundColor: '#fd5a43', borderRadius: 30 }}>
+                      <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
+                        <Image
+                          style={styles.image}
+                          source={SecondLogo}
+                        />
+                      </View>
+                      <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
+                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Create a Menu</Text>
+                      </View>
                     </View>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => { navigation.navigate("RecipeBrowser") }} >
-                  <View style={styles.innerBox(darkTheme)}>
-                    <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
-                      <Image
-                        style={styles.image}
-                        source={ThirdLogo}
-                      />
-                    </View>
-                    <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
-                      <Text style={{ color: 'white', fontWeight: 'bold' }}>Browse Recipes</Text>
+                  <View style={styles.innerBox}>
+                    <View style={{ backgroundColor: '#fd5a43', borderRadius: 30 }}>
+                      <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
+                        <Image
+                          style={styles.image}
+                          source={ThirdLogo}
+                        />
+                      </View>
+                      <View style={{ backgroundColor: '#fd5a43', width: "100%", height: 80, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
+                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Browse Recipes</Text>
+                      </View>
                     </View>
                   </View>
                 </TouchableOpacity>
@@ -92,12 +98,12 @@ export default function ScreenOne({ navigation }) {
               </ScrollView>
 
               <View style={styles.homepictureview(darkTheme)}>
-                
+
                 <Image
                   style={styles.homepic}
                   source={homepicture}
                 />
-                <Text style={{marginTop: 20,textAlign: 'center',padding: 30,fontWeight: 'bold',color:darkTheme? 'white':'#fd5a43'}}>Pick the foods you love, and make them with detailed instructions!</Text>
+                <Text style={{ marginTop: 20, textAlign: 'center', padding: 30, fontWeight: 'bold', color: darkTheme ? 'white' : '#fd5a43' }}>Pick the foods you love, and make them with detailed instructions!</Text>
               </View>
 
             </SafeAreaView>
@@ -165,11 +171,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     borderRadius: 20,
   },
-  innerBox: (darkTheme) => ({
+  innerBox: {
     padding: 5,
     width: 160,
     height: "100%",
-  }),
+
+  },
   profileImage: (darkTheme) => ({
     width: 100,
     height: 100,
@@ -197,11 +204,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
   },
-  homepictureview: (darkTheme)=>({
-    borderTopColor: darkTheme? '#fd5a43':'#d3d3d3',
-    borderTopWidth:1,
+  homepictureview: (darkTheme) => ({
+    borderTopColor: darkTheme ? '#fd5a43' : '#d3d3d3',
+    borderTopWidth: 1,
     alignItems: 'center',
-    
+
     width: '100%',
     height: 400,
     marginTop: 30,
