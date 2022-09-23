@@ -110,14 +110,14 @@ const RecipeBrowser = ({ navigation, route }) => {
 
                     <View style={styles.pagingview}>
 
-                        <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageBackwards() }} disabled={pagestart <= 0 ? true : false} >
-                            <AntDesign name="arrowleft" size={30} color="black" />
+                        <TouchableOpacity style={ pagestart <= 0 ? styles.disabledButton(darkTheme) : styles.Button(darkTheme)} onPress={() => { pageBackwards() }} disabled={pagestart <= 0 ? true : false} >
+                            <AntDesign name="arrowleft" size={30} color={ pagestart <= 0 ? "#d3d3d3" : "white" } />
                         </TouchableOpacity>
 
                         <Text style={styles.pagecounttext(darkTheme)}>{pagecount}</Text>
 
-                        <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > item.length ? true : false} >
-                            <AntDesign name="arrowright" size={30} color="black" />
+                        <TouchableOpacity style={pageend > item.length ? styles.disabledButton(darkTheme) : styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > item.length ? true : false} >
+                            <AntDesign name="arrowright" size={30} color={pageend > item.length ? "#d3d3d3" : "white"} />
                         </TouchableOpacity>
 
                     </View>
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         width: "85%",
         borderRadius: 20,
         height: 40,
-
+        backgroundColor: darkTheme ? "black" : "white",
 
         textAlign: 'center'
     }),
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: darkTheme ? 'black' : "#fd5a43",
         borderBottomWidth: darkTheme ? 5 : 0,
-        borderColor: darkTheme ? "#181616" : "transparent",
+        borderColor: darkTheme ? "#fd5a43" : "transparent",
     }),
     headerText: {
         fontSize: 20,
@@ -195,8 +195,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         backgroundColor: darkTheme ? "black" : "white",
-        borderColor: darkTheme ? "grey" : "#fd5a43",
-        borderBottomWidth: 1,
+        borderColor: darkTheme ? "grey" : "#d3d3d3",
+        borderBottomWidth: 2,
 
     }),
     pagingview: {
@@ -212,10 +212,20 @@ const styles = StyleSheet.create({
         marginRight: 20,
         alignItems: 'center',
         height: 50,
-        backgroundColor: darkTheme ? "#181616" : "#fd5a43",
+        backgroundColor: darkTheme ? "#fd5a43" : "#fd5a43",
         width: 50,
         borderRadius: 20,
 
+    }),
+    disabledButton:(darkTheme)=> ({
+        justifyContent: 'center',
+        marginLeft: 20,
+        marginRight: 20,
+        alignItems: 'center',
+        height: 50,
+        backgroundColor: darkTheme ? "#181616" : "#e5e5e5",
+        width: 50,
+        borderRadius: 20,
     }),
     nametext: (darkTheme) => ({
         color: "black",

@@ -40,11 +40,17 @@ const GetRandomFood = ({ navigation, route }) => {
         </View>
 
 
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', borderBottomWidth: 1, borderBottomColor: darkTheme ? "#fd5a43" : "#d3d3d3", }}>
           <Image source={{ uri: item.image }} style={styles.image} />
         </View>
-        <Text style={styles.descriptiontext(darkTheme)}>Description: {item.description}</Text>
-        <Text style={styles.difficultytext(darkTheme)}>Dish Difficulty: {item.difficulty}</Text>
+        <View style={{ alignItems: 'center', padding: 20, }}>
+          <Text style={styles.descriptiontext(darkTheme)}>Description: {item.description}</Text>
+        </View>
+        <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, }}>
+          <View style={{ borderWidth: 2, borderColor: darkTheme ? "#d3d3d3" : "#fd5a43", height: 60, width: "80%", alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
+            <Text style={styles.difficultytext(darkTheme)}>Dish Difficulty: {item.difficulty}</Text>
+          </View>
+        </View>
         <Text style={styles.typetext(darkTheme)}>Dish Type: {item.type}</Text>
 
         <Text style={styles.typetext(darkTheme)}>Ingredients Required:</Text>
@@ -52,23 +58,27 @@ const GetRandomFood = ({ navigation, route }) => {
           {item.ingredients.map((data, i) => {
 
             return (
-              <View style={{ flexDirection: 'row',marginBottom: 20}} key={i}>
+              <View style={{ flexDirection: 'row', marginBottom: 20 }} key={i}>
                 <BouncyCheckbox
                   size={25}
-                  fillColor={darkTheme? "white" :"#fd5a43"}
-                  unfillColor={darkTheme? "black":"#FFFFFF"}
+                  fillColor={darkTheme ? "white" : "#fd5a43"}
+                  unfillColor={darkTheme ? "black" : "#FFFFFF"}
                   iconStyle={{ borderColor: "black" }}
                   innerIconStyle={{ borderWidth: 2 }}
                   text={data}
-                  style={{marginLeft:50}}
+                  style={{ marginLeft: 50 }}
                 />
-                
+
               </View>
             )
           })}
         </View>
         <Text style={styles.upperrecipetext(darkTheme)}>Recipe for this Meal:</Text>
-        <Text style={styles.recipeText(darkTheme)}>{item.recipe}</Text>
+        <View style={{justifyContent: 'center',alignItems: 'center'}}>
+          <View style={{ borderWidth: 2, borderColor: darkTheme ?  "#fd5a43":"#d3d3d3" , borderRadius: 5, marginTop: 20, justifyContent: "center", alignItems: "center", width: "85%",padding: 20,}}>
+            <Text style={styles.recipeText(darkTheme)}>{item.recipe}</Text>
+          </View>
+        </View>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.gobackButton(darkTheme)} onPress={() => { navigation.navigate("Homepage") }}><Text style={styles.gobackbuttontext(darkTheme)}>Go back</Text></TouchableOpacity>
@@ -138,6 +148,7 @@ const styles = StyleSheet.create({
     width: "90%",
     height: 250,
     borderRadius: 10,
+    marginBottom: 50,
 
   },
   randomContainer: {
@@ -175,9 +186,7 @@ const styles = StyleSheet.create({
   }),
 
   recipeText: (darkTheme) => ({
-    marginLeft: 30,
-    marginRight: 20,
-    marginTop: 20,
+    
     fontSize: 16,
     color: darkTheme ? "white" : "black"
   }),
@@ -194,11 +203,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 15,
     color: darkTheme ? "white" : "black",
-    
+
   }),
   difficultytext: (darkTheme) => ({
-    marginTop: 40,
-    marginLeft: 30,
+
     fontWeight: "700",
     fontSize: 22,
     color: darkTheme ? "white" : "black"
@@ -227,7 +235,7 @@ const styles = StyleSheet.create({
   }),
   ingredienttext: (darkTheme) => ({
     marginLeft: 5,
-    
+
 
   })
 })
