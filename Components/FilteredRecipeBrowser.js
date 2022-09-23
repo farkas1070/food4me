@@ -1,26 +1,26 @@
 
 import React, { useContext, useState } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput, Switch } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, KeyboardAvoidingView, Switch } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { themeContext } from "../Components/SetData.js"
 import { useRef } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons'; 
+import { FontAwesome5 } from '@expo/vector-icons';
+import noitemfound from "../noitemfound.png"
 
 
 
-
-const RecipeBrowser = ({ navigation,route }) => {
+const RecipeBrowser = ({ navigation, route }) => {
     const { item } = route.params;
     const [darkTheme, setDarkTheme] = useContext(themeContext)
-    
+
     const [pagestart, setPageStart] = useState(0)
     const [pageend, setPageEnd] = useState(9)
     const [pagecount, setPageCount] = useState(0)
-    
+
     const scrollRef = useRef();
-    
+
     const getTextStyle = (item) => {
         if (item.difficulty === "Easy") {
             return {
@@ -51,7 +51,7 @@ const RecipeBrowser = ({ navigation,route }) => {
         scrollRef.current?.scrollTo({
             y: 0,
             animated: true,
-          });
+        });
     }
     const pageForward = () => {
         setPageStart(pagestart + 10)
@@ -60,14 +60,15 @@ const RecipeBrowser = ({ navigation,route }) => {
         scrollRef.current?.scrollTo({
             y: 0,
             animated: true,
-          });
+        });
     }
 
     return (
-        <View>
+        <KeyboardAvoidingView style={{ height: '100%', }}>
+
             <View style={styles.headerContainer(darkTheme)}>
-                <TouchableOpacity onPress={() => { openMenu() }}><AntDesign name="back" size={25} color={darkTheme ? "#fd5a43" : "white"} /></TouchableOpacity>
-                
+                <TouchableOpacity onPress={() => { openMenu() }}><AntDesign name="back" size={25} color={darkTheme ? "#fd5a43" : "white"} style={styles.anticon} /></TouchableOpacity>
+
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
 
                     <Switch trackColor={{ false: "#767577", true: "white" }} thumbColor={darkTheme ? "#fd5a43" : "white"} onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
@@ -75,42 +76,56 @@ const RecipeBrowser = ({ navigation,route }) => {
                     </Switch>
                 </View>
             </View>
-            <ScrollView contentContainerStyle={styles.mainContainer(darkTheme)} ref={scrollRef} >
-                {item.map((data, i) => {
-                    if (i >= pagestart && i <= pageend) {
-                        return (
-                            <TouchableOpacity onPress={() => { navigation.navigate("SingleElement", { item: data }) }} style={styles.singlefood(darkTheme)} key={i}>
+            <View style={{ height: "88%" }}>
+                <ScrollView contentContainerStyle={styles.mainContainer(darkTheme)} ref={scrollRef} >
+                    <View style={{ width: "100%" }}>
+                        {item.length === 0 ?
+                            <View style={{ marginTop: 100, alignItems: "center" }}>
+                                <Image
+                                    style={styles.noitemimage}
+                                    source={noitemfound}
+                                />
+                            </View>
+                            :
+                            item.map((data, i) => {
+                                if (i >= pagestart && i <= pageend) {
+                                    return (
+                                        <TouchableOpacity onPress={() => { navigation.navigate("SingleElement", { item: data }) }} style={styles.singlefood(darkTheme)} key={i}>
 
-                                <Image source={{ uri: data.image }} style={styles.image} />
+                                            <Image source={{ uri: data.image }} style={styles.image} />
 
-                                <View style={{ marginRight: 20 }}>
-                                    {data.healthy == true ? <Ionicons name="md-heart-sharp" size={18} color="green" style={{ textAlign: 'right', marginBottom: 10 }} /> : <Ionicons name="md-heart-dislike-sharp" size={18} color="red" style={{ textAlign: 'right', marginBottom: 10 }} />}
-                                    <Text style={styles.nametext(darkTheme)}>{data.name}</Text>
-                                    <Text style={styles.kcalorietext(darkTheme)}>{data.kcalories} Kcal / 100g</Text>
-                                    <Text style={getTextStyle(data)}> {data.difficulty}</Text>
-                                </View>
+                                            <View style={{ marginRight: 20 }}>
+                                                {data.healthy == true ? <Ionicons name="md-heart-sharp" size={18} color="green" style={{ textAlign: 'right', marginBottom: 10 }} /> : <Ionicons name="md-heart-dislike-sharp" size={18} color="red" style={{ textAlign: 'right', marginBottom: 10 }} />}
+                                                <Text style={styles.nametext(darkTheme)}>{data.name}</Text>
+                                                <Text style={styles.kcalorietext(darkTheme)}>{data.kcalories} Kcal / 100g</Text>
+                                                <Text style={getTextStyle(data)}> {data.difficulty}</Text>
+                                            </View>
 
-                            </TouchableOpacity>
-                        )
-                    }
+                                        </TouchableOpacity>
+                                    )
+                                }
 
-                })}
-                <View style={styles.pagingview}>
+                            })}
+                    </View>
 
-                    <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageBackwards() }} disabled={pagestart <= 0 ? true : false} >
-                        <AntDesign name="arrowleft" size={30} color="black" />
-                    </TouchableOpacity>
+                    <View style={styles.pagingview}>
 
-                    <Text style={styles.pagecounttext(darkTheme)}>{pagecount}</Text>
+                        <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageBackwards() }} disabled={pagestart <= 0 ? true : false} >
+                            <AntDesign name="arrowleft" size={30} color="black" />
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > item.length ? true : false} >
-                        <AntDesign name="arrowright" size={30} color="black" />
-                    </TouchableOpacity>
+                        <Text style={styles.pagecounttext(darkTheme)}>{pagecount}</Text>
 
-                </View>
-            </ScrollView>
+                        <TouchableOpacity style={styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > item.length ? true : false} >
+                            <AntDesign name="arrowright" size={30} color="black" />
+                        </TouchableOpacity>
 
-        </View>
+                    </View>
+                </ScrollView>
+
+            </View>
+
+        </KeyboardAvoidingView>
     )
 }
 
@@ -119,7 +134,9 @@ export default RecipeBrowser
 const styles = StyleSheet.create({
     mainContainer: (darkTheme) => ({
         width: '100%',
-        height: 1390,
+        flexGrow: 1,
+        justifyContent: 'space-between',
+
         alignItems: 'center',
         backgroundColor: darkTheme ? "black" : "white"
     }),
@@ -127,8 +144,8 @@ const styles = StyleSheet.create({
         width: "85%",
         borderRadius: 20,
         height: 40,
-        
-        
+
+
         textAlign: 'center'
     }),
     image: {
@@ -138,9 +155,14 @@ const styles = StyleSheet.create({
         marginLeft: 20,
 
     },
+    noitemimage: {
+
+        width: 300,
+        height: 300
+      },
     headerContainer: (darkTheme) => ({
         width: '100%',
-        height: 90,
+        height: "12%",
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -156,7 +178,7 @@ const styles = StyleSheet.create({
         marginTop: 35
     },
 
-    feathericon: {
+    anticon: {
         marginTop: 25,
         marginLeft: 30
     },
@@ -178,7 +200,9 @@ const styles = StyleSheet.create({
 
     }),
     pagingview: {
-        marginTop: 30,
+
+        height: 90,
+
         alignItems: 'center',
         flexDirection: 'row',
     },
@@ -211,20 +235,20 @@ const styles = StyleSheet.create({
     }),
     pagecounttext: (darkTheme) => ({
         color: darkTheme ? "white" : "black",
-        fontWeight:"700",
-        fontSize:20
+        fontWeight: "700",
+        fontSize: 20
     }),
     searchbutton: (darkTheme) => ({
         justifyContent: 'center',
         alignItems: 'center',
         height: 40,
-        width:40,
-        borderRadius:20,
-        
-        
+        width: 40,
+        borderRadius: 20,
+
+
     }),
     searchicon: {
-        
+
     }
 
 })
