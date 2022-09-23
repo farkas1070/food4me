@@ -1,13 +1,14 @@
-import { StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity, View,Switch } from 'react-native'
+import { StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity, View, Switch, ImageBackground } from 'react-native'
 import React from 'react'
 import { useContext } from "react";
-import { foodContext,themeContext } from "../Components/SetData.js"
+import { foodContext, themeContext } from "../Components/SetData.js"
 import { Feather } from '@expo/vector-icons';
+import menubackground from "../assets/menubackground.jpg"
 
-const MenuElement = ({navigation}) => {
-    const [darkTheme, setDarkTheme] = useContext(themeContext)
-    const [foodarray, setFoodArray] = useContext(foodContext)
-    const toggleSwitch = () => setDarkTheme(previousState => !previousState);
+const MenuElement = ({ navigation }) => {
+  const [darkTheme, setDarkTheme] = useContext(themeContext)
+  const [foodarray, setFoodArray] = useContext(foodContext)
+  const toggleSwitch = () => setDarkTheme(previousState => !previousState);
 
   const openMenu = () => {
     navigation.openDrawer();
@@ -21,7 +22,7 @@ const MenuElement = ({navigation}) => {
     var randbreakfastelement = breakfastfood[Math.floor(Math.random() * breakfastfood.length)]
     var randdinnerelement = dinnerfood[Math.floor(Math.random() * dinnerfood.length)]
 
-    let finallist = [randbreakfastelement,randlunchelement,  randdinnerelement]
+    let finallist = [randbreakfastelement, randlunchelement, randdinnerelement]
     navigation.navigate("MenuElement", { item: finallist })
 
   }
@@ -40,13 +41,19 @@ const MenuElement = ({navigation}) => {
 
 
 
+        <ImageBackground source={menubackground} resizeMode="cover" style={{ justifyContent: "center", alignItems: 'center', height: '100%', width: '100%' }}>
+          <View style={styles.questioncontainer(darkTheme)}>
 
-        <View style={styles.questioncontainer(darkTheme)}>
-          <Text style={styles.dontshowtext(darkTheme)}>Click on the Button below, And we will give you A full Menu with 3 courses!</Text>
-          <TouchableOpacity style={styles.button(darkTheme)} onPress={() => { getRandomMenu() }}>
-            <Text style={styles.text}>What should I cook today?</Text>
-          </TouchableOpacity>
-        </View>
+            <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: "rgba(255, 255, 255, 0.8)", borderRadius: 80, width: "80%" }}>
+              <View><Text style={styles.dontshowtext(darkTheme)}>Click on the Button below, And we will give you a recipe suggestion!</Text></View>
+
+              <TouchableOpacity style={styles.button(darkTheme)} onPress={() => { getRandomMenu() }}>
+                <Text style={styles.text(darkTheme)}>What should I cook today?</Text>
+              </TouchableOpacity>
+            </View>
+
+          </View>
+        </ImageBackground>
 
 
       </KeyboardAvoidingView>
@@ -57,77 +64,78 @@ const MenuElement = ({navigation}) => {
 export default MenuElement
 
 const styles = StyleSheet.create({
-    headerContainer: (darkTheme) => ({
-        width: '100%',
-        height: "9%",
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: darkTheme ? 'black' : "#fd5a43",
-        borderBottomWidth: darkTheme? 5:0,
-        borderColor: darkTheme? "#181616":"transparent",
-    
-    
-      }),
-      headerText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: 'black',
-        textAlign: 'center',
-        marginTop: 35
-      },
-    
-      feathericon: {
-        marginTop: 25,
-        marginLeft: 30
-      },
-      switch: {
-        marginTop: 25,
-        marginRight: 25,
-        transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }]
-      },
-      mainContainer: (darkTheme) => ({
-        height: "91%",
-        backgroundColor: darkTheme ? "black" : "white",
-      }),
-      questioncontainer: (darkTheme) => ({
-        width: "100%",
-        height: "100%",
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: darkTheme ? "black" : "white"
-      }),
-      
-     
-      
-    
-      quoteText: (darkTheme) => ({
-        fontSize: 25,
-        fontWeight: "700",
-        textAlign: "center",
-        color: "#fff",
-      }),
-      button: (darkTheme) => ({
-        marginTop: 50,
-        width: "80%",
-        height: 50,
-        backgroundColor: darkTheme ? "white" : "black",
-        borderRadius: 20,
-    
-        justifyContent: "center",
-        alignItems: "center"
-      }),
-      text: {
-        fontweight: "700",
-        color: "#fd5a43",
-        textAlign: "center"
-      },
-      dontshowtext: (darkTheme) => ({
-        textAlign: "center",
-        fontWeight: "700",
-        marginLeft: 50,
-        marginRight: 50,
-        fontSize: 18,
-        color: darkTheme ? "white" : "black"
-      })
+  headerContainer: (darkTheme) => ({
+    width: '100%',
+    height: "11%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: darkTheme ? 'black' : "#fd5a43",
+    borderBottomWidth: darkTheme ? 5 : 0,
+    borderColor: darkTheme ? "#181616" : "transparent",
+
+
+  }),
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
+    textAlign: 'center',
+    marginTop: 35
+  },
+
+  feathericon: {
+    marginTop: 25,
+    marginLeft: 30
+  },
+  switch: {
+    marginTop: 25,
+    marginRight: 25,
+    transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }]
+  },
+  mainContainer: (darkTheme) => ({
+    height: "89%",
+    backgroundColor: darkTheme ? "black" : "white",
+  }),
+  questioncontainer: (darkTheme) => ({
+    width: "100%",
+    height: "100%",
+    alignItems: 'center',
+    justifyContent: 'center',
+  }),
+
+
+
+
+  quoteText: (darkTheme) => ({
+    fontSize: 25,
+    fontWeight: "700",
+    textAlign: "center",
+    color: "#fff",
+  }),
+  button: (darkTheme) => ({
+    marginTop: 30,
+    width: "60%",
+    height: 50,
+    marginBottom: 50,
+    backgroundColor: darkTheme ? "white" : "#fd5a43",
+    borderRadius: 20,
+
+    justifyContent: "center",
+    alignItems: "center"
+  }),
+  text: (darkTheme)=>({
+    fontweight: "700",
+    color:darkTheme? "black": "white",
+    textAlign: "center"
+  }),
+  dontshowtext: (darkTheme) => ({
+    textAlign: "center",
+    fontWeight: "700",
+    marginTop: 30,
+    marginLeft: 50,
+    marginRight: 50,
+    fontSize: 15,
+    color: darkTheme ? "white" : "black"
+  })
 })

@@ -4,9 +4,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, KeyboardAv
 import { Ionicons } from '@expo/vector-icons';
 import { themeContext } from "../Components/SetData.js"
 import { useRef } from 'react';
-import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
 import noitemfound from "../assets/noitemfound.png"
 
 

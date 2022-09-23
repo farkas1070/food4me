@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
 
   headerContainer: (darkTheme) => ({
     width: '100%',
-    height: 80,
+    height: 90,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

@@ -17,14 +17,8 @@ const MenuCreator = ({navigation,route}) => {
   const lightpictures = [Recipelight1,Recipelight2,Recipelight3]
   const { item } = route.params;
 
-  
-
-  
   const width = Dimensions.get('window').width;
 
-  const goBack= (index) => {
-    index = index-1
-  } 
 
   return (
     <View style={styles.maincontainer(darkTheme)}>
@@ -65,7 +59,7 @@ const MenuCreator = ({navigation,route}) => {
                 <View style={styles.rightbuttoncontainer(darkTheme)} >
                   <View onPress={() => { }} style={styles.rightbutton(darkTheme)}><Ionicons name="return-up-forward" size={24} color="black" style={{}} /></View>
                 
-                </View>assets/
+                </View>
                 
               </ImageBackground>
             </View>
