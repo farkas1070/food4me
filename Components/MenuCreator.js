@@ -1,15 +1,13 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ImageBackground, Image } from 'react-native'
-import React from 'react'
-import { themeContext, foodContext } from "../Components/SetData.js"
-import { useContext } from "react";
+import React,{useContext } from 'react'
+import { themeContext } from "../Components/SetData.js"
 import Carousel from 'react-native-reanimated-carousel';
-
-import Recipelight1 from "../recipelight1.png"
-import Recipedark1 from "../recipedark1.png"
-import Recipelight2 from "../recipelight2.png"
-import Recipedark2 from "../recipedark2.png"
-import Recipelight3 from "../recipelight3.png"
-import Recipedark3 from "../recipedark3.png"
+import Recipelight1 from "../assets/recipelight1.png"
+import Recipedark1 from "../assets/recipedark1.png"
+import Recipelight2 from "../assets/recipelight2.png"
+import Recipedark2 from "../assets/recipedark2.png"
+import Recipelight3 from "../assets/recipelight3.png"
+import Recipedark3 from "../assets/recipedark3.png"
 import { Ionicons } from '@expo/vector-icons'; 
 
 
@@ -67,7 +65,7 @@ const MenuCreator = ({navigation,route}) => {
                 <View style={styles.rightbuttoncontainer(darkTheme)} >
                   <View onPress={() => { }} style={styles.rightbutton(darkTheme)}><Ionicons name="return-up-forward" size={24} color="black" style={{}} /></View>
                 
-                </View>
+                </View>assets/
                 
               </ImageBackground>
             </View>

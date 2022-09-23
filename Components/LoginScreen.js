@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { useState,useContext } from "react";
 import { auth } from "../firebase-config";
-import Logo from "../Logo.jpg"
+import Logo from "../assets/Logo.jpg"
 import { userContext } from "../Components/SetData.js"
 
 const LoginScreen = ({ navigation }) => {

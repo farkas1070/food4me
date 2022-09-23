@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../firebase-config";
-import Logo from "../Logo.jpg"
+import Logo from "../assets/Logo.jpg"
 const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

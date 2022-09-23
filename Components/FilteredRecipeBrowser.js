@@ -7,7 +7,7 @@ import { useRef } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import noitemfound from "../noitemfound.png"
+import noitemfound from "../assets/noitemfound.png"
 
 
 

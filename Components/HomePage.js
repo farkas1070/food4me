@@ -4,9 +4,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { themeContext, userContext } from "../Components/SetData.js"
 import { useState, useContext } from "react";
-import SecondLogo from "../second.png"
-import FirstLogo from "../first.jpeg"
-import ThirdLogo from "../third.jpg"
+import SecondLogo from "../assets/second.png"
+import FirstLogo from "../assets/first.jpeg"
+import ThirdLogo from "../assets/third.jpg"
 
 
 
