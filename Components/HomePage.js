@@ -7,9 +7,10 @@ import { useContext, useState } from "react";
 import SecondLogo from "../assets/second.png"
 import FirstLogo from "../assets/first.jpeg"
 import ThirdLogo from "../assets/third.jpg"
-import homepicture from "../assets/homepicture.jpg"
-import Carousel from 'react-native-reanimated-carousel';
 
+import Carousel from 'react-native-reanimated-carousel';
+import { Entypo } from '@expo/vector-icons'; 
+import { Linking } from 'react-native';
 export default function ScreenOne({ navigation }) {
 
   const [darkTheme, setDarkTheme] = useContext(themeContext)
@@ -172,6 +173,19 @@ export default function ScreenOne({ navigation }) {
               </View>
 
             </SafeAreaView>
+          </View>
+          <View style={{justifyContent: "center",alignItems: 'center',height:100,backgroundColor:darkTheme? "#181616":"black",flexDirection: 'row'}}>
+            <View style={{width: '50%',flexDirection: 'row',alignItems: 'center',justifyContent: "center"}}>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://www.facebook.com/'); }}><Entypo name="facebook-with-circle" size={30} color="#fd5a43" style={{margnLeft: 5,marginRight: 5}} /></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://www.instagram.com/'); }}><Entypo name="instagram-with-circle" size={30} color="#fd5a43" style={{margnLeft: 5,marginRight: 5}} /></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://github.com/'); }}><Entypo name="github-with-circle" size={30} color="#fd5a43" style={{margnLeft: 5,marginRight: 5}} /></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://www.pinterest.com/'); }}><Entypo name="pinterest-with-circle" size={30} color="#fd5a43"  style={{margnLeft: 5,marginRight: 5}}/></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://www.youtube.com/'); }}><Entypo name="youtube-with-circle" size={30} color="#fd5a43" style={{margnLeft: 5,marginRight: 5}} /></TouchableOpacity>
+            </View>
+            <View style={{width: '50%',alignItems: 'center',justifyContent: "center"}}>
+              <Text style={{textDecoration: 'underline',color: '#fd5a43',fontSize:8,fontWeight: 'bold'}}>Copyright: Foodemy Coorporation 2022</Text>
+              <Text style={{textDecoration: 'underline',color: '#fd5a43',fontSize:8,fontWeight: 'bold', marginTop:10}}>Get In touch with us!</Text>
+            </View>
           </View>
         </ScrollView>
       </View>

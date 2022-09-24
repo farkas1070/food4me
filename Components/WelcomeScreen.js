@@ -35,22 +35,27 @@ const WelcomeScreen = ({ navigation }) => {
 
   const register = async () => {
     try {
-      const user = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      ).then(() => {
-        updateProfile(auth.currentUser, {
-          displayName: name,
-        }).then(() => {
-          console.log("user created")
-        }).catch((error) => {
-          console.log(error)
-        });
-      })
-      createAlert()
-      navigation.navigate('Login')
-      console.log(user);
+      if (email === "" || password === "" || name === "") {
+        Alert.alert("All fields must be provided!")
+      } else {
+        const user = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        ).then(() => {
+          updateProfile(auth.currentUser, {
+            displayName: name,
+          }).then(() => {
+            console.log("user created")
+          }).catch((error) => {
+            console.log(error)
+          });
+        })
+        createAlert()
+        navigation.navigate('Login')
+        console.log(user);
+      }
+
     } catch (error) {
       if (error) {
         setMessage(["That isn't quite right...", "This e-mail is already in use...  "])
@@ -88,6 +93,7 @@ const WelcomeScreen = ({ navigation }) => {
           value={password}
           style={styles.input}
           placeholder="Password..."
+          secureTextEntry = {true}
           placeholderTextColor="#fd5a43"
           onChangeText={text => setPassword(text)}
         />

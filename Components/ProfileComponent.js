@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
     borderRadius: 400 / 2,
     marginTop: 40,
     marginBottom: 40
+    
   },
   Button: (darkTheme) => ({
     height: 80,
