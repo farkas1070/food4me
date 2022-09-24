@@ -1,2 +1,2 @@
 React Native app that focuses on food management
-https://imgur.com/JyBbLVL
+![Alt text](https://i.imgur.com/JyBbLVL.jpg)
