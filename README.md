@@ -18,11 +18,17 @@ The main functionalities of the app constists of recipebrowsing, and the ability
 
 ![Alt text](https://i.imgur.com/os6vHGn.jpeg)
 
+For now Authentication is done with only email password and username, but google and other authentication possibilites will come in the future.
+
 
 ![Alt text](https://i.imgur.com/xmg1DFX.jpeg)
 
+The database is Firestore by google and the backend is written with Firebase, also by Google
+
 
 ![Alt text](https://i.imgur.com/UwdI98K.jpeg)
+
+
 
 
 ![Alt text](https://i.imgur.com/1FGSJ0A.jpeg)
