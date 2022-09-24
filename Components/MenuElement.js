@@ -45,7 +45,7 @@ const MenuElement = ({ navigation }) => {
           <View style={styles.questioncontainer(darkTheme)}>
 
             <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: "rgba(255, 255, 255, 0.8)", borderRadius: 80, width: "80%" }}>
-              <View><Text style={styles.dontshowtext(darkTheme)}>Click on the Button below, And we will give you a recipe suggestion!</Text></View>
+              <View><Text style={styles.dontshowtext}>Click on the Button below, And we will give you a recipe suggestion!</Text></View>
 
               <TouchableOpacity style={styles.button(darkTheme)} onPress={() => { getRandomMenu() }}>
                 <Text style={styles.text(darkTheme)}>What should I cook today?</Text>
@@ -128,13 +128,13 @@ const styles = StyleSheet.create({
     color:darkTheme? "black": "white",
     textAlign: "center"
   }),
-  dontshowtext: (darkTheme) => ({
+  dontshowtext:{
     textAlign: "center",
     fontWeight: "700",
     marginTop: 30,
     marginLeft: 50,
     marginRight: 50,
     fontSize: 15,
-    color: darkTheme ? "white" : "black"
-  })
+    color: "black"
+  }
 })

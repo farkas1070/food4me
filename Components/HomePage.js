@@ -1,26 +1,52 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Switch, Image } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Switch, Image, Dimensions,ImageBackground } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { themeContext, userContext } from "../Components/SetData.js"
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import SecondLogo from "../assets/second.png"
 import FirstLogo from "../assets/first.jpeg"
 import ThirdLogo from "../assets/third.jpg"
 import homepicture from "../assets/homepicture.jpg"
-
+import Carousel from 'react-native-reanimated-carousel';
 
 export default function ScreenOne({ navigation }) {
 
   const [darkTheme, setDarkTheme] = useContext(themeContext)
   const [user, setUser] = useContext(userContext)
-
+  const [pagingEnabled, setPagingEnabled] = useState(true);
+  const [snapEnabled, setSnapEnabled] = useState(true);
+  const [mode, setMode] = useState('horizontal-stack');
+  const [snapDirection, setSnapDirection] = useState('left');
   const toggleSwitch = () => setDarkTheme(previousState => !previousState);
 
   const openMenu = () => {
     navigation.openDrawer();
   }
+  const width = Dimensions.get('window').width;
+  const viewCount = 5;
 
+  const carouseldata = [
+    {
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+      "text": "Suscribe to Our food delivery services, and get all the products you need to keep cooking!"
+    }, {
+      "image": "https://images.unsplash.com/photo-1499028344343-cd173ffc68a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+      "text": "Browse our Recipes and get inspired!"
+    }, {
+      "image": "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+      "text": "Or make it extra easy to decide and just let us pick a meal for you"
+    }, {
+      "image": "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3540&q=80",
+      "text": "Suscribe to Our food delivery services, and get all the products you need to keep cooking!"
+    }, {
+      "image": "https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+      "text": "Or an entire menu!"
+    }, {
+      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+      "text": "Keep in touch with us, and we will keep you updated on special deals tailor made just for you!"
+    }
+  ];
 
   return (
     <View style={styles.container}>
@@ -99,11 +125,50 @@ export default function ScreenOne({ navigation }) {
 
               <View style={styles.homepictureview(darkTheme)}>
 
-                <Image
-                  style={styles.homepic}
-                  source={homepicture}
-                />
-                <Text style={{ marginTop: 20, textAlign: 'center', padding: 30, fontWeight: 'bold', color: darkTheme ? 'white' : '#fd5a43' }}>Pick the foods you love, and make them with detailed instructions!</Text>
+                <View style={{ flex: 1, marginTop: 50 }}>
+                  <Carousel
+                    style={{
+                      width: 350,
+                      height: 240,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                    loop
+                    mode={mode}
+                    pagingEnabled={pagingEnabled}
+                    snapEnabled={snapEnabled}
+                    width={280}
+                    height={210}
+                    autoPlay={false}
+                    modeConfig={{
+                      snapDirection,
+                      stackInterval: mode === 'vertical-stack' ? 8 : 18,
+                    }}
+                    customConfig={() => ({ type: 'positive', viewCount })}
+                    data={carouseldata}
+                    scrollAnimationDuration={1000}
+                    renderItem={({ index }) => (
+                      <View
+                        style={{
+                          flex: 1,
+
+                          justifyContent: 'center',
+                          
+                          
+                          borderRadius: 30
+                        }}
+                      >
+                        <ImageBackground source={{ uri: carouseldata[index].image }} resizeMode="cover" style={{ justifyContent: "center", alignItems: 'center', height: '100%', width: '100%'}}>
+                          <View style={{justifyContent:"center",alignItems: 'center',width: "60%",backgroundColor: "rgba(255, 255, 255, 0.85)",height:60,borderRadius: 50}}>
+                          <Text style={{ textAlign: 'center', fontSize: 10 }}>
+                            {carouseldata[index].text}
+                          </Text>
+                          </View>
+                        </ImageBackground>
+                      </View>
+                    )}
+                  />
+                </View>
               </View>
 
             </SafeAreaView>
