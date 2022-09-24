@@ -139,14 +139,14 @@ export default function ScreenOne({ navigation }) {
                     snapEnabled={snapEnabled}
                     width={280}
                     height={210}
-                    autoPlay={false}
+                    autoPlay={true}
                     modeConfig={{
                       snapDirection,
                       stackInterval: mode === 'vertical-stack' ? 8 : 18,
                     }}
                     customConfig={() => ({ type: 'positive', viewCount })}
                     data={carouseldata}
-                    scrollAnimationDuration={1000}
+                    scrollAnimationDuration={3000}
                     renderItem={({ index }) => (
                       <View
                         style={{
