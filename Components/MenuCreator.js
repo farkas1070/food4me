@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 const MenuCreator = ({navigation,route}) => {
-  const [darkTheme, setDarkTheme] = useContext(themeContext)
+  const [darkTheme] = useContext(themeContext)
   const darkpictures = [Recipedark1,Recipedark2,Recipedark3]
   const lightpictures = [Recipelight1,Recipelight2,Recipelight3]
   const { item } = route.params;

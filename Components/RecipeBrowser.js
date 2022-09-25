@@ -1,6 +1,6 @@
 
 import React, { useContext, useState } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput, Switch, Alert, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput, Switch, KeyboardAvoidingView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { themeContext, foodContext } from "../Components/SetData.js"
 import { useRef } from 'react';
@@ -13,7 +13,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 const RecipeBrowser = ({ navigation }) => {
 
     const [darkTheme, setDarkTheme] = useContext(themeContext)
-    const [foodarray, setFoodArray] = useContext(foodContext)
+    const [foodarray] = useContext(foodContext)
     const [searchvalue, setSearchValue] = useState("")
 
     const [pagestart, setPageStart] = useState(0)

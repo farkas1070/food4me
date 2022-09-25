@@ -5,7 +5,7 @@ import {  themeContext } from "../Components/SetData.js"
 
 
 const ChangePasswordModal = () => {
-    const [darkTheme, setDarkTheme] = useContext(themeContext)
+    const [darkTheme] = useContext(themeContext)
 
     const [password,setPassword] = useState("")
     const [newpassword,setNewPassword] = useState("")

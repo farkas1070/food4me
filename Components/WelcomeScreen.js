@@ -1,19 +1,17 @@
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, StyleSheet, Image, Alert } from "react-native"
 import React from 'react'
 import { useState } from "react";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
+import {createUserWithEmailAndPassword,onAuthStateChanged,} from "firebase/auth";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../firebase-config";
 import Logo from "../assets/Logo.jpg"
+
 const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
-  const [user, setUser] = useState({});
+  const [, setUser] = useState({});
   const [message, setMessage] = useState(["Success", "User successfully created"]);
   const createAlert = () =>
     Alert.alert(

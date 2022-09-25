@@ -2,8 +2,9 @@ import { StyleSheet, Text, View, TextInput,TouchableOpacity, Alert } from 'react
 import React,{useState,useContext} from 'react'
 import { getAuth,updateProfile  } from "firebase/auth";
 import {  themeContext } from "../Components/SetData.js"
-const ChangePasswordModal = () => {
-    const [darkTheme, setDarkTheme] = useContext(themeContext)
+
+const ChangeUsernameModal = () => {
+    const [darkTheme] = useContext(themeContext)
     const [username,setUsername] = useState("")
     
     const auth = getAuth();
@@ -46,7 +47,7 @@ const ChangePasswordModal = () => {
     )
 }
 
-export default ChangePasswordModal
+export default ChangeUsernameModal
 
 const styles = StyleSheet.create({
     centeredView: {

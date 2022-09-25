@@ -1,10 +1,6 @@
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, StyleSheet, Image, Alert } from "react-native"
 import React from 'react'
-import {
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-
-} from "firebase/auth";
+import {signInWithEmailAndPassword,onAuthStateChanged,} from "firebase/auth";
 import { useState,useContext } from "react";
 import { auth } from "../firebase-config";
 import Logo from "../assets/Logo.jpg"
@@ -13,7 +9,7 @@ import { userContext } from "../Components/SetData.js"
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("smarton0614@gmail.com");
   const [password, setPassword] = useState("marci1070");
-  const [user, setUser] = useContext(userContext);
+  const [, setUser] = useContext(userContext);
 
   const createAlert = () =>
     Alert.alert(

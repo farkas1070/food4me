@@ -8,7 +8,7 @@ import recipebackground from "../assets/recipebackground.jpg"
 const Homepage = ({ navigation }) => {
 
 
-  const [foodarray, setFoodArray] = useContext(foodContext)
+  const [foodarray] = useContext(foodContext)
   const [darkTheme, setDarkTheme] = useContext(themeContext)
 
   const getRandomElement = () => {

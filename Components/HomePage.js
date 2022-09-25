@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Switch, Image, Dimensions,ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Switch, Image,ImageBackground } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { themeContext, userContext } from "../Components/SetData.js"
@@ -14,17 +14,18 @@ import { Linking } from 'react-native';
 export default function ScreenOne({ navigation }) {
 
   const [darkTheme, setDarkTheme] = useContext(themeContext)
-  const [user, setUser] = useContext(userContext)
-  const [pagingEnabled, setPagingEnabled] = useState(true);
-  const [snapEnabled, setSnapEnabled] = useState(true);
-  const [mode, setMode] = useState('horizontal-stack');
-  const [snapDirection, setSnapDirection] = useState('left');
+  const [user] = useContext(userContext)
+  const [pagingEnabled] = useState(true);
+  const [snapEnabled] = useState(true);
+  const [mode] = useState('horizontal-stack');
+  const [snapDirection] = useState('left');
+
   const toggleSwitch = () => setDarkTheme(previousState => !previousState);
 
   const openMenu = () => {
     navigation.openDrawer();
   }
-  const width = Dimensions.get('window').width;
+  
   const viewCount = 5;
 
   const carouseldata = [

@@ -7,7 +7,7 @@ import menubackground from "../assets/menubackground.jpg"
 
 const MenuElement = ({ navigation }) => {
   const [darkTheme, setDarkTheme] = useContext(themeContext)
-  const [foodarray, setFoodArray] = useContext(foodContext)
+  const [foodarray] = useContext(foodContext)
   const toggleSwitch = () => setDarkTheme(previousState => !previousState);
 
   const openMenu = () => {

@@ -22,7 +22,6 @@ const ProfileComponent = ({ navigation }) => {
   const [passwordmodalVisible, setpasswordModalVisible] = useState(false);
   const [usernamemodalVisible, setusernameModalVisible] = useState(false);
   const [deleteusermodalVisible, setdeleteusermodalVisible] = useState(false);
-  const [image, setImage] = useState(null);
 
   const toggleSwitch = () => setDarkTheme(previousState => !previousState);
 

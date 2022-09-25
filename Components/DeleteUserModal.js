@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, TextInput,TouchableOpacity, Alert } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity, Alert } from 'react-native'
 import React,{useContext} from 'react'
 import { getAuth,deleteUser    } from "firebase/auth";
 import {  themeContext } from "../Components/SetData.js"
 
-const ChangePasswordModal = ({nav}) => {
-    const [darkTheme, setDarkTheme] = useContext(themeContext)
+const DeleteUserModal = ({navigation}) => {
+    const [darkTheme] = useContext(themeContext)
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -15,7 +15,7 @@ const ChangePasswordModal = ({nav}) => {
           }).catch((error) => {
             console.log(error)
           });
-          navigation.navigate(nav)
+          navigation.navigate("Register")
         
     }
     return (
@@ -37,7 +37,7 @@ const ChangePasswordModal = ({nav}) => {
     )
 }
 
-export default ChangePasswordModal
+export default DeleteUserModal
 
 const styles = StyleSheet.create({
     centeredView: {
