@@ -1,16 +1,18 @@
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, StyleSheet, Image, Alert } from "react-native"
 import React from 'react'
 import { useState } from "react";
-import {createUserWithEmailAndPassword,onAuthStateChanged,} from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, } from "firebase/auth";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../firebase-config";
 import Logo from "../assets/Logo.jpg"
+import { FontAwesome } from '@expo/vector-icons'; 
+
 
 const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-
+  const [visibility, setVisibility] = useState(true);
   const [, setUser] = useState({});
   const [message, setMessage] = useState(["Success", "User successfully created"]);
   const createAlert = () =>
@@ -30,6 +32,9 @@ const WelcomeScreen = ({ navigation }) => {
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
+  const showPassword = () => {
+    setVisibility(!visibility)
+  }
 
   const register = async () => {
     try {
@@ -71,31 +76,38 @@ const WelcomeScreen = ({ navigation }) => {
         source={Logo}
       />
       <View style={styles.formContainer}>
-
-        <TextInput
-          value={name}
-          style={styles.input}
-          placeholder="Username..."
-          placeholderTextColor="#fd5a43"
-          onChangeText={text => setName(text)}
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder="Email..."
-          placeholderTextColor="#fd5a43"
-          value={email}
-          onChangeText={text => setEmail(text)}
-        />
-        <TextInput
-          value={password}
-          style={styles.input}
-          placeholder="Password..."
-          secureTextEntry = {true}
-          placeholderTextColor="#fd5a43"
-          onChangeText={text => setPassword(text)}
-        />
-
+       
+          <TextInput
+            value={name}
+            style={styles.topinput}
+            placeholder="Username..."
+            placeholderTextColor="#fd5a43"
+            onChangeText={text => setName(text)}
+          />
+          
+        
+        
+          <TextInput
+            style={styles.topinput}
+            placeholder="Email..."
+            placeholderTextColor="#fd5a43"
+            value={email}
+            onChangeText={text => setEmail(text)}
+          />
+        
+        <View style={{ borderRadius: 15, flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center',backgroundColor: '#fff',marginTop:10,height:50,width:"100%"}}> 
+          <TextInput
+            value={password}
+            style={styles.input}
+            placeholder="Password..."
+            secureTextEntry={visibility}
+            placeholderTextColor="#fd5a43"
+            onChangeText={text => setPassword(text)}
+          />
+          <TouchableOpacity onPress={()=>{showPassword()}}>
+          <FontAwesome name="eye" size={24} color="#fd5a43" style={{marginRight:20 ,}} />
+          </TouchableOpacity>
+        </View>
 
       </View>
       <TouchableOpacity onPress={register} style={styles.buttonContainer}>
@@ -135,20 +147,32 @@ const styles = StyleSheet.create({
     color: "white"
   },
   formContainer: {
-    width: "100%",
-    padding: 20,
-    marginTop: 10
+    width: "95%",
+    padding: 10,
+   
   },
   input: {
     height: 50,
+    width: "80%",
     color: "#fd5a43",
     fontWeight: "700",
     backgroundColor: "white",
     borderRadius: 15,
     marginTop: 10,
     marginBottom: 10,
-    textAlign: 'center'
+    paddingLeft: 20,
 
+  },
+  topinput:{
+    height: 50,
+    width: "100%",
+    color: "#fd5a43",
+    fontWeight: "700",
+    backgroundColor: "white",
+    borderRadius: 15,
+    marginTop: 10,
+    marginBottom: 10,
+    paddingLeft: 20,
   },
   buttonContainer: {
     marginTop: 50,
