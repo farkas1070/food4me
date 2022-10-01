@@ -4,15 +4,11 @@ import { useContext } from "react";
 import { foodContext, themeContext } from "../Components/SetData.js"
 import { Feather } from '@expo/vector-icons';
 import menubackground from "../assets/menubackground.jpg"
-
+import Header from "./Header.js"
 const MenuElement = ({ navigation }) => {
   const [darkTheme, setDarkTheme] = useContext(themeContext)
   const [foodarray] = useContext(foodContext)
-  const toggleSwitch = () => setDarkTheme(previousState => !previousState);
-
-  const openMenu = () => {
-    navigation.openDrawer();
-  }
+  
   const getRandomMenu = () => {
     const lunchfood = foodarray.filter(food => food.type === "Lunch");
     const breakfastfood = foodarray.filter(food => food.type === "Breakfast");
@@ -29,14 +25,7 @@ const MenuElement = ({ navigation }) => {
 
   return (
     <View>
-      <View style={styles.headerContainer(darkTheme)}>
-        <TouchableOpacity onPress={() => { openMenu() }}><Feather style={styles.feathericon} name="menu" size={35} color={darkTheme ? "#fd5a43" : "white"} /></TouchableOpacity>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-          {darkTheme ? <Feather name="moon" size={25} color={darkTheme ? "#fd5a43" : "white"} style={{ marginTop: 25, marginRight: 10 }} /> : <Feather name="sun" size={25} color={darkTheme ? "#fd5a43" : "white"} style={{ marginTop: 25, marginRight: 10 }} />}
-          <Switch trackColor={{ false: "#767577", true: "white" }} thumbColor={darkTheme ? "#fd5a43" : "white"} onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
-          </Switch>
-        </View>
-      </View>
+      <Header/>
       <KeyboardAvoidingView style={styles.mainContainer(darkTheme)}>
 
 

@@ -12,7 +12,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ChangeUsernameModal from "./ChangeUsernameModal"
 import DeleteUserModal from "./DeleteUserModal"
 import * as ImagePicker from 'expo-image-picker';
-
+import Header from "./Header.js"
 
 const ProfileComponent = ({ navigation }) => {
 
@@ -72,7 +72,7 @@ const ProfileComponent = ({ navigation }) => {
 
 
   return (
-    <ScrollView style={{ width: '100%' }}>
+    <View style={{ width: '100%' }}>
       {/* Setting Up modals*/} 
       <Modal animationType="slide" transparent={true} visible={passwordmodalVisible} onRequestClose={() => {setpasswordModalVisible(!passwordmodalVisible);}}>
         <ChangePasswordModal/>
@@ -85,15 +85,8 @@ const ProfileComponent = ({ navigation }) => {
       </Modal>
       {/* Setting Up modals*/} 
 
-      <View style={styles.headerContainer(darkTheme)}>
-        <TouchableOpacity onPress={() => { openMenu() }}><Feather style={styles.feathericon} name="menu" size={35} color={darkTheme?"#fd5a43" :"white"} /></TouchableOpacity>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-          {darkTheme ? <Feather name="moon" size={25} color={darkTheme?"#fd5a43" :"white"} style={{ marginTop: 25, marginRight: 10 }} /> : <Feather name="sun" size={25} color={darkTheme?"#fd5a43" :"white"} style={{ marginTop: 25, marginRight: 10 }} />}
-          <Switch trackColor={{ false: "#767577", true: "white" }} thumbColor={darkTheme?"#fd5a43" :"white"} onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
-          </Switch>
-        </View>
-      </View>
-      <View style={styles.bodyContainer(darkTheme)}>
+      <Header/>
+      <ScrollView style={styles.bodyContainer(darkTheme)}>
         <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%' }}>
 
           <View style={styles.innerbody}>
@@ -137,8 +130,8 @@ const ProfileComponent = ({ navigation }) => {
           </View>
 
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   )
 }
 
@@ -148,7 +141,7 @@ const styles = StyleSheet.create({
 
   headerContainer: (darkTheme) => ({
     width: '100%',
-    height: 90,
+    height: "12%",
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -178,7 +171,7 @@ const styles = StyleSheet.create({
   bodyContainer: (darkTheme) => ({
 
     width: "100%",
-    height: "100%",
+    height: "88%",
 
     backgroundColor: darkTheme ? 'black' : "white"
   }),

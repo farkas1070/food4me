@@ -7,7 +7,7 @@ import { useContext, useState } from "react";
 import SecondLogo from "../assets/second.png"
 import FirstLogo from "../assets/first.jpeg"
 import ThirdLogo from "../assets/third.jpg"
-
+import Header from "./Header.js"
 import Carousel from 'react-native-reanimated-carousel';
 import { Entypo } from '@expo/vector-icons'; 
 import { Linking } from 'react-native';
@@ -19,12 +19,6 @@ export default function ScreenOne({ navigation }) {
   const [snapEnabled] = useState(true);
   const [mode] = useState('horizontal-stack');
   const [snapDirection] = useState('left');
-
-  const toggleSwitch = () => setDarkTheme(previousState => !previousState);
-
-  const openMenu = () => {
-    navigation.openDrawer();
-  }
   
   const viewCount = 5;
 
@@ -53,16 +47,7 @@ export default function ScreenOne({ navigation }) {
   return (
     <View style={styles.container}>
 
-      <View style={styles.headerContainer(darkTheme)}>
-        <TouchableOpacity onPress={() => { openMenu() }}><Feather style={styles.feathericon} name="menu" size={35} color={darkTheme ? "#fd5a43" : "white"} /></TouchableOpacity>
-
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-          {darkTheme ? <Feather name="moon" size={25} color={darkTheme ? "#fd5a43" : "white"} style={{ marginTop: 25, marginRight: 10 }} /> : <Feather name="sun" size={25} color={darkTheme ? "#fd5a43" : "white"} style={{ marginTop: 25, marginRight: 10 }} />}
-          <Switch trackColor={{ false: "#767577", true: "#661b1c" }} thumbColor="white" onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
-
-          </Switch>
-        </View>
-      </View>
+      <Header />
       <View style={{ height: "88%", width: "100%" }}>
         <ScrollView style={styles.bodyContainer(darkTheme)}>
           <View>

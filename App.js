@@ -24,6 +24,7 @@ function App() {
           <Stack.Screen  options={{headerShown:false}}  name="SingleElement" component={SingleElement} />
           <Stack.Screen  options={{headerShown:false}}  name="MenuElement" component={MenuCreator} />
           <Stack.Screen  options={{headerShown:false}}  name="FilteredRecipeBrowser" component={FilteredRecipeBrowser} />
+          
         </Stack.Navigator>
       </NavigationContainer>
     </DataProvider>

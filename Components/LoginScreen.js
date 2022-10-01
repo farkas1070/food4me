@@ -8,7 +8,7 @@ import { userContext } from "../Components/SetData.js"
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("smarton0614@gmail.com");
-  const [password, setPassword] = useState("marci1070");
+  const [password, setPassword] = useState("farkas1070");
   const [, setUser] = useContext(userContext);
 
   const createAlert = () =>

@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { foodContext, themeContext } from "../Components/SetData.js"
 import { Feather } from '@expo/vector-icons';
 import recipebackground from "../assets/recipebackground.jpg"
-
+import Header from "./Header.js"
 const Homepage = ({ navigation }) => {
 
 
@@ -16,22 +16,10 @@ const Homepage = ({ navigation }) => {
     navigation.navigate("SingleElement", { item: randelement })
 
   }
-  const toggleSwitch = () => setDarkTheme(previousState => !previousState);
-
-  const openMenu = () => {
-    navigation.openDrawer();
-  }
 
   return (
     <View>
-      <View style={styles.headerContainer(darkTheme)}>
-        <TouchableOpacity onPress={() => { openMenu() }}><Feather style={styles.feathericon} name="menu" size={35} color={darkTheme ? "#fd5a43" : "white"} /></TouchableOpacity>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-          {darkTheme ? <Feather name="moon" size={25} color={darkTheme ? "#fd5a43" : "white"} style={{ marginTop: 25, marginRight: 10 }} /> : <Feather name="sun" size={25} color={darkTheme ? "#fd5a43" : "white"} style={{ marginTop: 25, marginRight: 10 }} />}
-          <Switch trackColor={{ false: "#767577", true: "white" }} thumbColor={darkTheme ? "#fd5a43" : "white"} onValueChange={toggleSwitch} value={darkTheme} style={styles.switch} >
-          </Switch>
-        </View>
-      </View>
+     <Header/>
       <KeyboardAvoidingView style={styles.mainContainer(darkTheme)}>
 
       <ImageBackground source={recipebackground} resizeMode="cover" style={{ justifyContent: "center", alignItems: 'center', height: '100%',width: '100%'}}>
