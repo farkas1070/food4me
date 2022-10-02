@@ -16,18 +16,13 @@ import Header from "./Header.js"
 
 const ProfileComponent = ({ navigation }) => {
 
-  const [darkTheme, setDarkTheme] = useContext(themeContext)
+  const [darkTheme] = useContext(themeContext)
   const auth = getAuth();
   const user = auth.currentUser
   const [passwordmodalVisible, setpasswordModalVisible] = useState(false);
   const [usernamemodalVisible, setusernameModalVisible] = useState(false);
   const [deleteusermodalVisible, setdeleteusermodalVisible] = useState(false);
 
-  const toggleSwitch = () => setDarkTheme(previousState => !previousState);
-
-  const openMenu = () => {
-    navigation.openDrawer();
-  }
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -55,7 +50,7 @@ const ProfileComponent = ({ navigation }) => {
   const verifyEmail = () => {
     sendEmailVerification(auth.currentUser)
       .then(() => {
-        Alert.alert("Email Sent!")
+        Alert.alert("Verification Email Sent!","check your inbox!")
       });
   }
  
@@ -122,10 +117,11 @@ const ProfileComponent = ({ navigation }) => {
             </View>
             <View style={{ width: '100%', marginTop: 50, alignItems: 'center' }}>
               
-             
+              
               <TouchableOpacity style={styles.optionButton(darkTheme)} onPress={() => { verifyEmail() }} ><FontAwesome name="envelope-o" size={24} color={darkTheme ? "#fd5a43" : "#36454F"} style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Verify Email</Text></TouchableOpacity>
               <TouchableOpacity style={styles.optionButton(darkTheme)} onPress={() => { setdeleteusermodalVisible(true) }} ><AntDesign name="delete" size={24} color={darkTheme? "#fd5a43":"black" } style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Delete Account</Text></TouchableOpacity>
               <TouchableOpacity style={styles.optionButton(darkTheme)} onPress={() => { signUserOut() }} ><Feather name="log-out" size={24} color={darkTheme? "#fd5a43":"black" } style={{marginLeft: 15}} /><Text style={styles.optionText(darkTheme)}>Log Out</Text></TouchableOpacity>
+              
             </View>
           </View>
 
@@ -232,8 +228,8 @@ const styles = StyleSheet.create({
   bottomBody: (darkTheme) => ({
 
     width: "100%",
-    height: 600,
-    backgroundColor: darkTheme ? "#181616" : "#fd5a43",
+    height: 480,
+    backgroundColor: darkTheme ? "#1e1e1e" : "#fd5a43",
     alignItems: 'center',
     borderTopEndRadius: 50,
     borderTopStartRadius: 50,

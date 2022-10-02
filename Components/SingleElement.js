@@ -61,7 +61,7 @@ const GetRandomFood = ({ navigation, route }) => {
               <View style={{ flexDirection: 'row', marginBottom: 20 }} key={i}>
                 <BouncyCheckbox
                   size={25}
-                  fillColor={darkTheme ? "white" : "#fd5a43"}
+                  fillColor={darkTheme ? "#fd5a43" : "#fd5a43"}
                   unfillColor={darkTheme ? "black" : "#FFFFFF"}
                   iconStyle={{ borderColor: "black" }}
                   innerIconStyle={{ borderWidth: 2 }}

@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: darkTheme ? 'black' : "#fd5a43",
         borderBottomWidth: darkTheme ? 5 : 0,
-        borderColor: darkTheme ? "#181616" : "transparent",
+        borderColor: darkTheme ? "#1e1e1e" : "transparent",
 
     }),
     headerText: {
