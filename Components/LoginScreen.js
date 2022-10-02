@@ -5,11 +5,17 @@ import { useState,useContext } from "react";
 import { auth } from "../firebase-config";
 import Logo from "../assets/Logo.jpg"
 import { userContext } from "../Components/SetData.js"
+import { FontAwesome } from '@expo/vector-icons';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("smarton0614@gmail.com");
   const [password, setPassword] = useState("farkas1070");
   const [, setUser] = useContext(userContext);
+  const [visibility, setVisibility] = useState(true);
+
+  const showPassword = () => {
+    setVisibility(!visibility)
+  }
 
   const createAlert = () =>
     Alert.alert(
@@ -55,20 +61,25 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.formContainer}>
 
         <TextInput
-          style={styles.input}
+          style={styles.topinput}
           placeholder="Email..."
           placeholderTextColor="#fd5a43"
           value={email}
           onChangeText={text => setEmail(text)}
         />
-        <TextInput
-          value={password}
-          style={styles.input}
-          placeholder="Password..."
-          secureTextEntry = {true}
-          placeholderTextColor="#fd5a43"
-          onChangeText={text => setPassword(text)}
-        />
+        <View style={{ borderRadius: 15, flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center',backgroundColor: '#fff',marginTop:10,height:50,width:"100%"}}> 
+          <TextInput
+            value={password}
+            style={styles.input}
+            placeholder="Password..."
+            secureTextEntry={visibility}
+            placeholderTextColor="#fd5a43"
+            onChangeText={text => setPassword(text)}
+          />
+          <TouchableOpacity onPress={()=>{showPassword()}}>
+          <FontAwesome name="eye" size={24} color="#fd5a43" style={{marginRight:20 ,}} />
+          </TouchableOpacity>
+        </View>
 
       </View>
       <TouchableOpacity onPress={login} style={styles.buttonContainer}>
@@ -110,14 +121,26 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
+    width: "80%",
     color: "#fd5a43",
     fontWeight: "700",
     backgroundColor: "white",
     borderRadius: 15,
     marginTop: 10,
     marginBottom: 10,
-    textAlign: 'center'
+    paddingLeft: 20,
 
+  },
+  topinput:{
+    height: 50,
+    width: "100%",
+    color: "#fd5a43",
+    fontWeight: "700",
+    backgroundColor: "white",
+    borderRadius: 15,
+    marginTop: 10,
+    marginBottom: 10,
+    paddingLeft: 20,
   },
   buttonContainer: {
     marginTop: 50,
