@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Switch, Image, ScrollView,Modal,Alert} from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView,Modal,Alert} from 'react-native'
 import React from 'react'
 import { useContext,useState } from "react";
 import {  themeContext } from "../Components/SetData.js"

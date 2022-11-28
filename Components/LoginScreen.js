@@ -11,8 +11,8 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("smarton0614@gmail.com");
   const [password, setPassword] = useState("farkas1070");
   const [, setUser] = useContext(userContext);
-  const [visibility, setVisibility] = useState(true);
-
+  const [visibility, setVisibility] = useState(false);
+  
   const showPassword = () => {
     setVisibility(!visibility)
   }

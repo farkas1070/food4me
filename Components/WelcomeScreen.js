@@ -12,7 +12,7 @@ const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [visibility, setVisibility] = useState(true);
+  const [visibility, setVisibility] = useState(false);
   const [, setUser] = useState({});
   const [message, setMessage] = useState(["Success", "User successfully created"]);
   const createAlert = () =>

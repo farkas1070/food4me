@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Switch, Image,ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Image,ImageBackground } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
 import { themeContext, userContext } from "../Components/SetData.js"
 import { useContext, useState } from "react";
 import SecondLogo from "../assets/second.png"

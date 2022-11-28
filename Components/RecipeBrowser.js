@@ -14,6 +14,7 @@ const RecipeBrowser = ({ navigation }) => {
 
     const [darkTheme, setDarkTheme] = useContext(themeContext)
     const [foodarray] = useContext(foodContext)
+    
     const [searchvalue, setSearchValue] = useState("")
 
     const [pagestart, setPageStart] = useState(0)

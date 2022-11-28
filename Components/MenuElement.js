@@ -2,7 +2,7 @@ import { StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity, View, Switch,
 import React from 'react'
 import { useContext } from "react";
 import { foodContext, themeContext } from "../Components/SetData.js"
-import { Feather } from '@expo/vector-icons';
+
 import menubackground from "../assets/menubackground.jpg"
 import Header from "./Header.js"
 const MenuElement = ({ navigation }) => {
