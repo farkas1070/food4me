@@ -86,7 +86,7 @@ const ProfileComponent = ({ navigation }) => {
 
           <View style={styles.innerbody}>
             
-            {user.photoURL == null ? <MaterialIcons name="account-circle" size={200} color="black" /> : <Image
+            {user.photoURL == null ? <MaterialIcons name="account-circle" size={220} color="black" /> : <Image
               style={styles.profileimage}
               source={{ uri: user.photoURL }}
             />}
