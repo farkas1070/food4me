@@ -32,7 +32,7 @@ const InformationGatherer = () => {
   return (
     <View style={{ width: '100%', height: '100%', flex: 1,backgroundColor:'white' }}>
       <View style={styles.homepictureview}>
-
+      
         <View style={{ flex: 1 }}>
           <Carousel
             style={{
@@ -41,13 +41,13 @@ const InformationGatherer = () => {
               alignItems: 'center',
               justifyContent: 'center',
             }}
-            loop
+            
             
             pagingEnabled={pagingEnabled}
             snapEnabled={snapEnabled}
             width={width}
             height='100%'
-            autoPlay={true}
+            autoPlay={false}
             
             
             data={carouseldata}
