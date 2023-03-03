@@ -26,7 +26,7 @@ export const DataProvider = (props) => {
             newarray.push({ ...doc.data() })
           })
           setFoodArray(newarray)
-          console.log(newarray)
+          
         })
         .catch(error => {
           console.log(error)

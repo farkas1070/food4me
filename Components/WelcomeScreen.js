@@ -6,15 +6,19 @@ import { updateProfile } from "firebase/auth";
 import { auth } from "../firebase-config";
 import Logo from "../assets/Logo.jpg"
 import { FontAwesome } from '@expo/vector-icons'; 
-
+import { db } from "../firebase-config";
+import { collection } from "firebase/firestore"
+import { doc, setDoc } from "firebase/firestore";
 
 const WelcomeScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState("Valaki@gmail.com");
+  const [password, setPassword] = useState("Valaki");
+  const [name, setName] = useState("Valaki");
   const [visibility, setVisibility] = useState(false);
   const [, setUser] = useState({});
   const [message, setMessage] = useState(["Success", "User successfully created"]);
+
+  const collectionRef = collection(db, 'Users')
   const createAlert = () =>
     Alert.alert(
       message[0],
@@ -48,15 +52,19 @@ const WelcomeScreen = ({ navigation }) => {
         ).then(() => {
           updateProfile(auth.currentUser, {
             displayName: name,
+            
           }).then(() => {
-            console.log("user created")
+            
+            const userRef = doc(db, 'Users', auth.currentUser.uid);
+            setDoc(userRef, { merge: true });
+            
           }).catch((error) => {
             console.log(error)
           });
         })
         createAlert()
-        navigation.navigate('Login')
-        console.log(user);
+        navigation.navigate('InformationGatherer')
+        
       }
 
     } catch (error) {

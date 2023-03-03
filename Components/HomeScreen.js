@@ -8,7 +8,8 @@ import ProfileComponent from "./ProfileComponent"
 import MenuElement from './MenuElement';
 import RecipeComponent from "./RecipeComponent"
 import { foodContext } from "../Components/SetData.js"
-
+import RestaurantFinder from "./RestaurantFinder"
+import BottomTabs from "./BottomTabs"
 const HomeScreen = () => {
   const [foodarray] = useContext(foodContext)
   const Drawer = createDrawerNavigator();
@@ -20,17 +21,9 @@ const HomeScreen = () => {
           options={{
             headerShown:false
           }}
-          component={Homepage}
+          component={BottomTabs}
         />
-        <Drawer.Screen
-          name="ProfileComponent"
-          options={{
-            headerShown:false,
-            title: 'Profile',
-            headerTitleAlign: 'center',
-          }}
-          component={ProfileComponent}
-        />
+        
         <Drawer.Screen
           name="RecipeFinder"
           options={{
@@ -60,6 +53,7 @@ const HomeScreen = () => {
           }}
           component={MenuElement}
         />
+        
       </Drawer.Navigator>
   )
 }

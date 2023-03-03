@@ -10,6 +10,7 @@ import Header from "./Header.js"
 import Carousel from 'react-native-reanimated-carousel';
 import { Entypo } from '@expo/vector-icons'; 
 import { Linking } from 'react-native';
+
 export default function ScreenOne({ navigation }) {
 
   const [darkTheme, setDarkTheme] = useContext(themeContext)
@@ -222,7 +223,7 @@ const styles = StyleSheet.create({
   text: (darkTheme) => ({
     fontWeight: "700",
     fontSize: 20,
-    marginLeft: 30,
+    marginLeft: 20,
     color: darkTheme ? "white" : "black",
 
   }),

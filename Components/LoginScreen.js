@@ -44,7 +44,7 @@ const LoginScreen = ({ navigation }) => {
         password
       );
       navigation.navigate('Home')
-      console.log(user);
+      
     } catch (error) {
       if (error) {
         createAlert()
