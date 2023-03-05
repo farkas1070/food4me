@@ -11,9 +11,9 @@ import { collection } from "firebase/firestore"
 import { doc, setDoc } from "firebase/firestore";
 
 const WelcomeScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("Valaki@gmail.com");
-  const [password, setPassword] = useState("Valaki");
-  const [name, setName] = useState("Valaki");
+  const [email, setEmail] = useState("Valaki10@gmail.com");
+  const [password, setPassword] = useState("Valaki10");
+  const [name, setName] = useState("Valaki10");
   const [visibility, setVisibility] = useState(false);
   const [, setUser] = useState({});
   const [message, setMessage] = useState(["Success", "User successfully created"]);
@@ -62,8 +62,8 @@ const WelcomeScreen = ({ navigation }) => {
             console.log(error)
           });
         })
-        createAlert()
-        navigation.navigate('InformationGatherer')
+        
+        navigation.navigate('GenderComponent')
         
       }
 

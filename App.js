@@ -10,7 +10,7 @@ import MenuCreator from "./Components/MenuCreator"
 import FilteredRecipeBrowser from "./Components/FilteredRecipeBrowser"
 import { Provider as PaperProvider } from 'react-native-paper';
 import RestaurantFinder from './Components/RestaurantFinder';
-import InformationGatherer from "./Components/InformationGatherer"
+import GenderComponent from "./Components/GenderComponent"
 function App() {
 
   const Stack = createNativeStackNavigator();
@@ -20,10 +20,10 @@ function App() {
     <DataProvider>
       <PaperProvider>
         <NavigationContainer theme={DarkTheme}>
-          <Stack.Navigator initialRouteName="Register">
+          <Stack.Navigator initialRouteName="GenderComponent">
             <Stack.Screen options={{ headerShown: false }} name="Register" component={WelcomeScreen} />
             <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
-            <Stack.Screen options={{ headerShown: false }} name="InformationGatherer" component={InformationGatherer} />
+            <Stack.Screen options={{ headerShown: false }} name="GenderComponent" component={GenderComponent} />
             <Stack.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
             <Stack.Screen options={{ headerShown: false }} name="SingleElement" component={SingleElement} />
             <Stack.Screen options={{ headerShown: false }} name="MenuElement" component={MenuCreator} />
