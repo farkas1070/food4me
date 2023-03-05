@@ -81,6 +81,21 @@ const GenderComponent = ({ navigation }) => {
         console.error('Error updating document: ', error);
       });
   }
+  const goToNextPage = () => {
+    const nextIndex = currentIndex + 1;
+    ref.current.setPage(nextIndex )
+    setCurrentIndex(nextIndex);
+  };
+
+  const goToPrevPage = () => {
+    const prevIndex = currentIndex - 1;
+    ref.current.setPage(prevIndex )
+    setCurrentIndex(prevIndex);
+  };
+  const onPageSelected = (event) => {
+    const { position } = event.nativeEvent;
+    setCurrentIndex(position);
+  };
 
   const [loaded] = useFonts({
     CustomFont: CustomFont,
@@ -90,7 +105,7 @@ const GenderComponent = ({ navigation }) => {
   }
   return (
     <View style={styles.maincontainer}>
-      <PagerView style={styles.viewPager} initialPage={currentIndex} ref={ref}>
+      <PagerView style={styles.viewPager} initialPage={currentIndex} ref={ref} scrollEnabled={false} onPageSelected={onPageSelected}>
         <View style={styles.page} key="1">
           <ImageBackground source={Background} resizeMode="cover" style={styles.imagebackground}>
 
@@ -104,7 +119,8 @@ const GenderComponent = ({ navigation }) => {
                 <Text style={styles.topText}>Success! Your Account has been created</Text>
                 <Text style={{ fontFamily: 'CustomFont', fontSize: 15, color: 'black', marginLeft: 30, marginRight: 30, textAlign: 'center' }}>To continue, we need to ask a few questions first...</Text>
               </View>
-              <Button icon="forward" buttonColor='white' mode="elevated" onPress={() => { ref.current.setPage(currentIndex + 1) }} style={{ marginBottom: 50 }}>
+
+              <Button icon="arrow-right-bold" buttonColor='white' mode="elevated" onPress={() => { goToNextPage(); }} style={{ marginBottom: 50 }}>
                 Next
               </Button>
             </View>
@@ -127,14 +143,20 @@ const GenderComponent = ({ navigation }) => {
                   <Button icon="gender-male" buttonColor='#00FFFF' mode="elevated" onPress={() => { setValue('Male'); setLeftBorderValue(3); setRightBorderValue(0) }} style={{ flex: 1, marginRight: 10, borderWidth: leftBorderValue, borderColor: 'black' }}>
                     Male
                   </Button>
+
                   <Button icon="gender-female" buttonColor='#FF00FF' mode="elevated" onPress={() => { setValue('Female'); setRightBorderValue(3); setLeftBorderValue(0) }} style={{ flex: 1, marginLeft: 10, borderWidth: rightBorderValue, borderColor: 'black' }}>
                     Female
                   </Button>
                 </View>
               </View>
-              <Button icon="forward" buttonColor='white' disabled={value == '' ? true : false} mode="elevated" onPress={() => { ref.current.setPage(currentIndex + 2) }} style={{ marginBottom: 50 }}>
-                Next
-              </Button>
+              <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center' }}>
+                <Button icon="arrow-left-bold" buttonColor='white' mode="elevated" onPress={() => { goToPrevPage() }} style={{ marginBottom: 50 }}>
+                  previous
+                </Button>
+                <Button icon="arrow-right-bold" buttonColor='white' disabled={value == '' ? true : false} mode="elevated" onPress={() => { goToNextPage() }} style={{ marginBottom: 50 }}>
+                  Next
+                </Button>
+              </View>
             </View>
 
           </ImageBackground>
@@ -160,9 +182,14 @@ const GenderComponent = ({ navigation }) => {
                   style={{ width: '60%', marginTop: 50 }}
                 />
               </View>
-              <Button icon="forward" buttonColor='white' disabled={text == '' ? true : false} mode="elevated" onPress={() => { ref.current.setPage(currentIndex + 3) }} style={{ marginBottom: 50 }}>
-                Next
-              </Button>
+              <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center' }}>
+                <Button icon="arrow-left-bold" buttonColor='white' mode="elevated" onPress={() => { goToPrevPage() }} style={{ marginBottom: 50 }}>
+                  previous
+                </Button>
+                <Button icon="arrow-right-bold" buttonColor='white' disabled={text == '' ? true : false} mode="elevated" onPress={() => { goToNextPage() }} style={{ marginBottom: 50 }}>
+                  Next
+                </Button>
+              </View>
             </View>
           </ImageBackground>
 
@@ -187,9 +214,14 @@ const GenderComponent = ({ navigation }) => {
                   style={{ width: '60%', marginTop: 50 }}
                 />
               </View>
-              <Button icon="forward" buttonColor='white' disabled={text == '' ? true : false} mode="elevated" onPress={() => { ref.current.setPage(currentIndex + 4) }} style={{ marginBottom: 50 }}>
-                Next
-              </Button>
+              <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center' }}>
+                <Button icon="arrow-left-bold" buttonColor='white' mode="elevated" onPress={() => { goToPrevPage() }} style={{ marginBottom: 50 }}>
+                  previous
+                </Button>
+                <Button icon="arrow-right-bold" buttonColor='white' disabled={text == '' ? true : false} mode="elevated" onPress={() => { goToNextPage() }} style={{ marginBottom: 50 }}>
+                  Next
+                </Button>
+              </View>
             </View>
           </ImageBackground>
 
@@ -246,9 +278,14 @@ const GenderComponent = ({ navigation }) => {
                   <Text style={{ fontFamily: 'CustomFont', fontSize: 15, color: 'black', marginLeft: 10 }}>very hard exercise/work 6-7 days a week</Text>
                 </View>
               </View>
-              <Button icon="forward" buttonColor='white' disabled={checked == '' ? true : false} mode="elevated" onPress={() => { ref.current.setPage(currentIndex + 5) }} style={{ marginBottom: 50 }}>
-                Next
-              </Button>
+              <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center' }}>
+                <Button icon="arrow-left-bold" buttonColor='white' mode="elevated" onPress={() => { goToPrevPage() }} style={{ marginBottom: 50 }}>
+                  previous
+                </Button>
+                <Button icon="arrow-right-bold" buttonColor='white' disabled={checked == '' ? true : false} mode="elevated" onPress={() => { goToNextPage() }} style={{ marginBottom: 50 }}>
+                  Next
+                </Button>
+              </View>
             </View>
 
           </ImageBackground>
@@ -276,9 +313,14 @@ const GenderComponent = ({ navigation }) => {
                   />
                 </View>
               </View>
-              <Button icon="forward" buttonColor='white' disabled={ageText == '' ? true : false} mode="elevated" onPress={() => { ref.current.setPage(currentIndex + 6); calculateData() }} style={{ marginBottom: 50 }}>
-                Next
-              </Button>
+              <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center' }}>
+                <Button icon="arrow-left-bold" buttonColor='white' mode="elevated" onPress={() => { goToPrevPage() }} style={{ marginBottom: 50 }}>
+                  previous
+                </Button>
+                <Button icon="arrow-right-bold" buttonColor='white' disabled={ageText == '' ? true : false} mode="elevated" onPress={() => { goToNextPage(); calculateData() }} style={{ marginBottom: 50 }}>
+                  Next
+                </Button>
+              </View>
             </View>
 
           </ImageBackground>
@@ -295,7 +337,7 @@ const GenderComponent = ({ navigation }) => {
                   resizeMode='contain'
                 />
                 <Text style={styles.topText}>These are your results:</Text>
-                <View style={{ width: '100%', flexDirection: 'column', justifyContent: 'center', padding: 15,marginTop:50 }}>
+                <View style={{ width: '100%', flexDirection: 'column', justifyContent: 'center', padding: 15, marginTop: 50 }}>
                   <Text style={{ fontFamily: 'CustomFont', fontSize: 15, color: 'black', marginLeft: 10 }}>
                     Your BMR or Basal Metabolic Rate is: {bmr}
                   </Text>
@@ -311,9 +353,14 @@ const GenderComponent = ({ navigation }) => {
                   </Text>
                 </View>
               </View>
-              <Button icon="forward" buttonColor='white' disabled={value == '' ? true : false} mode="elevated" onPress={() => { UploadData(); navigation.navigate('Home') }} style={{marginBottom:50}}>
-                Finish
-              </Button>
+              <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center' }}>
+                <Button icon="arrow-left-bold" buttonColor='white' mode="elevated" onPress={() => { goToPrevPage() }} style={{ marginBottom: 50 }}>
+                  previous
+                </Button>
+                <Button icon="arrow-right-bold" buttonColor='white' disabled={value == '' ? true : false} mode="elevated" onPress={() => { UploadData(); navigation.navigate('Home') }} style={{ marginBottom: 50 }}>
+                  Finish
+                </Button>
+              </View>
             </View>
 
           </ImageBackground>
