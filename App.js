@@ -20,7 +20,7 @@ function App() {
     <DataProvider>
       <PaperProvider>
         <NavigationContainer theme={DarkTheme}>
-          <Stack.Navigator initialRouteName="GenderComponent">
+          <Stack.Navigator initialRouteName="Home">
             <Stack.Screen options={{ headerShown: false }} name="Register" component={WelcomeScreen} />
             <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
             <Stack.Screen options={{ headerShown: false }} name="GenderComponent" component={GenderComponent} />
