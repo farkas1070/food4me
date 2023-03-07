@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 export const themeContext = createContext();
 export const foodContext = createContext();
 export const userContext = createContext();
+export const userDataContext = createContext();
 
 
 
@@ -12,7 +13,8 @@ export const DataProvider = (props) => {
   const [darkTheme, setDarkTheme] = useState(false)
   const [foodarray, setFoodArray] = useState([])
   const [user, setUser] = useState({})
-  
+  const [userData, setUserData] = useState({})
+
 
   const foodCollectionRef = collection(db, 'foods')
 
@@ -26,7 +28,7 @@ export const DataProvider = (props) => {
             newarray.push({ ...doc.data() })
           })
           setFoodArray(newarray)
-          
+
         })
         .catch(error => {
           console.log(error)
@@ -36,14 +38,17 @@ export const DataProvider = (props) => {
   }, [])
 
   return (
-    
-      <userContext.Provider value={[user, setUser]} >
-        <foodContext.Provider value={[foodarray, setFoodArray]}>
-          <themeContext.Provider value={[darkTheme, setDarkTheme]}>
+
+    <userContext.Provider value={[user, setUser]} >
+      <foodContext.Provider value={[foodarray, setFoodArray]}>
+        <themeContext.Provider value={[darkTheme, setDarkTheme]}>
+          <userDataContext.Provider value={[userData, setUserData]}>
+
             {props.children}
-          </themeContext.Provider>
-        </foodContext.Provider>
-      </userContext.Provider>
-    
+          </userDataContext.Provider>
+        </themeContext.Provider>
+      </foodContext.Provider>
+    </userContext.Provider>
+
   )
 }

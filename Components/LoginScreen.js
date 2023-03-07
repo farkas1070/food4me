@@ -1,18 +1,19 @@
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, StyleSheet, Image, Alert } from "react-native"
 import React from 'react'
-import {signInWithEmailAndPassword,onAuthStateChanged,} from "firebase/auth";
-import { useState,useContext } from "react";
+import { signInWithEmailAndPassword, onAuthStateChanged, } from "firebase/auth";
+import { useState, useContext, } from "react";
 import { auth } from "../firebase-config";
 import Logo from "../assets/Logo.jpg"
-import { userContext } from "../Components/SetData.js"
+import { userContext, userDataContext } from "../Components/SetData.js"
 import { FontAwesome } from '@expo/vector-icons';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("smarton0614@gmail.com");
   const [password, setPassword] = useState("farkas1070");
+  const [userData, setUserData] = useContext(userDataContext)
   const [, setUser] = useContext(userContext);
   const [visibility, setVisibility] = useState(false);
-  
+
   const showPassword = () => {
     setVisibility(!visibility)
   }
@@ -30,10 +31,11 @@ const LoginScreen = ({ navigation }) => {
 
       ]
     );
+ 
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
-    
+
   });
 
   const login = async () => {
@@ -43,8 +45,10 @@ const LoginScreen = ({ navigation }) => {
         email,
         password
       );
-      navigation.navigate('Home')
       
+      
+      navigation.navigate('Home')
+
     } catch (error) {
       if (error) {
         createAlert()
@@ -67,7 +71,7 @@ const LoginScreen = ({ navigation }) => {
           value={email}
           onChangeText={text => setEmail(text)}
         />
-        <View style={{ borderRadius: 15, flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center',backgroundColor: '#fff',marginTop:10,height:50,width:"100%"}}> 
+        <View style={{ borderRadius: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fff', marginTop: 10, height: 50, width: "100%" }}>
           <TextInput
             value={password}
             style={styles.input}
@@ -76,8 +80,8 @@ const LoginScreen = ({ navigation }) => {
             placeholderTextColor="#fd5a43"
             onChangeText={text => setPassword(text)}
           />
-          <TouchableOpacity onPress={()=>{showPassword()}}>
-          <FontAwesome name="eye" size={24} color="#fd5a43" style={{marginRight:20 ,}} />
+          <TouchableOpacity onPress={() => { showPassword() }}>
+            <FontAwesome name="eye" size={24} color="#fd5a43" style={{ marginRight: 20, }} />
           </TouchableOpacity>
         </View>
 
@@ -131,7 +135,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
 
   },
-  topinput:{
+  topinput: {
     height: 50,
     width: "100%",
     color: "#fd5a43",

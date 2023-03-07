@@ -1,17 +1,21 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Image,ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { themeContext, userContext } from "../Components/SetData.js"
-import { useContext, useState } from "react";
+import { themeContext, userContext, userDataContext } from "../Components/SetData.js"
+import { useContext, useState, useEffect } from "react";
 import SecondLogo from "../assets/second.png"
 import FirstLogo from "../assets/first.jpeg"
 import ThirdLogo from "../assets/third.jpg"
 import Header from "./Header.js"
 import Carousel from 'react-native-reanimated-carousel';
-import { Entypo } from '@expo/vector-icons'; 
+import { Entypo } from '@expo/vector-icons';
 import { Linking } from 'react-native';
+import { auth } from "../firebase-config";
+import { doc,getDoc } from "firebase/firestore"
+import { db } from "../firebase-config";
 
 export default function ScreenOne({ navigation }) {
+
 
   const [darkTheme, setDarkTheme] = useContext(themeContext)
   const [user] = useContext(userContext)
@@ -19,7 +23,7 @@ export default function ScreenOne({ navigation }) {
   const [snapEnabled] = useState(true);
   const [mode] = useState('horizontal-stack');
   const [snapDirection] = useState('left');
-  
+  const [userData, setUserData] = useContext(userDataContext)
   const viewCount = 5;
 
   const carouseldata = [
@@ -43,6 +47,16 @@ export default function ScreenOne({ navigation }) {
       "text": "Keep in touch with us, and we will keep you updated on special deals tailor made just for you!"
     }
   ];
+  useEffect(() => {
+    const getUserData = async () => {
+      console.log(auth.currentUser.uid)
+      const docRef = doc(db, "Users", auth.currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      console.log(docSnap.data())
+      setUserData(docSnap.data())
+    }
+    getUserData();
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -140,16 +154,16 @@ export default function ScreenOne({ navigation }) {
                           flex: 1,
 
                           justifyContent: 'center',
-                          
-                          
+
+
                           borderRadius: 30
                         }}
                       >
-                        <ImageBackground source={{ uri: carouseldata[index].image }} resizeMode="cover" style={{ justifyContent: "center", alignItems: 'center', height: '100%', width: '100%'}}>
-                          <View style={{justifyContent:"center",alignItems: 'center',width: "60%",backgroundColor: "rgba(255, 255, 255, 0.85)",height:60,borderRadius: 50}}>
-                          <Text style={{ textAlign: 'center', fontSize: 10 }}>
-                            {carouseldata[index].text}
-                          </Text>
+                        <ImageBackground source={{ uri: carouseldata[index].image }} resizeMode="cover" style={{ justifyContent: "center", alignItems: 'center', height: '100%', width: '100%' }}>
+                          <View style={{ justifyContent: "center", alignItems: 'center', width: "60%", backgroundColor: "rgba(255, 255, 255, 0.85)", height: 60, borderRadius: 50 }}>
+                            <Text style={{ textAlign: 'center', fontSize: 10 }}>
+                              {carouseldata[index].text}
+                            </Text>
                           </View>
                         </ImageBackground>
                       </View>
@@ -160,17 +174,17 @@ export default function ScreenOne({ navigation }) {
 
             </SafeAreaView>
           </View>
-          <View style={{justifyContent: "center",alignItems: 'center',height:100,backgroundColor:darkTheme? "#181616":"black",flexDirection: 'row'}}>
-            <View style={{width: '50%',flexDirection: 'row',alignItems: 'center',justifyContent: "center"}}>
-              <TouchableOpacity onPress={() => { Linking.openURL('https://www.facebook.com/'); }}><Entypo name="facebook-with-circle" size={30} color="#fd5a43" style={{margnLeft: 5,marginRight: 5}} /></TouchableOpacity>
-              <TouchableOpacity onPress={() => { Linking.openURL('https://www.instagram.com/'); }}><Entypo name="instagram-with-circle" size={30} color="#fd5a43" style={{margnLeft: 5,marginRight: 5}} /></TouchableOpacity>
-              <TouchableOpacity onPress={() => { Linking.openURL('https://github.com/'); }}><Entypo name="github-with-circle" size={30} color="#fd5a43" style={{margnLeft: 5,marginRight: 5}} /></TouchableOpacity>
-              <TouchableOpacity onPress={() => { Linking.openURL('https://www.pinterest.com/'); }}><Entypo name="pinterest-with-circle" size={30} color="#fd5a43"  style={{margnLeft: 5,marginRight: 5}}/></TouchableOpacity>
-              <TouchableOpacity onPress={() => { Linking.openURL('https://www.youtube.com/'); }}><Entypo name="youtube-with-circle" size={30} color="#fd5a43" style={{margnLeft: 5,marginRight: 5}} /></TouchableOpacity>
+          <View style={{ justifyContent: "center", alignItems: 'center', height: 100, backgroundColor: darkTheme ? "#181616" : "black", flexDirection: 'row' }}>
+            <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center', justifyContent: "center" }}>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://www.facebook.com/'); }}><Entypo name="facebook-with-circle" size={30} color="#fd5a43" style={{ margnLeft: 5, marginRight: 5 }} /></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://www.instagram.com/'); }}><Entypo name="instagram-with-circle" size={30} color="#fd5a43" style={{ margnLeft: 5, marginRight: 5 }} /></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://github.com/'); }}><Entypo name="github-with-circle" size={30} color="#fd5a43" style={{ margnLeft: 5, marginRight: 5 }} /></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://www.pinterest.com/'); }}><Entypo name="pinterest-with-circle" size={30} color="#fd5a43" style={{ margnLeft: 5, marginRight: 5 }} /></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://www.youtube.com/'); }}><Entypo name="youtube-with-circle" size={30} color="#fd5a43" style={{ margnLeft: 5, marginRight: 5 }} /></TouchableOpacity>
             </View>
-            <View style={{width: '50%',alignItems: 'center',justifyContent: "center"}}>
-              <Text style={{textDecoration: 'underline',color: '#fd5a43',fontSize:8,fontWeight: 'bold'}}>Copyright: Foodemy Coorporation 2022</Text>
-              <Text style={{textDecoration: 'underline',color: '#fd5a43',fontSize:8,fontWeight: 'bold', marginTop:10}}>Get In touch with us!</Text>
+            <View style={{ width: '50%', alignItems: 'center', justifyContent: "center" }}>
+              <Text style={{ textDecoration: 'underline', color: '#fd5a43', fontSize: 8, fontWeight: 'bold' }}>Copyright: Foodemy Coorporation 2022</Text>
+              <Text style={{ textDecoration: 'underline', color: '#fd5a43', fontSize: 8, fontWeight: 'bold', marginTop: 10 }}>Get In touch with us!</Text>
             </View>
           </View>
         </ScrollView>
