@@ -18,11 +18,14 @@ import HeartAsset from "../assets/heartbeat.png";
 import DumbbellAsset from "../assets/dumbbell.png";
 import HeightAsset from "../assets/height-limit.png";
 import WeightAsset from "../assets/weight-scale.png";
-
+import * as ImagePicker from 'expo-image-picker';
+import { updateProfile, getAuth } from "firebase/auth";
 const NewProfileComponent = () => {
-    const [user] = useContext(userContext)
+
     const [userData, setUserData] = useContext(userDataContext)
     const navigation = useNavigation();
+    const auth = getAuth();
+    const user = auth.currentUser
     const [loaded] = useFonts({
         CustomFont: CustomFont,
     });
@@ -33,6 +36,29 @@ const NewProfileComponent = () => {
         navigation.openDrawer();
     }
     const userRef = user.uid
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log(result);
+
+        if (!result.canceled) {
+            updateProfile(auth.currentUser, {
+                photoURL: result.assets[0].uri
+            }).then(() => {
+                Alert.alert("Successfully updated profile pic,Login and logout to see your new pic")
+            }).catch((error) => {
+                console.log(error)
+            });
+            console.log(user)
+        }
+
+    };
 
     return (
         <View style={{ width: '100%', height: '100%', flex: 1, backgroundColor: 'white' }}>
@@ -68,7 +94,7 @@ const NewProfileComponent = () => {
                                             containerColor='#fd5a43'
                                             iconColor='white'
                                             style={{ position: 'absolute', top: 0, right: 0 }}
-                                            onPress={() => console.log('Change profile picture')}
+                                            onPress={() => { pickImage() }}
                                         />
                                     </View>
                                     :
@@ -84,7 +110,7 @@ const NewProfileComponent = () => {
                                             containerColor='#fd5a43'
                                             iconColor='white'
                                             style={{ position: 'absolute', top: 0, right: 0 }}
-                                            onPress={() => console.log('Change profile picture')}
+                                            onPress={() => { pickImage() }}
                                         />
                                     </View>}
                             </View>
@@ -102,153 +128,162 @@ const NewProfileComponent = () => {
                 </ImageBackground>
                 <View style={styles.container}>
                     <View style={{ flex: 1, width: '100%', alignItems: "flex-start", backgroundColor: '#f8f8f8' }}>
+                        <LinearGradient
+                            colors={['#f8f8f8', '#ffcdc6']}
+                            style={styles.gradient}
+                        >
 
-                        <View style={{ width: '100%', justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'column' }}>
-                            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#808080', marginTop: 30 }}>Your Calorie Status</Text>
-                            <View style={{ width: '100%', justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row', padding: 20 }}>
+                            <Surface style={{ width: '90%', justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'column', marginTop: 10, borderRadius: 30, backgroundColor: '#ffffff', }}>
 
-                                <CircularProgress
-                                    value={20}
-                                    radius={70}
-                                    duration={2000}
-                                    progressValueColor={'#808080'}
-                                    maxValue={userData.AMR}
-                                    activeStrokeColor={'white'}
-                                    inActiveStrokeColor={'#fd5a43'}
-                                    inActiveStrokeOpacity={0.5}
-                                    inActiveStrokeWidth={20}
-                                    activeStrokeWidth={10}
-                                    title={'Calories'}
-                                    titleColor={'#fd5a43'}
-                                    titleStyle={{ fontFamily: 'CustomFont', }}
+                                <View style={{ width: '100%', justifyContent: 'space-evenly', alignItems: 'flex-start', flexDirection: 'column', padding: 20 }}>
+                                    <View>
+                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 15, color: '#fd5a43', fontWeight: 'bold' }}>Your Progress Today:</Text>
+                                    </View>
+                                    <View style={{ width: '100%', alignItems: 'center', marginTop: 20, marginBottom: 20 }}>
+                                        <CircularProgress
+                                            value={20}
+                                            radius={80}
+                                            duration={2000}
+                                            progressValueColor={'#808080'}
+                                            maxValue={userData.AMR}
+                                            activeStrokeColor={'white'}
+                                            inActiveStrokeColor={'#fd5a43'}
+                                            inActiveStrokeOpacity={0.5}
+                                            inActiveStrokeWidth={20}
+                                            activeStrokeWidth={10}
+                                            title={'Calories'}
+                                            titleColor={'#fd5a43'}
+                                            titleStyle={{ fontFamily: 'CustomFont', }}
 
-                                />
-                                <View>
-                                    <Button icon="food-apple" textColor='white' buttonColor='#fd5a43' mode="contained" onPress={() => console.log('Pressed')} style={{ marginBottom: 10, marginLeft: 10 }}>
-                                        Add Food You Ate
-                                    </Button>
-                                    <Button icon="dumbbell" textColor='white' buttonColor='#fd5a43' mode="contained" onPress={() => console.log('Pressed')} style={{ marginTop: 10, marginLeft: 10 }}>
-                                        AddExcesize You did
-                                    </Button>
+
+                                        />
+                                    </View>
+                                    <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Button icon="food-apple" textColor='white' buttonColor='#fd5a43' mode="contained" onPress={() => console.log('Pressed')} style={{ marginBottom: 10 }}>
+                                            Add Food You Ate
+                                        </Button>
+
+                                    </View>
                                 </View>
+
+
+                            </Surface>
+                            <View style={{ width: '100%', alignItems: 'center', flexDirection: 'column', marginTop: 30 }}>
+
+                                <Surface style={styles.bigSurface}>
+                                    <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>Fitness Data:</Text>
+
+                                    <View style={styles.surface}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <Image
+                                                style={styles.AssetImage}
+                                                source={HeartAsset}
+                                                resizeMode='contain'
+                                            />
+                                            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>BMR</Text>
+                                        </View>
+                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginRight: 10 }}>{userData.BMR.toFixed(2)}</Text>
+                                    </View>
+                                    <View style={styles.surface}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <Image
+                                                style={styles.AssetImage}
+                                                source={AgeAsset}
+                                                resizeMode='contain'
+                                            />
+                                            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>AMR</Text>
+                                        </View>
+                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginRight: 10 }}>{userData.AMR.toFixed(2)}</Text>
+                                    </View>
+                                    <View style={styles.surface}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <Image
+                                                style={styles.AssetImage}
+                                                source={DumbbellAsset}
+                                                resizeMode='contain'
+                                            />
+                                            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>BMI</Text>
+                                        </View>
+                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginRight: 10 }}>{userData.BMI.toFixed(2)}</Text>
+                                    </View>
+                                </Surface>
+
+                                <Surface style={styles.bigSurface}>
+                                    <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>Personal Data</Text>
+                                    <View style={styles.surface}>
+                                        <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                                            <Image
+                                                style={styles.AssetImage}
+                                                source={HeightAsset}
+                                                resizeMode='contain'
+                                            />
+                                            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>Height</Text>
+                                            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>{userData.height} Cm.</Text>
+                                        </View>
+                                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                            <IconButton
+                                                icon="cog-outline"
+                                                iconColor='white'
+                                                size={20}
+                                                mode='contained'
+                                                containerColor='#fd5a43'
+                                                onPress={() => console.log('Pressed')}
+                                            />
+                                        </View>
+                                    </View>
+                                    <View style={styles.surface}>
+                                        <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                                            <Image
+                                                style={styles.AssetImage}
+                                                source={WeightAsset}
+                                                resizeMode='contain'
+                                            />
+                                            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>Weight</Text>
+                                            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>{userData.weight} Kg.</Text>
+                                        </View>
+                                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                            <IconButton
+                                                icon="cog-outline"
+                                                iconColor='white'
+                                                size={20}
+                                                mode='contained'
+                                                containerColor='#fd5a43'
+                                                onPress={() => console.log('Pressed')}
+                                            />
+                                        </View>
+                                    </View>
+                                    <View style={styles.surface}>
+                                        <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+
+                                            <Image
+                                                style={styles.AssetImage}
+                                                source={AgeAsset}
+                                                resizeMode='contain'
+                                            />
+                                            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>Age</Text>
+                                            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>{userData.age} Yrs.</Text>
+                                        </View>
+                                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                            <IconButton
+                                                icon="cog-outline"
+                                                iconColor='white'
+                                                size={20}
+                                                mode='contained'
+                                                containerColor='#fd5a43'
+                                                onPress={() => console.log('Pressed')}
+                                            />
+                                        </View>
+
+                                    </View>
+                                </Surface>
+
+
+
+
+
                             </View>
 
-
-                        </View>
-                        <View style={{ width: '100%', alignItems: 'center', flexDirection: 'column', marginTop: 30 }}>
-                            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>Fitness Data:</Text>
-                            <Surface style={styles.bigSurface}>
-                               
-                                    <View style={styles.surface}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Image
-                                            style={styles.AssetImage}
-                                            source={HeartAsset}
-                                            resizeMode='contain'
-                                        />
-                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>BMR</Text>
-                                    </View>
-                                    <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginRight: 10 }}>{userData.BMR.toFixed(2)}</Text>
-                                </View>
-                                <View style={styles.surface}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Image
-                                            style={styles.AssetImage}
-                                            source={AgeAsset}
-                                            resizeMode='contain'
-                                        />
-                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>AMR</Text>
-                                    </View>
-                                    <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginRight: 10 }}>{userData.AMR.toFixed(2)}</Text>
-                                </View>
-                                <View style={styles.surface}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Image
-                                            style={styles.AssetImage}
-                                            source={DumbbellAsset}
-                                            resizeMode='contain'
-                                        />
-                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>BMI</Text>
-                                    </View>
-                                    <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginRight: 10 }}>{userData.BMI.toFixed(2)}</Text>
-                                </View>
-                            </Surface>
-                            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>Personal Data</Text>
-                            <Surface style={styles.bigSurface}>
-                                <View style={styles.surface}>
-                                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                                        <Image
-                                            style={styles.AssetImage}
-                                            source={HeightAsset}
-                                            resizeMode='contain'
-                                        />
-                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>Height</Text>
-                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>{userData.height} Cm.</Text>
-                                    </View>
-                                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                        <IconButton
-                                            icon="cog-outline"
-                                            iconColor='white'
-                                            size={20}
-                                            mode='contained'
-                                            containerColor='#fd5a43'
-                                            onPress={() => console.log('Pressed')}
-                                        />
-                                    </View>
-                                </View>
-                                <View style={styles.surface}>
-                                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                                        <Image
-                                            style={styles.AssetImage}
-                                            source={WeightAsset}
-                                            resizeMode='contain'
-                                        />
-                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>Weight</Text>
-                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>{userData.weight} Kg.</Text>
-                                    </View>
-                                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                        <IconButton
-                                            icon="cog-outline"
-                                            iconColor='white'
-                                            size={20}
-                                            mode='contained'
-                                            containerColor='#fd5a43'
-                                            onPress={() => console.log('Pressed')}
-                                        />
-                                    </View>
-                                </View>
-                                <View style={styles.surface}>
-                                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-
-                                        <Image
-                                            style={styles.AssetImage}
-                                            source={AgeAsset}
-                                            resizeMode='contain'
-                                        />
-                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>Age</Text>
-                                        <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginLeft: 10 }}>{userData.age} Yrs.</Text>
-                                    </View>
-                                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                        <IconButton
-                                            icon="cog-outline"
-                                            iconColor='white'
-                                            size={20}
-                                            mode='contained'
-                                            containerColor='#fd5a43'
-                                            onPress={() => console.log('Pressed')}
-                                        />
-                                    </View>
-
-                                </View>
-                            </Surface>
-
-
-
-
-
-                        </View>
-
-
+                        </LinearGradient>
                     </View>
 
 
@@ -257,8 +292,8 @@ const NewProfileComponent = () => {
 
 
                 </View>
-            </ScrollView>
-        </View>
+            </ScrollView >
+        </View >
     );
 };
 
@@ -273,6 +308,12 @@ const styles = StyleSheet.create({
     AssetImage: {
         height: 50,
         width: 50
+    },
+    gradient: {
+        width: '100%',
+        alignItems: 'center'
+
+
     },
     surface: {
         height: 80,
@@ -294,7 +335,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         elevation: 10,
-        borderRadius: 10,
+        borderRadius: 30,
         marginBottom: 20,
         backgroundColor: '#ffffff',
 
@@ -305,9 +346,6 @@ const styles = StyleSheet.create({
         width: "100%",
         flex: 1,
 
-
-
-
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
@@ -316,7 +354,8 @@ const styles = StyleSheet.create({
     profileImage: {
         width: 150,
         height: 150,
-        marginBottom: 50
+        marginBottom: 50,
+        borderRadius: 400 / 2,
 
     },
     appBar: {
@@ -332,7 +371,8 @@ const styles = StyleSheet.create({
     title: {
         color: 'white',
         fontSize: 20,
-        marginTop: 20
+        marginTop: 20,
+        fontWeight: "bold",
     },
 });
 

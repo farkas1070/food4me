@@ -16,7 +16,7 @@ export const DataProvider = (props) => {
   const [userData, setUserData] = useState({})
 
 
-  const foodCollectionRef = collection(db, 'foods')
+  const foodCollectionRef = collection(db, 'Recipes')
 
   useEffect(() => {
     const getFood = async () => {
@@ -25,7 +25,9 @@ export const DataProvider = (props) => {
 
           let newarray = []
           snapshot.docs.forEach((doc) => {
-            newarray.push({ ...doc.data() })
+            var subdata = doc.data()
+            subdata.docid = doc.id
+            newarray.push({ ...subdata })
           })
           setFoodArray(newarray)
 

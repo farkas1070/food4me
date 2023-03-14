@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   }),
   text: (darkTheme) =>({
-    fontweight: "700",
+    fontWeight: "700",
     color:darkTheme? "black": "white",
     textAlign: "center"
   }),

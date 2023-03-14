@@ -3,7 +3,8 @@ import { getAuth } from "firebase/auth";
 import {
   getFirestore, collection,getDocs
 } from "firebase/firestore";
-import React from "react"
+import {getStorage} from "firebase/storage";
+
 const firebaseConfig = {
     apiKey: "AIzaSyC0IUoCVDZEsY4f07C6cZZL7l4y4xxwy8k",
     authDomain: "food4me-e0a60.firebaseapp.com",
@@ -19,9 +20,9 @@ const app = initializeApp(firebaseConfig);
 
 //init service
 export const db = getFirestore()
-
+export const storage = getStorage(app)
 //collection reference
-const colRef = collection(db,"foods")
+const colRef = collection(db,"Recipes")
 //add to collection
 
 // get collection data

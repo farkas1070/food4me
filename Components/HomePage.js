@@ -11,12 +11,13 @@ import Carousel from 'react-native-reanimated-carousel';
 import { Entypo } from '@expo/vector-icons';
 import { Linking } from 'react-native';
 import { auth } from "../firebase-config";
-import { doc,getDoc } from "firebase/firestore"
+import { doc, getDoc, setDoc, addDoc, collection } from "firebase/firestore"
 import { db } from "../firebase-config";
+import axios from 'axios';
 
 export default function ScreenOne({ navigation }) {
 
-
+  const [newfoodData, setNewFoodData] = useState([])
   const [darkTheme, setDarkTheme] = useContext(themeContext)
   const [user] = useContext(userContext)
   const [pagingEnabled] = useState(true);
@@ -48,15 +49,120 @@ export default function ScreenOne({ navigation }) {
     }
   ];
   useEffect(() => {
-    const getUserData = async () => {
+    const getUserData = async (recipeId) => {
       console.log(auth.currentUser.uid)
       const docRef = doc(db, "Users", auth.currentUser.uid);
       const docSnap = await getDoc(docRef);
-      console.log(docSnap.data())
-      setUserData(docSnap.data())
+      
     }
     getUserData();
   }, [])
+  /*
+  
+
+  useEffect(() => {
+    const saveRecipeToFirestore = async (recipeId) => {
+      try {
+        const response = await axios.get(
+          `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=true&includeIngredients=true&apiKey=e7f08530cd1d44b79b6cd127fd5bc332`
+        );
+        const response2 = await axios.get(
+          `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?apiKey=e7f08530cd1d44b79b6cd127fd5bc332`
+        );
+
+        const data = response.data;
+        const data2 = response2.data;
+
+        const newsummary = data.summary.replace('<b>|</b>|<a>|</a>', ' ')
+
+        await setDoc(doc(db, "Recipes", recipeId.toString()), {
+          name: data.title,
+          image: 'https://www.skinnytaste.com/wp-content/uploads/2010/10/arugula_pomegranate_pistachio_salad.jpg',
+          description: newsummary,
+          healthy: data.veryHealthy,
+          cheap: data.cheap,
+          glutenfree: data.glutenFree,
+          vegetarian: data.vegetarian,
+          servings: data.servings,
+          ready: data.readyInMinutes,
+          dairy: data.dairyFree,
+          healthscore: data.healthScore,
+        });
+        //ingredients done
+        data.extendedIngredients.forEach(async (ingredient) => {
+          await setDoc(doc(db, "Ingredients", ingredient.name.toString()), {
+            name: ingredient.name,
+
+
+          });
+          //recipes_ingredients done
+          await setDoc(doc(db, "Recipes_Ingredients",`${recipeId.toString()}-${ingredient.name.toString()}` ), {
+            Recipe_ID: doc(db, `Recipes/${recipeId.toString()}`),
+            Ingredient_ID: doc(db,`Ingredients/${ingredient.name.toString()}`),
+            amount: ingredient.amount,
+            unit: ingredient.unit
+
+
+          });
+          
+
+        });
+        //steps done
+        data2[0].steps.forEach(async (step) => {
+          await setDoc(doc(db, "Steps", `${recipeId.toString()}-${step.number}`), {
+            Recipe_ID: doc(db, `Recipes/${recipeId.toString()}`),
+            step: step.step,
+            number: step.number,
+
+
+          });
+          
+
+        });
+
+        //nutrition done
+        data.nutrition.nutrients.forEach(async (nutrition) => {
+          await setDoc(doc(db, "Nutrition", nutrition.name.toString()), {
+            name: nutrition.name,
+            unit: nutrition.unit
+
+
+          });
+          //recipes_nutrition done
+          await setDoc(doc(db, "Recipe_Nutrition", `${recipeId.toString()}-${nutrition.name.toString()}`), {
+            Recipe_ID: doc(db, `Recipes/${recipeId.toString()}`),
+            Nutrition_ID: doc(db,`Nutrition/${nutrition.name.toString()}`),
+            amount: nutrition.amount,
+            percentOfDailyNeeds: nutrition.percentOfDailyNeeds
+
+
+          });
+          
+
+        })
+        data.dishTypes.forEach(async (type) => {
+          await setDoc(doc(db, "Types", type.toString()), {
+            name: type
+          });
+          //recipes_nutrition done
+          await setDoc(doc(db, "Recipe_Types", `${recipeId.toString()}-${type.toString()}`), {
+            Recipe_ID: doc(db, `Recipes/${recipeId.toString()}`),
+            Type_ID: doc(db,`Types/${type.toString()}`),
+          });
+          
+        })
+
+        console.log(data2[0].steps)
+
+
+
+        console.log('Recipe saved to Firestore!');
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    saveRecipeToFirestore(324643);
+  }, [])*/
 
   return (
     <View style={styles.container}>
@@ -176,15 +282,15 @@ export default function ScreenOne({ navigation }) {
           </View>
           <View style={{ justifyContent: "center", alignItems: 'center', height: 100, backgroundColor: darkTheme ? "#181616" : "black", flexDirection: 'row' }}>
             <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center', justifyContent: "center" }}>
-              <TouchableOpacity onPress={() => { Linking.openURL('https://www.facebook.com/'); }}><Entypo name="facebook-with-circle" size={30} color="#fd5a43" style={{ margnLeft: 5, marginRight: 5 }} /></TouchableOpacity>
-              <TouchableOpacity onPress={() => { Linking.openURL('https://www.instagram.com/'); }}><Entypo name="instagram-with-circle" size={30} color="#fd5a43" style={{ margnLeft: 5, marginRight: 5 }} /></TouchableOpacity>
-              <TouchableOpacity onPress={() => { Linking.openURL('https://github.com/'); }}><Entypo name="github-with-circle" size={30} color="#fd5a43" style={{ margnLeft: 5, marginRight: 5 }} /></TouchableOpacity>
-              <TouchableOpacity onPress={() => { Linking.openURL('https://www.pinterest.com/'); }}><Entypo name="pinterest-with-circle" size={30} color="#fd5a43" style={{ margnLeft: 5, marginRight: 5 }} /></TouchableOpacity>
-              <TouchableOpacity onPress={() => { Linking.openURL('https://www.youtube.com/'); }}><Entypo name="youtube-with-circle" size={30} color="#fd5a43" style={{ margnLeft: 5, marginRight: 5 }} /></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://www.facebook.com/'); }}><Entypo name="facebook-with-circle" size={30} color="#fd5a43" style={{ marginLeft: 5, marginRight: 5 }} /></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://www.instagram.com/'); }}><Entypo name="instagram-with-circle" size={30} color="#fd5a43" style={{ marginLeft: 5, marginRight: 5 }} /></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://github.com/'); }}><Entypo name="github-with-circle" size={30} color="#fd5a43" style={{ marginLeft: 5, marginRight: 5 }} /></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://www.pinterest.com/'); }}><Entypo name="pinterest-with-circle" size={30} color="#fd5a43" style={{ marginLeft: 5, marginRight: 5 }} /></TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://www.youtube.com/'); }}><Entypo name="youtube-with-circle" size={30} color="#fd5a43" style={{ marginLeft: 5, marginRight: 5 }} /></TouchableOpacity>
             </View>
             <View style={{ width: '50%', alignItems: 'center', justifyContent: "center" }}>
-              <Text style={{ textDecoration: 'underline', color: '#fd5a43', fontSize: 8, fontWeight: 'bold' }}>Copyright: Foodemy Coorporation 2022</Text>
-              <Text style={{ textDecoration: 'underline', color: '#fd5a43', fontSize: 8, fontWeight: 'bold', marginTop: 10 }}>Get In touch with us!</Text>
+              <Text style={{  color: '#fd5a43', fontSize: 8, fontWeight: 'bold' }}>Copyright: Foodemy Coorporation 2022</Text>
+              <Text style={{  color: '#fd5a43', fontSize: 8, fontWeight: 'bold', marginTop: 10 }}>Get In touch with us!</Text>
             </View>
           </View>
         </ScrollView>

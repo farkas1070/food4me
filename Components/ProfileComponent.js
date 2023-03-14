@@ -34,7 +34,7 @@ const ProfileComponent = ({ navigation }) => {
 
     console.log(result);
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       updateProfile(auth.currentUser, {
         photoURL: result.uri
       }).then(() => {
