@@ -57,9 +57,9 @@ export default function ScreenOne({ navigation }) {
     }
     getUserData();
   }, [])
-  /*
   
-
+  
+/*
   useEffect(() => {
     const saveRecipeToFirestore = async (recipeId) => {
       try {
@@ -73,11 +73,11 @@ export default function ScreenOne({ navigation }) {
         const data = response.data;
         const data2 = response2.data;
 
-        const newsummary = data.summary.replace('<b>|</b>|<a>|</a>', ' ')
-
+        const newsummary = data.summary.replace(/<\/?b>|<\/?a>/g, ' ')
+        console.log(newsummary)
         await setDoc(doc(db, "Recipes", recipeId.toString()), {
           name: data.title,
-          image: 'https://www.skinnytaste.com/wp-content/uploads/2010/10/arugula_pomegranate_pistachio_salad.jpg',
+          image: 'https://spoonacular.com/recipeImages/324643-556x370.jpeg',
           description: newsummary,
           healthy: data.veryHealthy,
           cheap: data.cheap,
@@ -90,17 +90,13 @@ export default function ScreenOne({ navigation }) {
         });
         //ingredients done
         data.extendedIngredients.forEach(async (ingredient) => {
-          await setDoc(doc(db, "Ingredients", ingredient.name.toString()), {
-            name: ingredient.name,
-
-
-          });
+         
           //recipes_ingredients done
           await setDoc(doc(db, "Recipes_Ingredients",`${recipeId.toString()}-${ingredient.name.toString()}` ), {
             Recipe_ID: doc(db, `Recipes/${recipeId.toString()}`),
-            Ingredient_ID: doc(db,`Ingredients/${ingredient.name.toString()}`),
             amount: ingredient.amount,
-            unit: ingredient.unit
+            unit: ingredient.unit,
+            name: ingredient.name,
 
 
           });
@@ -122,18 +118,13 @@ export default function ScreenOne({ navigation }) {
 
         //nutrition done
         data.nutrition.nutrients.forEach(async (nutrition) => {
-          await setDoc(doc(db, "Nutrition", nutrition.name.toString()), {
-            name: nutrition.name,
-            unit: nutrition.unit
-
-
-          });
-          //recipes_nutrition done
+          
           await setDoc(doc(db, "Recipe_Nutrition", `${recipeId.toString()}-${nutrition.name.toString()}`), {
             Recipe_ID: doc(db, `Recipes/${recipeId.toString()}`),
-            Nutrition_ID: doc(db,`Nutrition/${nutrition.name.toString()}`),
             amount: nutrition.amount,
-            percentOfDailyNeeds: nutrition.percentOfDailyNeeds
+            percentOfDailyNeeds: nutrition.percentOfDailyNeeds,
+            name: nutrition.name,
+            unit: nutrition.unit
 
 
           });
@@ -141,18 +132,15 @@ export default function ScreenOne({ navigation }) {
 
         })
         data.dishTypes.forEach(async (type) => {
-          await setDoc(doc(db, "Types", type.toString()), {
-            name: type
-          });
-          //recipes_nutrition done
+          
           await setDoc(doc(db, "Recipe_Types", `${recipeId.toString()}-${type.toString()}`), {
             Recipe_ID: doc(db, `Recipes/${recipeId.toString()}`),
-            Type_ID: doc(db,`Types/${type.toString()}`),
+            name: type
           });
           
         })
 
-        console.log(data2[0].steps)
+        
 
 
 
@@ -161,7 +149,7 @@ export default function ScreenOne({ navigation }) {
         console.error(error);
       }
     };
-    saveRecipeToFirestore(324643);
+    saveRecipeToFirestore(324642);
   }, [])*/
 
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, View, ImageBackground, Text, ScrollView } from 'react-native';
+import { StyleSheet, Image, View, ImageBackground, Text, ScrollView, Flatlist } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Appbar } from 'react-native-paper';
 import { BlurView } from 'expo-blur';
@@ -8,12 +8,13 @@ import CustomFont from '../fonts/myfont.otf';
 import { Surface } from 'react-native-paper';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import Forcefields from "../assets/Forcefields.png"
-import { collection, query, where, getDocs, doc, } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { useDocument, useCollection, useCollectionData } from 'react-firebase-hooks/firestore';
 import { db } from "../firebase-config";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Chip } from 'react-native-paper';
 import Searching from "../assets/searching.gif"
+import { Button } from 'react-native-paper';
 const getColor = (healthscore) => {
     switch (true) {
         case (healthscore < 25):
@@ -50,19 +51,19 @@ const NewSingleElement = ({ navigation, route }) => {
     const nutrientquery = query(Nutritionref, where("Recipe_ID", "==", recipeRef));
     const typequery = query(TypesRef, where("Recipe_ID", "==", recipeRef));
     const ingredientquery = query(Ingredientsref, where("Recipe_ID", "==", recipeRef));
-
+    const [ingredients, setIngredients] = useState([])
     const [nutritionSnapshot, nutritionSnapshotLoading, nutritionSnapshotError] = useCollectionData(nutrientquery);
     const [ingredientSnapshot, ingredientSnapshotLoading, ingredientSnapshotError] = useCollectionData(ingredientquery);
     const [typeSnapshot, typeSnapshotLoading, typeSnapshotError] = useCollectionData(typequery);
-    console.log(typeSnapshot)
 
 
 
 
 
-    const renderChip = ({ item }) => {
-        return <Chip style={{ margin: 4 }}>{item.label}</Chip>;
-    };
+
+
+
+
     const [loaded] = useFonts({
         CustomFont: CustomFont,
     });
@@ -86,168 +87,105 @@ const NewSingleElement = ({ navigation, route }) => {
                         source={Searching}
                     />
                 </View> :
-                <ScrollView style={{ width: '100%', flexGrow: 1, }}>
+                <ImageBackground
+                    style={styles.backgroundImage}
+                    source={{
+                        uri: item.image,
+                        cache: 'force-cache',
+                    }}
 
-                    <ImageBackground
-                        style={styles.backgroundImage}
-                        source={{
-                            uri: item.image,
-                            cache: 'force-cache',
-                        }}
-                        resizeMode="cover"
 
-                    >
+
+                >
+                    <ScrollView style={{ width: '100%', flexGrow: 1, }}>
+
+
+
+
                         <View style={styles.overlay} />
-                        <LinearGradient
-                            colors={['transparent', '#EFEFEF']}
-                            locations={[0.1, 0.95]}
-                            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-                            pointerEvents="none"
-                        />
-                        <View >
-                            <Appbar.Header style={styles.appBar}>
-                                <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
-                                    <Appbar.Action icon="menu" color="white" onPress={() => { openMenu() }} />
-                                    <Appbar.Action icon="dots-vertical" color="white" onPress={() => console.log('cog-outline')} />
-                                </View>
-
-
-                                <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", width: "100%", alignItems: "flex-start" }}>
-                                    <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'white', fontWeight: 'bold', marginTop: 20 }}>{item.name}</Text>
-
-                                </View>
-
-                                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', }}>
-                                    <CircularProgress
-                                        value={item.healthscore}
-                                        radius={75}
-                                        progressValueColor={'white'}
-                                        duration={2000}
-                                        strokeColorConfig={[
-                                            { color: 'red', value: 0 },
-                                            { color: 'skyblue', value: 50 },
-                                            { color: 'yellowgreen', value: 100 },
-                                        ]}
-                                        activeStrokeColor={'white'}
-                                        inActiveStrokeColor={'white'}
-                                        dashedStrokeConfig={{
-                                            count: 50,
-                                            width: 4,
-                                        }}
-                                    />
-                                    <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: coloritem.color, fontWeight: 'bold', marginTop: 5, marginBottom: 5 }}>{coloritem.statement}</Text>
-                                </View>
-
-
-
-
-                            </Appbar.Header>
-
-
-                        </View>
-                    </ImageBackground>
-                    <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-
-
-
-                        <View style={{ width: '100%', marginBottom: 60, flexDirection: 'row' }}>
-                            
-                        </View>
-
-
-
-
-                        <Surface style={{ width: '90%', alignItems: 'center', justifyContent: 'center', elevation: 4, backgroundColor: '#ffffff', borderRadius: 20, marginTop: 10, marginBottom: 20, height: 400 }}>
-                            <View style={{ backgroundColor: '#fd5a43', width: '100%', height: 40, alignItems: 'center', borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
-                                <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'white', fontWeight: 'bold', marginTop: 5, marginBottom: 5 }}>Nutrients In the recipe:</Text>
+                        <View style={styles.appBar}>
+                            <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", marginTop: 25 }}>
+                                <Appbar.Action icon="menu" color="rgba(253, 90, 67, 1)" onPress={() => { openMenu() }} />
+                                <Appbar.Action icon="dots-vertical" color="rgba(253, 90, 67, 1)" onPress={() => console.log('cog-outline')} />
                             </View>
-                            <ScrollView nestedScrollEnabled={true} style={{ width: '100%', flexGrow: 1, }}>
-
-                                <ImageBackground
-                                    style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center', }}
-
-                                    resizeMode="cover"
 
 
-                                >
 
-                                    {nutritionSnapshot.map((doc) => {
-                                        return (
-                                            <View key={doc.id} style={{ width: '100%', flexDirection: 'row', marginTop: 10, alignItems: 'center', marginBottom: 20, borderBottomWidth: 0.5, borderColor: '#fd5a43' }}>
-                                                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 10, marginLeft: 20 }}>
-                                                    <CircularProgress
-                                                        value={doc.percentOfDailyNeeds > 100 ? 100 : doc.percentOfDailyNeeds}
-                                                        radius={35}
-                                                        maxValue={100}
-                                                        progressValueColor={'#989898'}
-                                                        title={'Daily %'}
-                                                        duration={2000}
-                                                        titleColor={'#989898'}
-                                                        strokeColorConfig={[
-                                                            { color: 'green', value: 0 },
-                                                            { color: 'yellow', value: 50 },
-                                                            { color: 'red', value: 100 },
-                                                        ]}
 
-                                                    />
-                                                    <Text style={{ fontFamily: 'CustomFont', fontSize: 14, color: 'black', fontWeight: 'bold', marginLeft: 10 }}>{doc.name}:</Text>
-                                                    <Text style={{ fontFamily: 'CustomFont', fontSize: 14, color: 'black', fontWeight: 'bold', marginLeft: 20 }}>{doc.amount}</Text>
+
+
+
+
+
+
+                        </View>
+
+                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', borderTopStartRadius: 30, borderTopEndRadius: 30, backgroundColor: 'white' }}>
+
+
+
+                            <View style={{ width: '100%', marginBottom: 60, }}>
+                                <View style={{ padding: 20 }}>
+                                    <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, textAlign: 'left' }}>{item.name}</Text>
+                                </View>
+                                <View style={{ marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 20, borderBottomColor: '#efefef', borderBottomWidth: 1.3 }}>
+                                    {nutritionSnapshot.map((nutrition, index) => {
+                                        if (nutrition.name == 'Calories' || nutrition.name == 'Protein' || nutrition.name == 'Carbohydrates' || nutrition.name == 'Fat') {
+                                            return (
+                                                <View key={index}>
+                                                    <Text style={{ fontFamily: 'CustomFont', fontSize: 13, color: 'grey', marginTop: 5, textAlign: 'left' }}>{nutrition.name}</Text>
+                                                    <Text style={{ fontFamily: 'CustomFont', fontSize: 14, color: '#fd5a43', fontWeight: '700', marginTop: 5, textAlign: 'left' }}>{nutrition.amount} {nutrition.unit}</Text>
                                                 </View>
+                                            )
 
-
-                                            </View>
-
-                                        )
+                                        }
                                     })}
 
+                                </View>
+                                <View style={{ flexDirection: 'row', flexWrap: 'wrap', padding: 20 }}>
+                                    {typeSnapshot.map((item, index) => (
+                                        <Chip key={index} selectedColor="white" style={{ marginTop: 5, marginRight: 5, marginBottom: 5, backgroundColor: 'rgba(253, 90, 67, 1)' }}>
+                                            {item.name}
+                                        </Chip>
+                                    ))}
 
-                                </ImageBackground>
-                            </ScrollView>
-                            <View style={{ backgroundColor: '#fd5a43', width: '100%', height: 30, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 20, borderBottomEndRadius: 20 }}>
+                                </View>
+
 
                             </View>
-                        </Surface>
-                        <Surface style={{ width: '90%', alignItems: 'center', justifyContent: 'center', elevation: 4, backgroundColor: '#ffffff', borderRadius: 20, marginTop: 10, marginBottom: 20, height: 400 }}>
-                            <View style={{ backgroundColor: '#fd5a43', width: '100%', height: 40, alignItems: 'center', borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
-                                <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'white', fontWeight: 'bold', marginTop: 5, marginBottom: 5 }}>Recipe, ingredients</Text>
+
+                            <View style={{ marginBottom:50 }}>
+                                <CircularProgress
+                                    value={item.healthscore}
+                                    radius={75}
+                                    progressValueColor={'rgba(253, 90, 67, 1)'}
+                                    duration={2000}
+                                    title={'Healthscore'}
+                                    
+                                    titleColor={'grey'}
+                                    strokeColorConfig={[
+                                        { color: 'red', value: 0 },
+                                        { color: 'skyblue', value: 50 },
+                                        { color: 'yellowgreen', value: 100 },
+                                    ]}
+                                    activeStrokeColor={'#efefef'}
+                                    inActiveStrokeColor={'#efefef'}
+                                    dashedStrokeConfig={{
+                                        count: 50,
+                                        width: 4,
+                                    }}
+                                />
                             </View>
-                            <ScrollView nestedScrollEnabled={true} style={{ width: '100%', flexGrow: 1, }}>
-                                <ImageBackground
-                                    style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center', }}
-
-                                    resizeMode="cover"
-
-
-                                >
-                                    {ingredientSnapshot.map((ingredient, index) => {
-                                        return (
-                                            <View key={index} style={{ width: '100%', flexDirection: 'row', marginTop: 10, alignItems: 'center', marginBottom: 20 }}>
-
-                                                <BouncyCheckbox
-                                                    size={25}
-                                                    fillColor="#fd5a43"
-                                                    unfillColor="#FFFFFF"
-                                                    iconStyle={{ borderColor: "black" }}
-                                                    innerIconStyle={{ borderWidth: 2 }}
-                                                    text={`${ingredient.amount} ${ingredient.unit} of ${ingredient.name}`}
-                                                    style={{ marginLeft: 20 }}
-                                                />
-                                            </View>
-
-                                        )
-                                    })}
 
 
 
 
-                                </ImageBackground>
-                            </ScrollView>
-                        </Surface>
-
-                    </View>
+                        </View>
 
 
-                </ScrollView >
+
+                    </ScrollView >
+                </ImageBackground>
 
             }
         </View >
@@ -266,6 +204,13 @@ const styles = StyleSheet.create({
         height: undefined,
         aspectRatio: 4 / 3, // Change this to match your image aspect ratio
     },
+    backgroundImage: {
+        flex: 1,
+        width: '100%',
+        height: '75%',
+        resizeMode: 'cover'
+
+    },
     noitemimage: {
 
         width: 300,
@@ -274,11 +219,15 @@ const styles = StyleSheet.create({
     appBar: {
 
         backgroundColor: 'transparent',
-        justifyContent: "center",
+        justifyContent: "flex-start",
         alignItems: 'center',
-        height: 350,
+        height: 450,
         width: "100%",
         flexDirection: "column",
+
+        overflow: 'hidden',
+
+
 
 
     },
@@ -296,7 +245,9 @@ const styles = StyleSheet.create({
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(255, 205, 198,0.3)', // Orange with 50% opacity
+        backgroundColor: 'rgba(253, 90, 67, 0.1)',
+
+        overflow: 'hidden', // Orange with 50% opacity
     },
     fade: {
         ...StyleSheet.absoluteFillObject,
