@@ -9,6 +9,7 @@ import MenuElement from './MenuElement';
 import RecipeComponent from "./RecipeComponent"
 import { foodContext } from "../Components/SetData.js"
 import RestaurantFinder from "./RestaurantFinder"
+import NewRecipeBrowser from "../Components/NewRecipeBrowser"
 import BottomTabs from "./BottomTabs"
 const HomeScreen = () => {
   const [foodarray] = useContext(foodContext)
@@ -43,7 +44,7 @@ const HomeScreen = () => {
             
           }}
           initialParams={{ item: foodarray }}
-          component={RecipeBrowser}
+          component={NewRecipeBrowser}
         />
         <Drawer.Screen
           name="MenuCreator"
