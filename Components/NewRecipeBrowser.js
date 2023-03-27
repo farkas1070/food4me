@@ -10,7 +10,15 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Appbar } from 'react-native-paper';
 import { useFonts } from 'expo-font';
 import CustomFont from '../fonts/myfont.otf';
-
+import { MaterialIcons } from '@expo/vector-icons'; 
+import Cheese from '../assets/cheese.png'
+import Stopwatch from '../assets/stopwatch.png'
+import Wheat from '../assets/wheat.png'
+import Heart from '../assets/like.png'
+import Dish from '../assets/dish.png'
+import Dollar from '../assets/dollar.png'
+import Leaf from '../assets/leaf.png'
+import Clocks from '../assets/stopwatch.png'
 const RecipeBrowser = ({ navigation }) => {
 
     const [darkTheme, setDarkTheme] = useContext(themeContext)
@@ -20,6 +28,7 @@ const RecipeBrowser = ({ navigation }) => {
     const [loaded] = useFonts({
         CustomFont: CustomFont,
     });
+    
 
     
     const [pagestart, setPageStart] = useState(0)
@@ -28,23 +37,7 @@ const RecipeBrowser = ({ navigation }) => {
 
     const scrollRef = useRef();
 
-    const getTextStyle = (item) => {
-        if (item.difficulty === "Easy") {
-            return {
-                color: 'green', fontSize: 10, fontWeight: "700", textAlign: 'right'
-            }
-        }
-        if (item.difficulty === "Intermediate") {
-            return {
-                color: 'orange', fontSize: 10, fontWeight: "700", textAlign: 'right'
-            }
-        }
-        if (item.difficulty === "Hard") {
-            return {
-                color: 'red', fontSize: 10, fontWeight: "700", textAlign: 'right'
-            }
-        }
-    }
+    
 
     const toggleSwitch = () => setDarkTheme(previousState => !previousState);
 
@@ -109,10 +102,19 @@ const RecipeBrowser = ({ navigation }) => {
                                         <Image source={{ uri: data.image }} style={styles.image} />
 
                                         <View style={{ marginRight: 20 }}>
-                                            {data.healthy == true ? <Ionicons name="md-heart-sharp" size={18} color="green" style={{ textAlign: 'right', marginBottom: 10 }} /> : <Ionicons name="md-heart-dislike-sharp" size={18} color="red" style={{ textAlign: 'right', marginBottom: 10 }} />}
-                                            <Text style={styles.nametext(darkTheme)}>{data.name}</Text>
+                                            <View style={{flexDirection:'row',justifyContent: 'flex-end',marginBottom:10}}>
+                                            {data.healthy == true ? <Image style={{ width: 25, height: 25,marginLeft:5 }} source={Heart} /> : <></>}
+                                            {data.cheap == true ?  <Image style={{ width: 25, height: 25,marginLeft:5 }} source={Dollar} />:<></> }
+                                            {data.glutenfree == true ?  <Image style={{ width: 25, height: 25,marginLeft:5 }} source={Wheat} />:<></> }
+                                            {data.dairy == true ?  <Image style={{ width: 25, height: 25,marginLeft:5 }} source={Cheese} />:<></> }
+                                            {data.vegetarian == true ?  <Image style={{ width: 25, height: 25,marginLeft:5 }} source={Leaf} />:<></> }
+
+                                            </View>
+                                            
+
+                                            <Text style={styles.nametext(darkTheme)}>{data.name.length >40? data.name.slice(0,40)+'...':data.name}</Text>
                                             <Text style={styles.kcalorietext(darkTheme)}>{data.kcalories} Kcal / 100g</Text>
-                                            <Text style={getTextStyle(data)}> {data.difficulty}</Text>
+                                            
                                         </View>
 
                                     </TouchableOpacity>
