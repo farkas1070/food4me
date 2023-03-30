@@ -1,45 +1,46 @@
 
 import React, { useContext, useState } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput, Switch, KeyboardAvoidingView, ImageBackground } from 'react-native'
-import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Switch, KeyboardAvoidingView, ImageBackground } from 'react-native'
 import { themeContext, foodContext } from "../Components/SetData.js"
 import { useRef } from 'react';
-import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { Appbar } from 'react-native-paper';
 import { useFonts } from 'expo-font';
 import CustomFont from '../fonts/myfont.otf';
-import { MaterialIcons } from '@expo/vector-icons'; 
 import Cheese from '../assets/cheese.png'
-import Stopwatch from '../assets/stopwatch.png'
 import Wheat from '../assets/wheat.png'
 import Heart from '../assets/like.png'
-import Dish from '../assets/dish.png'
 import Dollar from '../assets/dollar.png'
 import Leaf from '../assets/leaf.png'
-import Clocks from '../assets/stopwatch.png'
+import { TextInput } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+
 const RecipeBrowser = ({ navigation }) => {
 
     const [darkTheme, setDarkTheme] = useContext(themeContext)
     const [foodarray] = useContext(foodContext)
 
     const [searchvalue, setSearchValue] = useState("")
-    const [loaded] = useFonts({
-        CustomFont: CustomFont,
-    });
-    
+    const [showsearch, setShowSearch] = useState(false)
 
-    
+
+    const [visible, setVisible] = React.useState(false);
+
+
+    const containerStyle = { backgroundColor: 'white', padding: 20 };
+
     const [pagestart, setPageStart] = useState(0)
     const [pageend, setPageEnd] = useState(9)
     const [pagecount, setPageCount] = useState(0)
 
     const scrollRef = useRef();
 
-    
+
 
     const toggleSwitch = () => setDarkTheme(previousState => !previousState);
+    const goBackToHome = () => {
+        navigation.goBack();
+    }
 
     const openMenu = () => {
         navigation.openDrawer();
@@ -62,6 +63,13 @@ const RecipeBrowser = ({ navigation }) => {
             animated: true,
         });
     }
+    const handleNavigation = () => {
+
+        navigation.navigate("RecipeFilter");
+    }
+    const changeToSearching = () => {
+
+    }
     const filterAndNavigate = () => {
         let filteredlist = foodarray.filter(item => {
             if (item.name.toLowerCase().includes(searchvalue.toLowerCase())) {
@@ -70,74 +78,106 @@ const RecipeBrowser = ({ navigation }) => {
         })
         navigation.navigate("FilteredRecipeBrowser", { item: filteredlist });
     }
+    const [loaded] = useFonts({
+        CustomFont: CustomFont,
+    });
+    if (!loaded) {
+        return null;
+    }
 
     return (
-        <KeyboardAvoidingView>
 
-            <ImageBackground
-                style={styles.backgroundImage}
-                source={{
-                    uri: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=962&q=80',
-                    cache: 'force-cache',
-                }}
-                resizeMode="cover"
-                
-            >
-                <View style={styles.overlay} />
-                <Appbar.Header style={styles.appBar}>
-                    <Appbar.BackAction color="rgba(255, 255, 255, 1)" onPress={() => { }} />
-                    <Appbar.Content color="rgba(255, 255, 255, 1)" title={<Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'white', textAlign: 'left' }}>Recipes</Text>} />
+        <KeyboardAvoidingView style={{ width: '100%', height: '100%' }}>
+            {showsearch ?
+                <View style={{ width: '100%', height: '100%', backgroundColor: 'white' }}>
+                    <Appbar.Header style={{ backgroundColor: 'transparent', justifyContent: "center", width: "100%", borderBottomColor: 'rgba(253, 90, 67, 1)', borderBottomWidth: 0.6 }}>
+                        <Appbar.BackAction color="rgba(253, 90, 67, 1)" onPress={() => { setShowSearch(false) }} />
 
-                    <Appbar.Action color="rgba(255, 255, 255, 1)" icon="filter-variant" onPress={() => { }} />
-                </Appbar.Header>
-            </ImageBackground>
-            <View style={{ height: "88%" }}>
-                <ScrollView contentContainerStyle={styles.mainContainer(darkTheme)} ref={scrollRef} >
-                    <View style={{ width: "100%" }}>
-                        {foodarray.map((data, i) => {
-                            if (i >= pagestart && i <= pageend) {
-                                return (
-                                    <TouchableOpacity onPress={() => { navigation.navigate("SingleElement", { item: data }) }} style={styles.singlefood(darkTheme)} key={i}>
+                        <Appbar.Content color="rgba(253, 90, 67, 1)" title={<Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'white', textAlign: 'left' }}>Recipes</Text>} />
+                        <Appbar.Action color="rgba(253, 90, 67, 1)" icon="magnify" onPress={() => { filterAndNavigate() }} />
 
-                                        <Image source={{ uri: data.image }} style={styles.image} />
-
-                                        <View style={{ marginRight: 20 }}>
-                                            <View style={{flexDirection:'row',justifyContent: 'flex-end',marginBottom:10}}>
-                                            {data.healthy == true ? <Image style={{ width: 25, height: 25,marginLeft:5 }} source={Heart} /> : <></>}
-                                            {data.cheap == true ?  <Image style={{ width: 25, height: 25,marginLeft:5 }} source={Dollar} />:<></> }
-                                            {data.glutenfree == true ?  <Image style={{ width: 25, height: 25,marginLeft:5 }} source={Wheat} />:<></> }
-                                            {data.dairy == true ?  <Image style={{ width: 25, height: 25,marginLeft:5 }} source={Cheese} />:<></> }
-                                            {data.vegetarian == true ?  <Image style={{ width: 25, height: 25,marginLeft:5 }} source={Leaf} />:<></> }
-
-                                            </View>
-                                            
-
-                                            <Text style={styles.nametext(darkTheme)}>{data.name.length >40? data.name.slice(0,40)+'...':data.name}</Text>
-                                            <Text style={styles.kcalorietext(darkTheme)}>{data.kcalories} Kcal / 100g</Text>
-                                            
-                                        </View>
-
-                                    </TouchableOpacity>
-                                )
-                            }
-
-                        })}
+                    </Appbar.Header>
+                    <View style={{ flexGrow: 1,alignItems:'center' }}>
+                        <TextInput
+                            label="Search for Foods"
+                            value={searchvalue}
+                            mode='outlined'
+                            right={<TextInput.Icon icon={() => <MaterialCommunityIcons name="food-apple-outline" size={24} color="black" />} />}
+                            onChangeText={searchvalue => setSearchValue(searchvalue)}
+                            style={{ width: '80%', marginTop: 10 }}
+                        />
                     </View>
-                    <View style={styles.pagingview}>
+                </View>
+                :
+                <View style={{ width: '100%', height: '100%' }}>
+                    <ImageBackground
+                        style={styles.backgroundImage}
+                        source={{
+                            uri: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=962&q=80',
+                            cache: 'force-cache',
+                        }}
+                        resizeMode="cover"
 
-                        <TouchableOpacity style={pagestart <= 0 ? styles.disabledButton(darkTheme) : styles.Button(darkTheme)} onPress={() => { pageBackwards() }} disabled={pagestart <= 0 ? true : false} >
-                            <AntDesign name="arrowleft" size={30} color={pagestart <= 0 ? "#d3d3d3" : "white"} />
-                        </TouchableOpacity>
+                    >
+                        <View style={styles.overlay} />
+                        <Appbar.Header style={styles.appBar}>
+                            <Appbar.BackAction color="rgba(255, 255, 255, 1)" onPress={() => { goBackToHome() }} />
 
-                        <Text style={styles.pagecounttext(darkTheme)}>{pagecount}</Text>
+                            <Appbar.Content color="rgba(255, 255, 255, 1)" title={<Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'white', textAlign: 'left' }}>Recipes</Text>} />
+                            <Appbar.Action color="rgba(255, 255, 255, 1)" icon="magnify" onPress={() => { setShowSearch(true) }} />
+                            <Appbar.Action color="rgba(255, 255, 255, 1)" icon="filter-variant" onPress={() => { handleNavigation() }} />
+                        </Appbar.Header>
+                    </ImageBackground>
 
-                        <TouchableOpacity style={pageend > foodarray.length ? styles.disabledButton(darkTheme) : styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > foodarray.length ? true : false} >
-                            <AntDesign name="arrowright" size={30} color={pageend > foodarray.length ? "#d3d3d3" : "white"} />
-                        </TouchableOpacity>
+                    <View style={{ flexGrow: 1 }}>
+                        <ScrollView contentContainerStyle={styles.mainContainer(darkTheme)} ref={scrollRef} >
+                            <View style={{ width: "100%" }}>
+                                {foodarray.map((data, i) => {
+                                    if (i >= pagestart && i <= pageend) {
+                                        return (
+                                            <TouchableOpacity onPress={() => { navigation.navigate("SingleElement", { item: data }) }} style={styles.singlefood(darkTheme)} key={i}>
 
+                                                <Image source={{ uri: data.image }} style={styles.image} />
+
+                                                <View style={{ marginRight: 20 }}>
+                                                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 10 }}>
+                                                        {data.healthy == true ? <Image style={{ width: 25, height: 25, marginLeft: 5 }} source={Heart} /> : <></>}
+                                                        {data.cheap == true ? <Image style={{ width: 25, height: 25, marginLeft: 5 }} source={Dollar} /> : <></>}
+                                                        {data.glutenfree == true ? <Image style={{ width: 25, height: 25, marginLeft: 5 }} source={Wheat} /> : <></>}
+                                                        {data.dairy == true ? <Image style={{ width: 25, height: 25, marginLeft: 5 }} source={Cheese} /> : <></>}
+                                                        {data.vegetarian == true ? <Image style={{ width: 25, height: 25, marginLeft: 5 }} source={Leaf} /> : <></>}
+
+                                                    </View>
+
+
+                                                    <Text style={styles.nametext(darkTheme)}>{data.name.length > 40 ? data.name.slice(0, 40) + '...' : data.name}</Text>
+                                                    <Text style={styles.kcalorietext(darkTheme)}>{data.kcalories} Kcal / 100g</Text>
+
+                                                </View>
+
+                                            </TouchableOpacity>
+                                        )
+                                    }
+
+                                })}
+                            </View>
+                            <View style={styles.pagingview}>
+
+                                <TouchableOpacity style={pagestart <= 0 ? styles.disabledButton(darkTheme) : styles.Button(darkTheme)} onPress={() => { pageBackwards() }} disabled={pagestart <= 0 ? true : false} >
+                                    <AntDesign name="arrowleft" size={30} color={pagestart <= 0 ? "#d3d3d3" : "white"} />
+                                </TouchableOpacity>
+
+                                <Text style={styles.pagecounttext(darkTheme)}>{pagecount}</Text>
+
+                                <TouchableOpacity style={pageend > foodarray.length ? styles.disabledButton(darkTheme) : styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > foodarray.length ? true : false} >
+                                    <AntDesign name="arrowright" size={30} color={pageend > foodarray.length ? "#d3d3d3" : "white"} />
+                                </TouchableOpacity>
+
+                            </View>
+                        </ScrollView>
                     </View>
-                </ScrollView>
-            </View>
+                </View>
+            }
 
         </KeyboardAvoidingView>
     )

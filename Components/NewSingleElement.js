@@ -53,11 +53,13 @@ const getColor = (healthscore) => {
 
 const NewSingleElement = ({ navigation, route }) => {
     const { item } = route.params;
-    
+
     const [page, setPage] = useState(0);
+    const [modifiedIngredients, setModifiedIngredients] = useState([]);
+    const [modifiedTypes, setModifiedTypes] = useState([]);
     const ITEMS_PER_PAGE = 4;
     const coloritem = getColor(item.healthscore)
-    
+
     const docid = item.docid
     const recipeRef = doc(db, "Recipes", docid);
     const Ingredientsref = collection(db, "Recipes_Ingredients");
@@ -87,13 +89,46 @@ const NewSingleElement = ({ navigation, route }) => {
     const goBack = () => {
         navigation.goBack();
     }
-    
-
-
-
-
-
-
+    useEffect(() => {
+        const getIngredientRef = async () => {
+            if (!ingredientSnapshotLoading) {
+                let newarray = []
+                await Promise.all(ingredientSnapshot.map(async (ingredient) => {
+                    const docSnap = await getDoc(ingredient.Ingredient_ID);
+                    var subdata = {...ingredient}
+                    subdata.name = docSnap.data().name
+                    
+                    console.log(subdata.name)
+                    newarray.push({ ...subdata })
+                    
+                    
+                  }))
+                  setModifiedIngredients(newarray)   
+            }
+        };
+        const getTypeRef = async () => {
+            if (!typeSnapshotLoading) {
+                let newarray = []
+                await Promise.all(typeSnapshot.map(async (type) => {
+                    const docSnap = await getDoc(type.Type_ID);
+                    var subdata = {...type}
+                    subdata.name = docSnap.data().name
+                    
+                    
+                    newarray.push({ ...subdata })
+                    
+                    
+                  }))
+                  setModifiedTypes(newarray)   
+            }
+        };
+        if (modifiedIngredients.length == 0) {
+            getIngredientRef()
+          }
+          if (modifiedTypes.length == 0) {
+            getTypeRef()
+          }
+    })
 
     const [loaded] = useFonts({
         CustomFont: CustomFont,
@@ -109,7 +144,7 @@ const NewSingleElement = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            {nutritionSnapshotLoading || ingredientSnapshotLoading || typeSnapshotLoading || stepsSnapshotLoading ?
+            {nutritionSnapshotLoading || (modifiedIngredients.length==0) || (modifiedTypes.length==0) || stepsSnapshotLoading ?
 
                 <View style={{ width: '100%', height: '100%', backgroundColor: '#ffffff', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                     <Text>Just a sec, loading data...</Text>
@@ -136,8 +171,8 @@ const NewSingleElement = ({ navigation, route }) => {
                         <View style={styles.overlay} />
                         <View style={styles.appBar}>
                             <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", marginTop: 25 }}>
-                                <Appbar.Action icon="arrow-left-top" color="rgba(253, 90, 67, 1)" onPress={() => { goBack() }} style={{backgroundColor:'white',marginLeft:10}} />
-                                
+                                <Appbar.Action icon="arrow-left-top" color="rgba(253, 90, 67, 1)" onPress={() => { goBack() }} style={{ backgroundColor: 'white', marginLeft: 10 }} />
+
                             </View>
 
 
@@ -174,7 +209,7 @@ const NewSingleElement = ({ navigation, route }) => {
 
                                 </View>
                                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', padding: 20, }}>
-                                    {typeSnapshot.map((item, index) => (
+                                    {modifiedTypes.map((item, index) => (
                                         <Chip key={index} selectedColor="white" style={{ marginTop: 5, marginRight: 5, marginBottom: 5, backgroundColor: 'rgba(253, 90, 67, 1)' }}>
                                             {item.name}
                                         </Chip>
@@ -190,7 +225,7 @@ const NewSingleElement = ({ navigation, route }) => {
                             </View>
 
 
-                            <Surface style={{ marginBottom: 30, justifyContent: 'center', alignItems: 'center', width: '90%', borderRadius: 30, backgroundColor: 'white',borderColor:'rgba(253, 90, 67, 1)',borderWidth:0.6 }}>
+                            <Surface style={{ marginBottom: 30, justifyContent: 'center', alignItems: 'center', width: '90%', borderRadius: 30, backgroundColor: 'white', borderColor: 'rgba(253, 90, 67, 1)', borderWidth: 0.6 }}>
                                 <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'rgba(253, 90, 67, 1)', marginTop: 20, textAlign: 'left' }}> General Information:</Text>
                                 <View style={{ marginTop: 30, marginBottom: 20 }}>
                                     <CircularProgress
@@ -214,7 +249,7 @@ const NewSingleElement = ({ navigation, route }) => {
                                         }}
                                     />
                                 </View>
-                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row',borderBottomWidth:1,borderBottomColor:'#efefef' }}>
+                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef' }}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
                                         <Image
                                             style={{ width: 40, height: 40 }}
@@ -224,7 +259,7 @@ const NewSingleElement = ({ navigation, route }) => {
                                     </View>
                                     <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, marginBottom: 20, textAlign: 'left', marginRight: 20 }}>{item.vegetarian == true ? 'Yes' : 'No'}</Text>
                                 </View>
-                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row',borderBottomWidth:1,borderBottomColor:'#efefef' }}>
+                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef' }}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
                                         <Image
                                             style={{ width: 40, height: 40 }}
@@ -234,7 +269,7 @@ const NewSingleElement = ({ navigation, route }) => {
                                     </View>
                                     <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, marginBottom: 20, textAlign: 'left', marginRight: 20 }}>{item.dairy == true ? 'Yes' : 'No'}</Text>
                                 </View>
-                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row',borderBottomWidth:1,borderBottomColor:'#efefef' }}>
+                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef' }}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
                                         <Image
                                             style={{ width: 40, height: 40 }}
@@ -244,28 +279,28 @@ const NewSingleElement = ({ navigation, route }) => {
                                     </View>
                                     <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, marginBottom: 20, textAlign: 'left', marginRight: 20 }}>{item.cheap == true ? 'Yes' : 'No'}</Text>
                                 </View>
-                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row',borderBottomWidth:1,borderBottomColor:'#efefef' }}>
+                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef' }}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
                                         <Image style={{ width: 40, height: 40 }} source={Wheat} />
                                         <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, marginBottom: 20, textAlign: 'left', marginLeft: 20, }}>Glutenfree?</Text>
                                     </View>
                                     <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, marginBottom: 20, textAlign: 'left', marginRight: 20 }}>{item.glutenfree == true ? 'Yes' : 'No'}</Text>
                                 </View>
-                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row',borderBottomWidth:1,borderBottomColor:'#efefef' }}>
+                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef' }}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
                                         <Image style={{ width: 40, height: 40 }} source={Heart} />
                                         <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, marginBottom: 20, textAlign: 'left', marginLeft: 20, }}>Healthy?</Text>
                                     </View>
                                     <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, marginBottom: 20, textAlign: 'left', marginRight: 20 }}>{item.healthy == true ? 'Yes' : 'No'}</Text>
                                 </View>
-                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row',borderBottomWidth:1,borderBottomColor:'#efefef' }}>
+                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef' }}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
                                         <Image style={{ width: 40, height: 40 }} source={Clocks} />
                                         <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, marginBottom: 20, textAlign: 'left', marginLeft: 20, }}>Ready in:</Text>
                                     </View>
                                     <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, marginBottom: 20, textAlign: 'left', marginRight: 20 }}>{item.ready} Minutes</Text>
                                 </View>
-                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row',marginBottom:10 }}>
+                                <View style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', marginBottom: 10 }}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
                                         <Image style={{ width: 40, height: 40 }} source={Dish} />
                                         <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, marginBottom: 20, textAlign: 'left', marginLeft: 20, }}>Servings:</Text>
@@ -283,11 +318,12 @@ const NewSingleElement = ({ navigation, route }) => {
                                 <View style={{ backgroundColor: 'white', top: -16, width: 50, justifyContent: 'center', alignItems: 'center' }}>
                                     <MaterialCommunityIcons name="silverware-fork" size={30} color="black" />
                                 </View>
-                                <View style={{ flex: 1, }}>
+                                <View style={{ flex: 1, width: '100%' }}>
                                     <ScrollView nestedScrollEnabled={true} style={{ flexGrow: 1 }}>
-                                        {ingredientSnapshot.map((ingredient, index) => {
-
-
+                                        {modifiedIngredients.map((ingredient, index) => {
+                                            
+                                            
+                                            
                                             return (
                                                 <View key={index} style={{ width: '100%', flexDirection: 'row', marginTop: 10, alignItems: 'center', marginBottom: 10 }}>
 
@@ -337,20 +373,20 @@ const NewSingleElement = ({ navigation, route }) => {
 
                             <View style={{ marginBottom: 50, marginTop: 50, width: '90%' }}>
                                 <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: '#fd5a43', marginTop: 5, marginBottom: 25, textAlign: 'left' }}>NutrientData:</Text>
-                                <DataTable style={{ borderRadius:10,backgroundColor:'#ffe4e0' }}>
+                                <DataTable style={{ borderRadius: 10, backgroundColor: '#ffe4e0' }}>
                                     <DataTable.Header>
                                         <DataTable.Title >Name</DataTable.Title>
-                                        <DataTable.Title  numeric>Amount</DataTable.Title>
-                                        <DataTable.Title  numeric>Unit</DataTable.Title>
-                                        <DataTable.Title  numeric>daily %</DataTable.Title>
+                                        <DataTable.Title numeric>Amount</DataTable.Title>
+                                        <DataTable.Title numeric>Unit</DataTable.Title>
+                                        <DataTable.Title numeric>daily %</DataTable.Title>
                                     </DataTable.Header>
                                     {getPaginatedData().map((doc, index) => {
                                         return (
                                             <DataTable.Row key={index}>
                                                 <DataTable.Cell >{doc.name}</DataTable.Cell>
-                                                <DataTable.Cell  numeric>{doc.amount}</DataTable.Cell>
-                                                <DataTable.Cell  numeric>{doc.unit}</DataTable.Cell>
-                                                <DataTable.Cell  numeric>{doc.percentOfDailyNeeds}</DataTable.Cell>
+                                                <DataTable.Cell numeric>{doc.amount}</DataTable.Cell>
+                                                <DataTable.Cell numeric>{doc.unit}</DataTable.Cell>
+                                                <DataTable.Cell numeric>{doc.percentOfDailyNeeds}</DataTable.Cell>
                                             </DataTable.Row>
 
                                         )
@@ -362,7 +398,7 @@ const NewSingleElement = ({ navigation, route }) => {
                                         page={page}
                                         numberOfPages={Math.ceil(nutritionSnapshot / ITEMS_PER_PAGE)}
                                         onPageChange={(page) => setPage(page)}
-                                        style={{color:'white'}}
+                                        style={{ color: 'white' }}
 
 
                                         showFastPagination

@@ -59,10 +59,11 @@ export default function ScreenOne({ navigation }) {
   }, [])
   
   
-/*
+  /*
   useEffect(() => {
     const saveRecipeToFirestore = async (recipeId) => {
       try {
+        
         const response = await axios.get(
           `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=true&includeIngredients=true&apiKey=e7f08530cd1d44b79b6cd127fd5bc332`
         );
@@ -72,12 +73,12 @@ export default function ScreenOne({ navigation }) {
 
         const data = response.data;
         const data2 = response2.data;
-
+          
         const newsummary = data.summary.replace(/<\/?b>|<\/?a>/g, ' ')
-        console.log(newsummary)
+        
         await setDoc(doc(db, "Recipes", recipeId.toString()), {
           name: data.title,
-          image: 'https://spoonacular.com/recipeImages/324643-556x370.jpeg',
+          image: 'https://casserolecrissy.com/wp-content/uploads/2021/02/easy-peanut-butter-fudge-9-735x493.jpg',
           description: newsummary,
           healthy: data.veryHealthy,
           cheap: data.cheap,
@@ -90,16 +91,21 @@ export default function ScreenOne({ navigation }) {
         });
         //ingredients done
         data.extendedIngredients.forEach(async (ingredient) => {
+          
+          await setDoc(doc(db, "Ingredients", ingredient.name.toString()), {
+            name: ingredient.name,
+
+          });
          
           //recipes_ingredients done
           await setDoc(doc(db, "Recipes_Ingredients",`${recipeId.toString()}-${ingredient.name.toString()}` ), {
             Recipe_ID: doc(db, `Recipes/${recipeId.toString()}`),
+            Ingredient_ID: doc(db,`Ingredients/${ingredient.name.toString()}`),
             amount: ingredient.amount,
-            unit: ingredient.unit,
-            name: ingredient.name,
-
-
+            unit: ingredient.unit
+            
           });
+        
           
 
         });
@@ -132,24 +138,24 @@ export default function ScreenOne({ navigation }) {
 
         })
         data.dishTypes.forEach(async (type) => {
+          await setDoc(doc(db, "Types", type.toString()), {
+            name: type
+          });
+          //recipes_nutrition done
           
           await setDoc(doc(db, "Recipe_Types", `${recipeId.toString()}-${type.toString()}`), {
             Recipe_ID: doc(db, `Recipes/${recipeId.toString()}`),
-            name: type
+            Type_ID: doc(db,`Types/${type.toString()}`),
+            
           });
           
         })
-
         
-
-
-
-        console.log('Recipe saved to Firestore!');
       } catch (error) {
         console.error(error);
       }
     };
-    saveRecipeToFirestore(324642);
+    saveRecipeToFirestore(324633);
   }, [])*/
 
   return (
