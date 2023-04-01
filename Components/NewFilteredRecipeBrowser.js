@@ -98,8 +98,9 @@ const RecipeBrowser = ({ navigation,route }) => {
                     {item.length === 0 ?
                             <View style={{ marginTop: 100, alignItems: "center" }}>
                                 <Image
-                                    style={styles.noitemimage}
+                                    style={{width:200,height:200}}
                                     source={noitemfound}
+                                    resizeMode='contain'
                                 />
                             </View>
                             :item.map((data, i) => {

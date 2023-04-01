@@ -24,10 +24,10 @@ const RecipeBrowser = ({ navigation }) => {
     const [showsearch, setShowSearch] = useState(false)
 
 
-    const [visible, setVisible] = React.useState(false);
+    
 
 
-    const containerStyle = { backgroundColor: 'white', padding: 20 };
+    
 
     const [pagestart, setPageStart] = useState(0)
     const [pageend, setPageEnd] = useState(9)
@@ -90,22 +90,22 @@ const RecipeBrowser = ({ navigation }) => {
         <KeyboardAvoidingView style={{ width: '100%', height: '100%' }}>
             {showsearch ?
                 <View style={{ width: '100%', height: '100%', backgroundColor: 'white' }}>
-                    <Appbar.Header style={{ backgroundColor: 'transparent', justifyContent: "center", width: "100%", borderBottomColor: 'rgba(253, 90, 67, 1)', borderBottomWidth: 0.6 }}>
+                    <Appbar.Header style={{ backgroundColor: 'transparent', width: "100%", borderBottomColor: 'rgba(253, 90, 67, 1)', borderBottomWidth: 0.6 }}>
                         <Appbar.BackAction color="rgba(253, 90, 67, 1)" onPress={() => { setShowSearch(false) }} />
 
-                        <Appbar.Content color="rgba(253, 90, 67, 1)" title={<Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'white', textAlign: 'left' }}>Recipes</Text>} />
-                        <Appbar.Action color="rgba(253, 90, 67, 1)" icon="magnify" onPress={() => { filterAndNavigate() }} />
-
-                    </Appbar.Header>
-                    <View style={{ flexGrow: 1,alignItems:'center' }}>
                         <TextInput
                             label="Search for Foods"
                             value={searchvalue}
                             mode='outlined'
                             right={<TextInput.Icon icon={() => <MaterialCommunityIcons name="food-apple-outline" size={24} color="black" />} />}
                             onChangeText={searchvalue => setSearchValue(searchvalue)}
-                            style={{ width: '80%', marginTop: 10 }}
+                            style={{ flexGrow:1 }}
                         />
+                        <Appbar.Action color="rgba(253, 90, 67, 1)" icon="magnify" onPress={() => { filterAndNavigate() }} />
+
+                    </Appbar.Header>
+                    <View style={{ flexGrow: 1,alignItems:'center' }}>
+                        
                     </View>
                 </View>
                 :

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import { Appbar } from 'react-native-paper';
 import { useFonts } from 'expo-font';
 import CustomFont from '../fonts/myfont.otf';
@@ -9,20 +9,24 @@ import { collection, query, where } from "firebase/firestore";
 import { Chip } from 'react-native-paper';
 import { ActivityIndicator } from 'react-native-paper';
 import RangeSlider, { Slider } from 'react-native-range-slider-expo';
+import {  foodContext } from "../Components/SetData.js"
+import ChipList from "./Chiplist"
+
 
 const FilterRecipes = ({ navigation }) => {
 
   const [typessnapshot, typesloading, typeserror] = useCollectionData(query(collection(db, "Types")));
   const [ingredientsnapshot, ingredientloading, ingredienterror] = useCollectionData(query(collection(db, "Ingredients")));
   const [nutrientsnapshot, nutrientloading, nutrienterror] = useCollectionData(query(collection(db, "Recipe_Nutrition"), where("name", "==", 'Calories')));
-  const [selectedChips, setSelectedChips] = useState([]);
-
-
+  const [selectedGeneralChips, setSelectedGeneralChips] = useState([]);
+  const [selectedTypeChips, setSelectedTypeChips] = useState([]);
+  const [selectedIngredientChips, setSelectedIngredientChips] = useState([]);
+  const [foodarray] = useContext(foodContext)
   const [fromValue, setFromValue] = useState(0);
   const [toValue, setToValue] = useState(0);
   const [value, setValue] = useState(0);
 
-  const generalfilteringoptions = [{ name: 'cheap' }, { name: 'glutenfree' }, { name: 'dairyfree' }, { name: 'healthy' }, { name: 'vegetarian' }]
+  const generalfilteringoptions = ['cheap', 'glutenfree', 'dairyfree', 'healthy', 'vegetarian']
 
 
   const GoBackToRecipeBrowser = () => {
@@ -31,24 +35,12 @@ const FilterRecipes = ({ navigation }) => {
   const filterRecipesAndNavigate = () => {
 
 
-    
+
     navigation.navigate("FilteredRecipeBrowser");
-    
+
   }
-  const handleChipPress = (chipValue) => {
-    const newSelectedChips = [...selectedChips];
 
-    if (newSelectedChips.includes(chipValue)) {
-      // Chip is already selected, remove it from selected chips array
-      const chipIndex = newSelectedChips.indexOf(chipValue);
-      newSelectedChips.splice(chipIndex, 1);
-    } else {
-      // Chip is not selected, add it to selected chips array
-      newSelectedChips.push(chipValue);
-    }
 
-    setSelectedChips(newSelectedChips);
-  };
   const [loaded] = useFonts({
     CustomFont: CustomFont,
   });
@@ -70,7 +62,7 @@ const FilterRecipes = ({ navigation }) => {
         <Appbar.Action color="grey" icon="close" style={{ backgroundColor: 'white' }} onPress={() => { GoBackToRecipeBrowser() }} />
       </Appbar.Header>
 
-      <View style={{ backgroundColor: 'white', width: '100%' }}>
+      <View style={{ backgroundColor: 'white', width: '100%',flexGrow:1 }}>
         <ScrollView style={{ flexGrow: 1, width: '100%' }}>
           <View style={{ width: '100%', padding: 10, borderBottomWidth: 0.2, borderBottomColor: '#fd5a43' }}>
             <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'rgba(253, 90, 67, 1)', textAlign: 'left', marginTop: 10, }}>
@@ -78,13 +70,9 @@ const FilterRecipes = ({ navigation }) => {
             </Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', padding: 20, width: '100%' }}>
               <ScrollView horizontal={true}>
-                {generalfilteringoptions.map((type, index) => {
-                  return (
-                    <Chip onPress={() =>  {handleChipPress(type.name)}} key={index} selectedColor={selectedChips.includes(type.name) ? 'white' : '#fd5a43'} style={{ marginTop: 5, marginRight: 5, marginBottom: 5, backgroundColor: selectedChips.includes(type.name) ? '#fd5a43' : 'white', borderColor: '#fd5a43', borderWidth: 0.5 }}>
-                      {type.name}
-                    </Chip>
-                  )
-                })}
+                {typesloading ? <ActivityIndicator animating={true} color="grey" /> :
+                  <ChipList options={generalfilteringoptions} selectedIndices={selectedGeneralChips} setSelectedIndices={setSelectedGeneralChips} />
+                }
               </ScrollView>
 
             </View>
@@ -122,13 +110,9 @@ const FilterRecipes = ({ navigation }) => {
             </Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', padding: 20, width: '100%' }}>
               <ScrollView horizontal={true}>
-                {typesloading ? <ActivityIndicator animating={true} color="grey" /> : typessnapshot.map((type, index) => {
-                  return (
-                    <Chip onPress={() => console.log('Pressed')} key={index} selectedColor="#fd5a43" style={{ marginTop: 5, marginRight: 5, marginBottom: 5, backgroundColor: 'white', borderColor: '#fd5a43', borderWidth: 0.5 }}>
-                      {type.name}
-                    </Chip>
-                  )
-                })}
+                {typesloading ? <ActivityIndicator animating={true} color="grey" /> :
+                  <ChipList options={typessnapshot.map(a => a.name)} selectedIndices={selectedTypeChips} setSelectedIndices={setSelectedTypeChips} />
+                }
               </ScrollView>
 
             </View>
@@ -141,54 +125,22 @@ const FilterRecipes = ({ navigation }) => {
             </Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', padding: 20, width: '100%' }}>
               <ScrollView horizontal={true}>
-                {ingredientloading ? <ActivityIndicator animating={true} color="grey" /> : ingredientsnapshot.map((ingredient, index) => {
-                  return (
-                    <Chip onPress={() => console.log('Pressed')} key={index} selectedColor="#fd5a43" style={{ marginTop: 5, marginRight: 5, marginBottom: 5, backgroundColor: 'white', borderColor: '#fd5a43', borderWidth: 0.5 }}>
-                      {ingredient.name}
-                    </Chip>
-                  )
-                })}
+                {ingredientloading ? <ActivityIndicator animating={true} color="grey" /> : 
+                 <ChipList options={ingredientsnapshot.map(a => a.name)} selectedIndices={selectedIngredientChips} setSelectedIndices={setSelectedIngredientChips} />
+                }
               </ScrollView>
             </View>
 
 
           </View>
-          <View style={{ width: '100%', padding: 10, borderBottomWidth: 0.2, borderBottomColor: '#fd5a43' }}>
-            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'rgba(253, 90, 67, 1)', textAlign: 'left', marginTop: 10, marginBottom: 10 }}>
-              Food Ingredients:
-            </Text>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', padding: 20, width: '100%' }}>
-              <ScrollView horizontal={true}>
-                {ingredientloading ? <ActivityIndicator animating={true} color="grey" /> : ingredientsnapshot.map((ingredient, index) => {
-                  return (
-                    <Chip onPress={() => console.log('Pressed')} key={index} selectedColor="#fd5a43" style={{ marginTop: 5, marginRight: 5, marginBottom: 5, backgroundColor: 'white', borderColor: '#fd5a43', borderWidth: 0.5 }}>
-                      {ingredient.name}
-                    </Chip>
-                  )
-                })}
-              </ScrollView>
-            </View>
+         
 
 
-          </View>
-          <View style={{ width: '100%', padding: 10, borderBottomWidth: 0.2, borderBottomColor: '#fd5a43' }}>
-            <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'rgba(253, 90, 67, 1)', textAlign: 'left', marginTop: 10, marginBottom: 10 }}>
-              Food Ingredients:
-            </Text>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', padding: 20, width: '100%' }}>
-              <ScrollView horizontal={true}>
-                {ingredientloading ? <ActivityIndicator animating={true} color="grey" /> : ingredientsnapshot.map((ingredient, index) => {
-                  return (
-                    <Chip onPress={() => console.log('Pressed')} key={index} selectedColor="#fd5a43" style={{ marginTop: 5, marginRight: 5, marginBottom: 5, backgroundColor: 'white', borderColor: '#fd5a43', borderWidth: 0.5 }}>
-                      {ingredient.name}
-                    </Chip>
-                  )
-                })}
-              </ScrollView>
-            </View>
+          
+          
 
 
-          </View>
+          
         </ScrollView>
       </View>
 
