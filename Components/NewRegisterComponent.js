@@ -12,7 +12,9 @@ import { doc, setDoc } from "firebase/firestore";
 import Videofootage from "../assets/food4me.mp4";
 import { Video, VideoOverlay } from 'expo-av';
 import { TextInput } from 'react-native-paper';
-
+import { Button } from 'react-native-paper';
+import { useFonts } from 'expo-font';
+import CustomFont from '../fonts/myfont.otf';
 const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState("Valaki10@gmail.com");
   const [password, setPassword] = useState("Valaki10");
@@ -80,6 +82,13 @@ const WelcomeScreen = ({ navigation }) => {
       }
     }
   };
+  const [loaded] = useFonts({
+    CustomFont: CustomFont,
+  });
+
+  if (!loaded) {
+    return null;
+  }
 
   return (
     <View style={{ flex: 1, position: 'relative', justifyContent: 'space-between', alignItems: 'center', minHeight: Math.round(windowHeight) }} >
@@ -95,36 +104,56 @@ const WelcomeScreen = ({ navigation }) => {
 
       <View style={styles.overlay} />
       <Image
-        style={{ width: 300, height: 300,marginTop:80 }}
+        style={{ width: 300, height: 300,marginTop:30 }}
         source={Logo}
         resizeMode='contain'
       />
-      <View style={{ width: '100%',justifyContent: 'center',alignItems: 'center',marginBottom:100}}>
+      <View style={{ width: '100%',justifyContent: 'center',alignItems: 'center',marginBottom:30}}>
+      <Text style={{ fontFamily: 'CustomFont', fontSize: 22, color: 'white', marginBottom: 10, textAlign: 'left', }}> Register: </Text>
         <TextInput
-          label="Height"
-          value={email}
+          label="Username..."
+          value={name}
           selectionColor="white"
-          mode='outlined'
+          mode='flat'
           right={<TextInput.Icon icon={() => <Text>@</Text>} />}
+          onChangeText={name => setName(name)}
+          style={{ width: '80%', marginTop: 20,backgroundColor:'white' }}
+           theme={{
+            colors: {
+              primary: '#fd5a43', 
+            },
+          }}
+        />
+        <TextInput
+          label="E-mail..."
+          value={email}
+          mode='flat'
+          right={<TextInput.Icon icon={() => <Text>Cm</Text>} />}
           onChangeText={email => setEmail(email)}
-          style={{ width: '80%', marginTop: 20 }}
+          style={{ width: '80%', marginTop: 20,backgroundColor:'white' }}
+           theme={{
+            colors: {
+              primary: '#fd5a43', 
+            },
+          }}
         />
         <TextInput
-          label="Height"
+          label="Password..."
           value={password}
-          mode='outlined'
+          mode='flat'
           right={<TextInput.Icon icon={() => <Text>Cm</Text>} />}
           onChangeText={password => setPassword(password)}
-          style={{ width: '80%', marginTop: 20 }}
+          style={{ width: '80%', marginTop: 20,backgroundColor:'white' }}
+           theme={{
+            colors: {
+              primary: '#fd5a43', 
+            },
+          }}
+          
         />
-        <TextInput
-          label="Height"
-          value={password}
-          mode='outlined'
-          right={<TextInput.Icon icon={() => <Text>Cm</Text>} />}
-          onChangeText={password => setPassword(password)}
-          style={{ width: '80%', marginTop: 20 }}
-        />
+         <Button icon="login" mode="contained" buttonColor='#fd5a43' onPress={() => console.log('Pressed')} style={{marginTop:20,width:'60%'}}>
+          Login
+        </Button>
       </View>
     </View>
 
