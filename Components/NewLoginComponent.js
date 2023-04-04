@@ -1,19 +1,24 @@
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, StyleSheet, Image, Alert } from "react-native"
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, StyleSheet, Image, Alert, useWindowDimensions } from "react-native"
 import React from 'react'
 import { signInWithEmailAndPassword, onAuthStateChanged, } from "firebase/auth";
 import { useState, useContext, } from "react";
 import { auth } from "../firebase-config";
 import Logo from "../assets/Logo.png"
 import { userContext, userDataContext } from "../Components/SetData.js"
-import { FontAwesome } from '@expo/vector-icons';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { Video, VideoOverlay } from 'expo-av';
+import { TextInput } from 'react-native-paper';
+import Videofootage from "../assets/food4me.mp4";
+import { useFonts } from 'expo-font';
+import CustomFont from '../fonts/myfont.otf';
+import { Button } from 'react-native-paper';
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("smarton0614@gmail.com");
   const [password, setPassword] = useState("farkas1070");
   const [userData, setUserData] = useContext(userDataContext)
   const [, setUser] = useContext(userContext);
-  const [visibility, setVisibility] = useState(false);
-
+  const [visibility, setVisibility] = useState(true);
+  const windowHeight = useWindowDimensions().height;
   const showPassword = () => {
     setVisibility(!visibility)
   }
@@ -31,7 +36,7 @@ const LoginScreen = ({ navigation }) => {
 
       ]
     );
- 
+
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
@@ -45,8 +50,8 @@ const LoginScreen = ({ navigation }) => {
         email,
         password
       );
-      
-      
+
+
       navigation.navigate('Home')
 
     } catch (error) {
@@ -55,47 +60,70 @@ const LoginScreen = ({ navigation }) => {
       }
     }
   };
+  const [loaded] = useFonts({
+    CustomFont: CustomFont,
+  });
+
+  if (!loaded) {
+    return null;
+  }
 
   return (
-    <KeyboardAvoidingView style={styles.mainContainer}>
-      <Image
-        style={styles.image}
-        source={Logo}
+    <View style={{ flex: 1, position: 'relative', justifyContent: 'space-between', alignItems: 'center', minHeight: Math.round(windowHeight) }} >
+
+      <Video
+        source={Videofootage}
+        shouldPlay={true}
+        isLooping={true}
+        resizeMode="cover"
+        style={{ width: '100%', flex: 1, height: '100%', brightness: 0.7, contrast: 0.7, zIndex: -10, position: 'absolute' }}
       />
-      <View style={styles.formContainer}>
 
+
+      <View style={styles.overlay} />
+      <Image
+        style={{ width: 300, height: 300, marginTop: 30 }}
+        source={Logo}
+        resizeMode='contain'
+      />
+      <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
+        <Text style={{ fontFamily: 'CustomFont', fontSize: 22, color: 'white', marginBottom: 10, textAlign: 'left', }}> Login: </Text>
         <TextInput
-          style={styles.topinput}
-          placeholder="Email..."
-          placeholderTextColor="#fd5a43"
+          label="E-mail"
           value={email}
-          onChangeText={text => setEmail(text)}
+          
+          
+          mode='outlined'
+          right={<TextInput.Icon icon={() => <MaterialCommunityIcons name="at" size={24} color="#fd5a43" />} />}
+          onChangeText={email => setEmail(email)}
+          style={{ width: '80%', marginTop: 20 }}
+          theme={{
+            colors: {
+              primary: '#fd5a43', 
+            },
+          }}
         />
-        <View style={{ borderRadius: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fff', marginTop: 10, height: 50, width: "100%" }}>
-          <TextInput
-            value={password}
-            style={styles.input}
-            placeholder="Password..."
-            secureTextEntry={visibility}
-            placeholderTextColor="#fd5a43"
-            onChangeText={text => setPassword(text)}
-          />
-          <TouchableOpacity onPress={() => { showPassword() }}>
-            <FontAwesome name="eye" size={24} color="#fd5a43" style={{ marginRight: 20, }} />
-          </TouchableOpacity>
-        </View>
-
+        <TextInput
+          label="Password"
+          
+          secureTextEntry={visibility}
+          value={password}
+          mode='outlined'
+          right={<TextInput.Icon icon={() => <TouchableOpacity onPress={() => {showPassword()}} ><MaterialCommunityIcons name="eye" size={24} color="#fd5a43" /></TouchableOpacity>} />}
+          onChangeText={password => setPassword(password)}
+          style={{ width: '80%', marginTop: 20 }}
+          theme={{
+            colors: {
+              primary: '#fd5a43', 
+            },
+          }}
+        />
+        <Button icon="login" mode="contained" buttonColor='#fd5a43' onPress={() => console.log('Pressed')} style={{marginTop:20,width:'60%'}}>
+          Login
+        </Button>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')} ><Text style={{ fontFamily: 'CustomFont', fontSize: 10, color: 'white', marginTop: 60, textAlign: 'left', textDecorationLine: 'underline' }}> Don't have an account yet? Click here and sign up! </Text></TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={login} style={styles.buttonContainer}>
-        <Text style={styles.registerButton}> Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Register')}
-      >
-        <Text style={styles.loginButton}> Go back and Sign up </Text>
-      </TouchableOpacity>
-
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 
@@ -108,6 +136,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fd5a43",
     padding: 20
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // dark overlay with 40% opacity
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   image: {
 
