@@ -14,6 +14,8 @@ import GenderComponent from "./Components/GenderComponent";
 import NewSingleElement from './Components/NewSingleElement';
 import FilterRecipes from './Components/FilterRecipes';
 import NewFilteredRecipeBrowser from './Components/NewFilteredRecipeBrowser';
+import NewLoginComponent from './Components/NewLoginComponent';
+import NewRegisterComponent from './Components/NewRegisterComponent';
 function App() {
 
   const Stack = createNativeStackNavigator();
@@ -24,8 +26,8 @@ function App() {
       <PaperProvider>
         <NavigationContainer theme={DarkTheme}>
           <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen options={{ headerShown: false }} name="Register" component={WelcomeScreen} />
-            <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
+            <Stack.Screen options={{ headerShown: false }} name="Register" component={NewRegisterComponent} />
+            <Stack.Screen options={{ headerShown: false }} name="Login" component={NewLoginComponent} />
             <Stack.Screen options={{ headerShown: false }} name="GenderComponent" component={GenderComponent} />
             <Stack.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
             <Stack.Screen options={{ headerShown: false }} name="SingleElement" component={NewSingleElement} />

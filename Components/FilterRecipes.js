@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native'
-import React, { useState,useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { Appbar } from 'react-native-paper';
 import { useFonts } from 'expo-font';
 import CustomFont from '../fonts/myfont.otf';
@@ -9,7 +9,7 @@ import { collection, query, where } from "firebase/firestore";
 import { Chip } from 'react-native-paper';
 import { ActivityIndicator } from 'react-native-paper';
 import RangeSlider, { Slider } from 'react-native-range-slider-expo';
-import {  foodContext } from "../Components/SetData.js"
+import { foodContext } from "../Components/SetData.js"
 import ChipList from "./Chiplist"
 
 
@@ -32,11 +32,26 @@ const FilterRecipes = ({ navigation }) => {
   const GoBackToRecipeBrowser = () => {
     navigation.goBack();
   }
+  const filterRecipesByGeneralFilters = () => {
+    console.log(selectedGeneralChips.length)
+    if (selectedGeneralChips.length == 0){
+      return foodarray
+    } else { 
+      let filteredlist = foodarray.filter((item) => selectedGeneralChips.includes(index))
+      console.log("jdaosihdo")
+      return filteredlist
+    }
+    
+
+
+
+
+  }
   const filterRecipesAndNavigate = () => {
+    let filteredlist = filterRecipesByGeneralFilters();
 
 
-
-    navigation.navigate("FilteredRecipeBrowser");
+    navigation.navigate("FilteredRecipeBrowser", { item: filteredlist });
 
   }
 
@@ -62,7 +77,7 @@ const FilterRecipes = ({ navigation }) => {
         <Appbar.Action color="grey" icon="close" style={{ backgroundColor: 'white' }} onPress={() => { GoBackToRecipeBrowser() }} />
       </Appbar.Header>
 
-      <View style={{ backgroundColor: 'white', width: '100%',flexGrow:1 }}>
+      <View style={{ backgroundColor: 'white', width: '100%', flexGrow: 1 }}>
         <ScrollView style={{ flexGrow: 1, width: '100%' }}>
           <View style={{ width: '100%', padding: 10, borderBottomWidth: 0.2, borderBottomColor: '#fd5a43' }}>
             <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'rgba(253, 90, 67, 1)', textAlign: 'left', marginTop: 10, }}>
@@ -125,22 +140,22 @@ const FilterRecipes = ({ navigation }) => {
             </Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', padding: 20, width: '100%' }}>
               <ScrollView horizontal={true}>
-                {ingredientloading ? <ActivityIndicator animating={true} color="grey" /> : 
-                 <ChipList options={ingredientsnapshot.map(a => a.name)} selectedIndices={selectedIngredientChips} setSelectedIndices={setSelectedIngredientChips} />
+                {ingredientloading ? <ActivityIndicator animating={true} color="grey" /> :
+                  <ChipList options={ingredientsnapshot.map(a => a.name)} selectedIndices={selectedIngredientChips} setSelectedIndices={setSelectedIngredientChips} />
                 }
               </ScrollView>
             </View>
 
 
           </View>
-         
 
 
-          
-          
 
 
-          
+
+
+
+
         </ScrollView>
       </View>
 

@@ -19,9 +19,9 @@ const ChipList = ({ options, selectedIndices, setSelectedIndices }) => {
           <Chip
             key={option}
   
-            selectedColor={selectedIndices.includes(index) ? 'white' : '#fd5a43'}
-            onPress={() => handleChipPress(index)}
-            style={{ marginTop: 5, marginRight: 5, marginBottom: 5, backgroundColor: selectedIndices.includes(index) ? '#fd5a43' : 'white', borderColor: '#fd5a43', borderWidth: 0.5 }}
+            selectedColor={selectedIndices.includes(option) ? 'white' : '#fd5a43'}
+            onPress={() => handleChipPress(option)}
+            style={{ marginTop: 5, marginRight: 5, marginBottom: 5, backgroundColor: selectedIndices.includes(option) ? '#fd5a43' : 'white', borderColor: '#fd5a43', borderWidth: 0.5 }}
           >
             {option}
           </Chip>
