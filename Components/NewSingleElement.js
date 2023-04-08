@@ -210,7 +210,7 @@ const NewSingleElement = ({ navigation, route }) => {
                                     </View>
                                     <TouchableOpacity onPress={() => { handleFavouriteChange() }} style={{ borderRadius: 50, width: 60, height: 60, backgroundColor: '#f44336', justifyContent: 'center', alignItems: 'center', top: -50, right: -40, borderColor: 'white', borderWidth: 2 }}>
 
-                                        {favouritesSnapshot.length==0? <MaterialCommunityIcons name="heart" size={30} color="white" />:<MaterialCommunityIcons name="heart-outline" size={30} color="white" />}
+                                        {favouritesSnapshot.length==0? <MaterialCommunityIcons name="heart-outline" size={30} color="white" />:<MaterialCommunityIcons name="heart" size={30} color="white" />}
 
                                     </TouchableOpacity>
                                 </View>
