@@ -15,8 +15,10 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
+      
       screenOptions={{
         headerShown: false,
+        
         tabBarActiveTintColor: 'purple',
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: [

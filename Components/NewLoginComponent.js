@@ -99,7 +99,7 @@ const LoginScreen = ({ navigation }) => {
 
 
           mode='flat'
-          right={<TextInput.Icon icon={() => <MaterialCommunityIcons name="at" size={24} color="#fd5a43" />} />}
+          right={<TextInput.Icon icon={() => <MaterialCommunityIcons name="at" size={24} color="black" />} />}
           onChangeText={email => setEmail(email)}
           style={{ width: '80%', marginTop: 20, backgroundColor: 'white' }}
           theme={{

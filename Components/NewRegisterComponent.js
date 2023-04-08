@@ -9,12 +9,14 @@ import { FontAwesome } from '@expo/vector-icons';
 import { db } from "../firebase-config";
 import { collection } from "firebase/firestore"
 import { doc, setDoc } from "firebase/firestore";
-import Videofootage from "../assets/food4me.mp4";
+import Videofootage from "../assets/othervideo.mp4";
 import { Video, VideoOverlay } from 'expo-av';
 import { TextInput } from 'react-native-paper';
 import { Button } from 'react-native-paper';
 import { useFonts } from 'expo-font';
 import CustomFont from '../fonts/myfont.otf';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 const WelcomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState("Valaki10@gmail.com");
   const [password, setPassword] = useState("Valaki10");
@@ -22,7 +24,8 @@ const WelcomeScreen = ({ navigation }) => {
   const [visibility, setVisibility] = useState(false);
   const [, setUser] = useState({});
   const windowHeight = useWindowDimensions().height;
-
+  
+  
   const [message, setMessage] = useState(["Success", "User successfully created"]);
 
   const collectionRef = collection(db, 'Users')
@@ -104,23 +107,23 @@ const WelcomeScreen = ({ navigation }) => {
 
       <View style={styles.overlay} />
       <Image
-        style={{ width: 300, height: 300,marginTop:30 }}
+        style={{ width: 300, height: 300, marginTop: 30 }}
         source={Logo}
         resizeMode='contain'
       />
-      <View style={{ width: '100%',justifyContent: 'center',alignItems: 'center',marginBottom:30}}>
-      <Text style={{ fontFamily: 'CustomFont', fontSize: 22, color: 'white', marginBottom: 10, textAlign: 'left', }}> Register: </Text>
+      <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
+        <Text style={{ fontFamily: 'CustomFont', fontSize: 22, color: 'white', marginBottom: 10, textAlign: 'left', }}> Register: </Text>
         <TextInput
           label="Username..."
           value={name}
           selectionColor="white"
           mode='flat'
-          right={<TextInput.Icon icon={() => <Text>@</Text>} />}
+          right={<TextInput.Icon icon={() => <MaterialCommunityIcons name="account" size={24} color="black" />} />}
           onChangeText={name => setName(name)}
-          style={{ width: '80%', marginTop: 20,backgroundColor:'white' }}
-           theme={{
+          style={{ width: '80%', marginTop: 20, backgroundColor: 'white' }}
+          theme={{
             colors: {
-              primary: '#fd5a43', 
+              primary: '#fd5a43',
             },
           }}
         />
@@ -128,30 +131,31 @@ const WelcomeScreen = ({ navigation }) => {
           label="E-mail..."
           value={email}
           mode='flat'
-          right={<TextInput.Icon icon={() => <Text>Cm</Text>} />}
+          right={<TextInput.Icon icon={() => <MaterialCommunityIcons name="at" size={24} color="black" />} />}
           onChangeText={email => setEmail(email)}
-          style={{ width: '80%', marginTop: 20,backgroundColor:'white' }}
-           theme={{
+          style={{ width: '80%', marginTop: 20, backgroundColor: 'white' }}
+          theme={{
             colors: {
-              primary: '#fd5a43', 
+              primary: '#fd5a43',
             },
           }}
         />
         <TextInput
           label="Password..."
           value={password}
+          secureTextEntry={visibility}
           mode='flat'
-          right={<TextInput.Icon icon={() => <Text>Cm</Text>} />}
+          right={<TextInput.Icon icon={() => <TouchableOpacity onPress={() => { showPassword() }} ><MaterialCommunityIcons name="eye" size={24} color="#fd5a43" /></TouchableOpacity>} />}
           onChangeText={password => setPassword(password)}
-          style={{ width: '80%', marginTop: 20,backgroundColor:'white' }}
-           theme={{
+          style={{ width: '80%', marginTop: 20, backgroundColor: 'white' }}
+          theme={{
             colors: {
-              primary: '#fd5a43', 
+              primary: '#fd5a43',
             },
           }}
-          
+
         />
-         <Button icon="login" mode="contained" buttonColor='#fd5a43' onPress={() => console.log('Pressed')} style={{marginTop:20,width:'60%'}}>
+        <Button icon="login" mode="contained" buttonColor='#fd5a43' onPress={() => console.log('Pressed')} style={{ marginTop: 20, width: '60%' }}>
           Login
         </Button>
       </View>
@@ -172,7 +176,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // dark overlay with 40% opacity
+    backgroundColor: 'rgba(0, 0, 0, 0.1)', // dark overlay with 40% opacity
     position: 'absolute',
     top: 0,
     bottom: 0,
