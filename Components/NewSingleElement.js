@@ -182,8 +182,9 @@ const NewSingleElement = ({ navigation, route }) => {
 
 
 
-                        <View style={styles.overlay} />
+                        
                         <View style={styles.appBar}>
+                        
                             <ImageBackground
                                 style={styles.backgroundImage}
                                 source={{
@@ -194,6 +195,7 @@ const NewSingleElement = ({ navigation, route }) => {
 
 
                             >
+                                
                                 <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", marginTop: 25 }}>
                                     <Appbar.Action icon="arrow-left-top" color="rgba(253, 90, 67, 1)" onPress={() => { goBack() }} style={{ backgroundColor: 'white', marginLeft: 10 }} />
 
@@ -210,7 +212,7 @@ const NewSingleElement = ({ navigation, route }) => {
                                     <View style={{ width: '70%' }}>
                                         <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, textAlign: 'left' }}>{item.name}</Text>
                                     </View>
-                                    <TouchableOpacity onPress={() => { handleFavouriteChange() }} style={{ borderRadius: 50, width: 60, height: 60, backgroundColor: '#f44336', justifyContent: 'center', alignItems: 'center', top: -50, right: -40, borderColor: 'white', borderWidth: 2 }}>
+                                    <TouchableOpacity onPress={() => { handleFavouriteChange() }} style={{ borderRadius: 50, width: 60, height: 60, backgroundColor: '#f44336', justifyContent: 'center', alignItems: 'center', top: -50, right: -30, borderColor: 'white', borderWidth: 2 }}>
 
                                         {favouritesSnapshot.length == 0 ? <MaterialCommunityIcons name="heart-outline" size={30} color="white" /> : <MaterialCommunityIcons name="heart" size={30} color="white" />}
 
@@ -448,7 +450,7 @@ const NewSingleElement = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#EFEFEF',
+        backgroundColor: 'white',
         width: '100%',
         height: '100%'
     },
@@ -469,6 +471,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '120%',
+        
 
 
     },
@@ -485,6 +488,8 @@ const styles = StyleSheet.create({
         height: 450,
         width: "100%",
         flexDirection: "column",
+        borderBottomEndRadius:30,
+        borderBottomStartRadius:30,
 
         overflow: 'hidden',
 
