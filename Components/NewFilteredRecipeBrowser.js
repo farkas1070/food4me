@@ -1,7 +1,7 @@
 
 import React, { useContext, useState } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput, Switch, KeyboardAvoidingView, ImageBackground } from 'react-native'
-import { themeContext, foodContext } from "../Components/SetData.js"
+import { themeContext } from "../Components/SetData.js"
 import { useRef } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { Appbar } from 'react-native-paper';
@@ -17,23 +17,21 @@ import noitemfound from "../assets/noitemfound.png"
 const RecipeBrowser = ({ navigation,route }) => {
     const { item } = route.params;
     const [darkTheme, setDarkTheme] = useContext(themeContext)
-    const [foodarray] = useContext(foodContext)
+    
 
-    const [searchvalue, setSearchValue] = useState("")
-    const [visible, setVisible] = React.useState(false);
-    const containerStyle = { backgroundColor: 'white', padding: 20 };
+    
+    
+   
     const [pagestart, setPageStart] = useState(0)
     const [pageend, setPageEnd] = useState(9)
     const [pagecount, setPageCount] = useState(0)
     const scrollRef = useRef();
-    const toggleSwitch = () => setDarkTheme(previousState => !previousState);
+    
     const goBackToHome = () => {
         navigation.goBack();
     }
 
-    const openMenu = () => {
-        navigation.openDrawer();
-    }
+    
     const pageBackwards = () => {
         setPageStart(pagestart - 10)
         setPageEnd(pageend - 10)
@@ -56,14 +54,7 @@ const RecipeBrowser = ({ navigation,route }) => {
         
         navigation.navigate("RecipeFilter");
     }
-    const filterAndNavigate = () => {
-        let filteredlist = foodarray.filter(item => {
-            if (item.name.toLowerCase().includes(searchvalue.toLowerCase())) {
-                return item;
-            }
-        })
-        navigation.navigate("FilteredRecipeBrowser", { item: filteredlist });
-    }
+    
     const [loaded] = useFonts({
         CustomFont: CustomFont,
     });
@@ -72,7 +63,7 @@ const RecipeBrowser = ({ navigation,route }) => {
     }
 
     return (
-        <KeyboardAvoidingView style={{width:'100%',height:'100%'}}>
+        <View style={{width:'100%',height:'100%',flex:1,backgroundColor:'white'}}>
 
             <ImageBackground
                 style={styles.backgroundImage}
@@ -92,7 +83,7 @@ const RecipeBrowser = ({ navigation,route }) => {
                 </Appbar.Header>
             </ImageBackground>
             
-            <View style={{flexGrow:1}}>
+            <View style={{flex:1,backgroundColor: 'white'}}>
                 <ScrollView contentContainerStyle={styles.mainContainer(darkTheme)} ref={scrollRef} >
                     <View style={{ width: "100%" }}>
                     {item.length === 0 ?
@@ -141,15 +132,15 @@ const RecipeBrowser = ({ navigation,route }) => {
 
                         <Text style={styles.pagecounttext(darkTheme)}>{pagecount}</Text>
 
-                        <TouchableOpacity style={pageend > foodarray.length ? styles.disabledButton(darkTheme) : styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > foodarray.length ? true : false} >
-                            <AntDesign name="arrowright" size={30} color={pageend > foodarray.length ? "#d3d3d3" : "white"} />
+                        <TouchableOpacity style={pageend > item.length ? styles.disabledButton(darkTheme) : styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > item.length ? true : false} >
+                            <AntDesign name="arrowright" size={30} color={pageend > item.length ? "#d3d3d3" : "white"} />
                         </TouchableOpacity>
 
                     </View>
                 </ScrollView>
             </View>
 
-        </KeyboardAvoidingView>
+        </View>
     )
 }
 

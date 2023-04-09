@@ -13,7 +13,7 @@ import Heart from '../assets/like.png'
 import Dollar from '../assets/dollar.png'
 import Leaf from '../assets/leaf.png'
 import { TextInput } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const RecipeBrowser = ({ navigation }) => {
 
@@ -24,10 +24,10 @@ const RecipeBrowser = ({ navigation }) => {
     const [showsearch, setShowSearch] = useState(false)
 
 
-    
 
 
-    
+
+
 
     const [pagestart, setPageStart] = useState(0)
     const [pageend, setPageEnd] = useState(9)
@@ -70,14 +70,7 @@ const RecipeBrowser = ({ navigation }) => {
     const changeToSearching = () => {
 
     }
-    const filterAndNavigate = () => {
-        let filteredlist = foodarray.filter(item => {
-            if (item.name.toLowerCase().includes(searchvalue.toLowerCase())) {
-                return item;
-            }
-        })
-        navigation.navigate("FilteredRecipeBrowser", { item: filteredlist });
-    }
+    
     const [loaded] = useFonts({
         CustomFont: CustomFont,
     });
@@ -87,29 +80,9 @@ const RecipeBrowser = ({ navigation }) => {
 
     return (
 
-        <KeyboardAvoidingView style={{ width: '100%', height: '100%' }}>
-            {showsearch ?
-                <View style={{ width: '100%', height: '100%', backgroundColor: 'white' }}>
-                    <Appbar.Header style={{ backgroundColor: 'transparent', width: "100%", borderBottomColor: 'rgba(253, 90, 67, 1)', borderBottomWidth: 0.6 }}>
-                        <Appbar.BackAction color="rgba(253, 90, 67, 1)" onPress={() => { setShowSearch(false) }} />
-
-                        <TextInput
-                            label="Search for Foods"
-                            value={searchvalue}
-                            mode='outlined'
-                            right={<TextInput.Icon icon={() => <MaterialCommunityIcons name="food-apple-outline" size={24} color="black" />} />}
-                            onChangeText={searchvalue => setSearchValue(searchvalue)}
-                            style={{ flexGrow:1 }}
-                        />
-                        <Appbar.Action color="rgba(253, 90, 67, 1)" icon="magnify" onPress={() => { filterAndNavigate() }} />
-
-                    </Appbar.Header>
-                    <View style={{ flexGrow: 1,alignItems:'center' }}>
-                        
-                    </View>
-                </View>
-                :
-                <View style={{ width: '100%', height: '100%' }}>
+        <View style={{ width: '100%', height: '100%',flex:1,backgroundColor:'white' }}>
+            
+                <View style={{ width: '100%', height: '100%',flexGrow:1 }}>
                     <ImageBackground
                         style={styles.backgroundImage}
                         source={{
@@ -124,18 +97,18 @@ const RecipeBrowser = ({ navigation }) => {
                             <Appbar.BackAction color="rgba(255, 255, 255, 1)" onPress={() => { goBackToHome() }} />
 
                             <Appbar.Content color="rgba(255, 255, 255, 1)" title={<Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'white', textAlign: 'left' }}>Recipes</Text>} />
-                            <Appbar.Action color="rgba(255, 255, 255, 1)" icon="magnify" onPress={() => { setShowSearch(true) }} />
+                            <Appbar.Action color="rgba(255, 255, 255, 1)" icon="magnify" onPress={() => { navigation.navigate("SearchComponent") }} />
                             <Appbar.Action color="rgba(255, 255, 255, 1)" icon="filter-variant" onPress={() => { handleNavigation() }} />
                         </Appbar.Header>
                     </ImageBackground>
 
-                    <View style={{ flexGrow: 1 }}>
-                        <ScrollView contentContainerStyle={styles.mainContainer(darkTheme)} ref={scrollRef} >
-                            <View style={{ width: "100%" }}>
+                    <View style={{ flex: 1, backgroundColor: 'white' }}>
+                        <ScrollView contentContainerStyle={styles.mainContainer(darkTheme)}  >
+                            <View style={{width: '100%'}}>
                                 {foodarray.map((data, i) => {
                                     if (i >= pagestart && i <= pageend) {
                                         return (
-                                            <TouchableOpacity onPress={() => { navigation.navigate("SingleElement", { item: data }) }} style={styles.singlefood(darkTheme)} key={i}>
+                                            <TouchableOpacity onPress={() => { navigation.navigate("SingleElement", { item: data }) }} style={styles.singlefood} key={i}>
 
                                                 <Image source={{ uri: data.image }} style={styles.image} />
 
@@ -161,6 +134,7 @@ const RecipeBrowser = ({ navigation }) => {
 
                                 })}
                             </View>
+
                             <View style={styles.pagingview}>
 
                                 <TouchableOpacity style={pagestart <= 0 ? styles.disabledButton(darkTheme) : styles.Button(darkTheme)} onPress={() => { pageBackwards() }} disabled={pagestart <= 0 ? true : false} >
@@ -177,9 +151,9 @@ const RecipeBrowser = ({ navigation }) => {
                         </ScrollView>
                     </View>
                 </View>
-            }
+            
 
-        </KeyboardAvoidingView>
+        </View>
     )
 }
 
@@ -235,16 +209,7 @@ const styles = StyleSheet.create({
         width: 50,
         borderRadius: 20,
     }),
-    headerContainer: (darkTheme) => ({
-        width: '100%',
-        height: "12%",
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: darkTheme ? 'black' : "#fd5a43",
-        borderBottomWidth: darkTheme ? 5 : 0,
-        borderColor: darkTheme ? "#181616" : "transparent",
-    }),
+
     headerText: {
         fontSize: 20,
         fontWeight: 'bold',
@@ -253,29 +218,26 @@ const styles = StyleSheet.create({
         marginTop: 35
     },
 
-    feathericon: {
-        marginTop: 25,
-        marginLeft: 30
-    },
-    switch: {
-        marginTop: 25,
-        marginRight: 15,
-        transform: [{ scaleX: 1.1 }, { scaleY: 1.1 }]
-    },
 
-    singlefood: (darkTheme) => ({
+
+
+    singlefood: {
         width: '100%',
         height: 120,
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: darkTheme ? "black" : "white",
-        borderColor: darkTheme ? "grey" : "#d3d3d3",
+        backgroundColor: "white",
+        borderColor: "#d3d3d3",
         borderBottomWidth: 2,
 
-    }),
+    },
     pagingview: {
-        height: 90,
+        
+        height:90,
+        width: '100%',
+        justifyContent: 'center',
+        
         alignItems: 'center',
         flexDirection: 'row',
     },

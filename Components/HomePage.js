@@ -53,16 +53,17 @@ export default function ScreenOne({ navigation }) {
       console.log(auth.currentUser.uid)
       const docRef = doc(db, "Users", auth.currentUser.uid);
       const docSnap = await getDoc(docRef);
-      
+
     }
     getUserData();
   }, [])
+
   
-  
-  /*
+/*
   useEffect(() => {
     const saveRecipeToFirestore = async (recipeId) => {
       try {
+        
         
         const response = await axios.get(
           `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=true&includeIngredients=true&apiKey=e7f08530cd1d44b79b6cd127fd5bc332`
@@ -78,7 +79,7 @@ export default function ScreenOne({ navigation }) {
         
         await setDoc(doc(db, "Recipes", recipeId.toString()), {
           name: data.title,
-          image: 'https://casserolecrissy.com/wp-content/uploads/2021/02/easy-peanut-butter-fudge-9-735x493.jpg',
+          image: data.image,
           description: newsummary,
           healthy: data.veryHealthy,
           cheap: data.cheap,
@@ -150,12 +151,47 @@ export default function ScreenOne({ navigation }) {
           });
           
         })
-        
+
       } catch (error) {
         console.error(error);
       }
     };
-    saveRecipeToFirestore(324633);
+    const ids = [
+      649567,
+      636812,
+      639054,
+      660697,
+      637014,
+      638315,
+      640238,
+      661925,
+      795751,
+      636962,
+      716432,
+      634040,
+      660868,
+      660306,
+      729532,
+      651453,
+      716431,
+      641063,
+      639492,
+      638552,
+      716334,
+      660504,
+      638249,
+      636325,
+      149425,
+      638338,
+      662654,
+      663054,
+      660243,
+      654571,
+    ]
+    ids.map((id) => {
+      saveRecipeToFirestore(id);
+    })
+    
   }, [])*/
 
   return (
@@ -283,8 +319,8 @@ export default function ScreenOne({ navigation }) {
               <TouchableOpacity onPress={() => { Linking.openURL('https://www.youtube.com/'); }}><Entypo name="youtube-with-circle" size={30} color="#fd5a43" style={{ marginLeft: 5, marginRight: 5 }} /></TouchableOpacity>
             </View>
             <View style={{ width: '50%', alignItems: 'center', justifyContent: "center" }}>
-              <Text style={{  color: '#fd5a43', fontSize: 8, fontWeight: 'bold' }}>Copyright: Foodemy Coorporation 2022</Text>
-              <Text style={{  color: '#fd5a43', fontSize: 8, fontWeight: 'bold', marginTop: 10 }}>Get In touch with us!</Text>
+              <Text style={{ color: '#fd5a43', fontSize: 8, fontWeight: 'bold' }}>Copyright: Foodemy Coorporation 2022</Text>
+              <Text style={{ color: '#fd5a43', fontSize: 8, fontWeight: 'bold', marginTop: 10 }}>Get In touch with us!</Text>
             </View>
           </View>
         </ScrollView>

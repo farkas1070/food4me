@@ -16,6 +16,7 @@ import FilterRecipes from './Components/FilterRecipes';
 import NewFilteredRecipeBrowser from './Components/NewFilteredRecipeBrowser';
 import NewLoginComponent from './Components/NewLoginComponent';
 import NewRegisterComponent from './Components/NewRegisterComponent';
+import SearchComponent from './Components/SearchComponent';
 function App() {
 
   const Stack = createNativeStackNavigator();
@@ -35,6 +36,7 @@ function App() {
             <Stack.Screen options={{ headerShown: false }} name="FilteredRecipeBrowser" component={NewFilteredRecipeBrowser} />
             <Stack.Screen options={{ headerShown: false }} name="RestaurantFinder" component={RestaurantFinder} />
             <Stack.Screen options={{ headerShown: false }} name="RecipeFilter" component={FilterRecipes} />
+            <Stack.Screen options={{ headerShown: false }} name="SearchComponent" component={SearchComponent} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
