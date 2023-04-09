@@ -13,7 +13,7 @@ import Heart from '../assets/like.png'
 import Dollar from '../assets/dollar.png'
 import Leaf from '../assets/leaf.png'
 import noitemfound from "../assets/noitemfound.png"
-
+import { Button } from 'react-native-paper';
 const RecipeBrowser = ({ navigation,route }) => {
     const { item } = route.params;
     const [darkTheme, setDarkTheme] = useContext(themeContext)
@@ -126,15 +126,15 @@ const RecipeBrowser = ({ navigation,route }) => {
                     </View>
                     <View style={styles.pagingview}>
 
-                        <TouchableOpacity style={pagestart <= 0 ? styles.disabledButton(darkTheme) : styles.Button(darkTheme)} onPress={() => { pageBackwards() }} disabled={pagestart <= 0 ? true : false} >
-                            <AntDesign name="arrowleft" size={30} color={pagestart <= 0 ? "#d3d3d3" : "white"} />
-                        </TouchableOpacity>
+                    <Button buttonColor={pagestart <= 0  ?  "#e5e5e5":"#fd5a43" } icon="arrow-left-bold-circle" mode="contained" onPress={() => {pageBackwards()}} disabled={pagestart <= 0 ? true : false} style={{marginRight:20}}  >
+                                Prev
+                            </Button>
 
                         <Text style={styles.pagecounttext(darkTheme)}>{pagecount}</Text>
 
-                        <TouchableOpacity style={pageend > item.length ? styles.disabledButton(darkTheme) : styles.Button(darkTheme)} onPress={() => { pageForward() }} disabled={pageend > item.length ? true : false} >
-                            <AntDesign name="arrowright" size={30} color={pageend > item.length ? "#d3d3d3" : "white"} />
-                        </TouchableOpacity>
+                        <Button buttonColor={pageend > item.length ?  "#e5e5e5":"#fd5a43" } icon="arrow-right-bold-circle" mode="contained" onPress={() => {pageForward()}} disabled={pageend > item.length ? true : false} style={{marginLeft:20}} contentStyle={{flexDirection: 'row-reverse'}}>
+                                Next
+                            </Button>
 
                     </View>
                 </ScrollView>

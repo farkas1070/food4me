@@ -108,9 +108,9 @@ const RecipeBrowser = ({ navigation, route }) => {
 
                     <View style={styles.pagingview}>
 
-                        <TouchableOpacity style={ pagestart <= 0 ? styles.disabledButton(darkTheme) : styles.Button(darkTheme)} onPress={() => { pageBackwards() }} disabled={pagestart <= 0 ? true : false} >
-                            <AntDesign name="arrowleft" size={30} color={ pagestart <= 0 ? "#d3d3d3" : "white" } />
-                        </TouchableOpacity>
+                    <Button buttonColor={pagestart <= 0  ?  "#e5e5e5":"#fd5a43" } icon="arrow-left-bold-circle" mode="contained" onPress={() => {pageBackwards()}} disabled={pagestart <= 0 ? true : false} style={{marginRight:20}}  >
+                                Prev
+                            </Button>
 
                         <Text style={styles.pagecounttext(darkTheme)}>{pagecount}</Text>
 
