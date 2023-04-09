@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ImageBackground, Image, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, Image, FlatList, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { collection, query, where, getDocs, doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
@@ -6,14 +6,19 @@ import { db } from "../firebase-config";
 import { Appbar } from 'react-native-paper';
 import { auth } from "../firebase-config";
 import Searching from "../assets/searching.gif"
-
-
+import { Avatar, Button, Card } from 'react-native-paper';
+import { IconButton, MD3Colors } from 'react-native-paper';
+import { Surface, } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
+import CustomFont from '../fonts/myfont.otf';
 
 const Favourites = ({ navigation }) => {
     const userRef = doc(db, "Users", auth.currentUser.uid);
     const favouritesquery = query(collection(db, "Favourites"), where("User_ID", "==", userRef));
     const [favouritesSnapshot, favouritesSnapshotLoading, favouritesSnapshotError] = useCollectionData(favouritesquery);
     const [favourites, setFavourites] = useState([])
+
     useEffect(() => {
         const getFavouriteRef = async () => {
             if (!favouritesSnapshotLoading) {
@@ -23,7 +28,8 @@ const Favourites = ({ navigation }) => {
                     var subdata = { ...favourite }
                     subdata.name = docSnap.data().name
                     subdata.image = docSnap.data().image
-
+                    subdata.servings = docSnap.data().servings
+                    subdata.ready = docSnap.data().ready
 
                     newarray.push({ ...subdata })
 
@@ -38,6 +44,13 @@ const Favourites = ({ navigation }) => {
         }
 
     })
+    const [loaded] = useFonts({
+        CustomFont: CustomFont,
+    });
+
+    if (!loaded) {
+        return null;
+    }
     return (
         <View style={styles.maincontainer}>
             {favourites.length == 0 ?
@@ -67,36 +80,30 @@ const Favourites = ({ navigation }) => {
 
                         </Appbar.Header>
                     </ImageBackground>
-                    <View style={styles.foodcontainer}>
-                        <FlatList
-                            data={favourites}
-                            renderItem={({ item }) => {
+                    <View style={{ flex: 1, width: '100%', height: '100%', }}>
+                        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: 'center' }}>
+                            {favourites.map((favourite) => {
                                 return (
 
-                                    <View style={{ flex: 1, flexDirection: 'column', margin: 1, borderRadius: 10 }}>
+                                    <Surface style={{ padding: 8, height: 160, width: "95%", alignItems: 'center', elevation: 4, margin: 5, backgroundColor: 'white', borderRadius: 20, flexDirection: 'row' }}>
+                                        <Image source={{ uri: favourite.image }} style={{ width: 100, height: 100, borderRadius: 10, marginLeft: 10 }} />
+                                        <View style={{ flex: 1, marginLeft: 30, }}>
+                                            <Text style={{ fontFamily: 'CustomFont', fontSize: 13, color: 'grey', marginBottom: 10, textAlign: 'left' }}>{favourite.name}</Text>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <MaterialCommunityIcons name="camera-timer" size={24} color="black" />
+                                                <Text style={{ fontFamily: 'CustomFont', fontSize: 13, color: 'grey', textAlign: 'left' }}> {favourite.servings} People</Text>
+                                            </View>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <MaterialCommunityIcons name="bowl-mix-outline" size={24} color="black" />
+                                                <Text style={{ fontFamily: 'CustomFont', fontSize: 13, color: 'grey', textAlign: 'left' }}> {favourite.ready} Minutes</Text>
+                                            </View>
+                                            
 
-                                        <TouchableOpacity style={{ height: 200, borderRadius: 10 }}>
-
-                                            <ImageBackground
-                                                style={{ height: 200, borderRadius: 10,justifyContent: 'center',alignItems: 'center'}}
-                                                source={{
-                                                    uri: item.image,
-                                                    cache: 'force-cache',
-                                                }}
-                                                blurRadius={0}
-
-
-                                            >
-                                                <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0, 0, 0, 0.25)', }} />
-                                                <Text style={{ color: 'rgba(255, 255, 255,1)',textAlign:'center',width:'80%',backgroundColor: 'rgba(253, 90, 67,0.7)',borderRadius:10,padding:10 }}>{item.name}</Text>
-                                            </ImageBackground>
-                                        </TouchableOpacity>
-
-                                    </View>)
-                            }}
-                            keyExtractor={(item) => item.name}
-                            numColumns={2}
-                        />
+                                        </View>
+                                    </Surface>
+                                )
+                            })}
+                        </ScrollView>
                     </View>
                 </>
 
@@ -131,7 +138,7 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     foodcontainer: {
-        flexGrow: 1,
+        flex: 1,
         width: '100%',
         height: '100%',
     }

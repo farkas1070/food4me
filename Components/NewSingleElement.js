@@ -29,28 +29,7 @@ import { DataTable } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
 import { auth } from "../firebase-config";
-const getColor = (healthscore) => {
-
-    switch (true) {
-        case (healthscore < 25):
-            return ({
-                color: 'red',
-                statement: 'Not Healthy'
-            })
-
-        case (healthscore >= 25 && healthscore < 75):
-            return ({
-                color: 'orange',
-                statement: 'Avarage healthiness'
-            })
-        case (healthscore >= 75):
-            return ({
-                color: 'green',
-                statement: 'Healthy'
-            })
-
-    }
-}
+import { Snackbar } from 'react-native-paper';
 
 const NewSingleElement = ({ navigation, route }) => {
     const { item } = route.params;
@@ -59,8 +38,12 @@ const NewSingleElement = ({ navigation, route }) => {
     const [modifiedIngredients, setModifiedIngredients] = useState([]);
     const [modifiedTypes, setModifiedTypes] = useState([]);
 
+    const [visible, setVisible] = React.useState(false);
+    const onToggleSnackBar = () => setVisible(!visible);
+    const onDismissSnackBar = () => setVisible(false);
+
     const ITEMS_PER_PAGE = 4;
-    const coloritem = getColor(item.healthscore)
+
 
     const docid = item.docid
     const recipeRef = doc(db, "Recipes", docid);
@@ -182,20 +165,20 @@ const NewSingleElement = ({ navigation, route }) => {
 
 
 
-                        
+
                         <View style={styles.appBar}>
-                        
+
                             <ImageBackground
                                 style={styles.backgroundImage}
                                 source={{
                                     uri: item.image,
                                     cache: 'force-cache',
                                 }}
-                                
+
 
 
                             >
-                                
+
                                 <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", marginTop: 25 }}>
                                     <Appbar.Action icon="arrow-left-top" color="rgba(253, 90, 67, 1)" onPress={() => { goBack() }} style={{ backgroundColor: 'white', marginLeft: 10 }} />
 
@@ -212,7 +195,7 @@ const NewSingleElement = ({ navigation, route }) => {
                                     <View style={{ width: '70%' }}>
                                         <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: 'black', marginTop: 20, textAlign: 'left' }}>{item.name}</Text>
                                     </View>
-                                    <TouchableOpacity onPress={() => { handleFavouriteChange() }} style={{ borderRadius: 50, width: 60, height: 60, backgroundColor: '#f44336', justifyContent: 'center', alignItems: 'center', top: -50, right: -30, borderColor: 'white', borderWidth: 2 }}>
+                                    <TouchableOpacity onPress={() => { handleFavouriteChange(); onToggleSnackBar() }} style={{ borderRadius: 50, width: 60, height: 60, backgroundColor: '#f44336', justifyContent: 'center', alignItems: 'center', top: -50, right: -30, borderColor: 'white', borderWidth: 2 }}>
 
                                         {favouritesSnapshot.length == 0 ? <MaterialCommunityIcons name="heart-outline" size={30} color="white" /> : <MaterialCommunityIcons name="heart" size={30} color="white" />}
 
@@ -249,7 +232,7 @@ const NewSingleElement = ({ navigation, route }) => {
                             </View>
 
 
-                            <Surface style={{ marginBottom: 30, justifyContent: 'center', alignItems: 'center', width: '90%', borderRadius: 30, backgroundColor: 'white', borderColor: 'rgba(253, 90, 67, 1)', borderWidth: 0.6 }}>
+                            <Surface style={{ marginBottom: 30, justifyContent: 'center', alignItems: 'center', width: '90%', borderRadius: 10, backgroundColor: 'white', borderColor: 'rgba(253, 90, 67, 1)', borderWidth: 0.6 }}>
                                 <Text style={{ fontFamily: 'CustomFont', fontSize: 20, color: 'rgba(253, 90, 67, 1)', marginTop: 20, textAlign: 'left' }}> General Information:</Text>
                                 <View style={{ marginTop: 30, marginBottom: 20 }}>
                                     <CircularProgress
@@ -384,7 +367,7 @@ const NewSingleElement = ({ navigation, route }) => {
                                                 <FontAwesome5 name="utensils" size={24} color="#fd5a43" style={{ marginRight: 10 }} />
                                                 <Text style={{ fontFamily: 'CustomFont', fontSize: 18, color: '#ffaa9e', textAlign: 'left', marginBottom: 2, marginTop: 10 }}> Step {step.number}:</Text>
                                             </View>
-                                            <Text style={{ fontFamily: 'CustomFont', fontSize: 15, color: 'grey', textAlign: 'left' }}> {step.step}:</Text>
+                                            <Text style={{ fontFamily: 'CustomFont', fontSize: 15, color: 'grey', textAlign: 'left' }}> {step.step}</Text>
                                         </View>
                                     )
 
@@ -443,6 +426,18 @@ const NewSingleElement = ({ navigation, route }) => {
                 </View>
 
             }
+            <Snackbar
+                visible={visible}
+                onDismiss={onDismissSnackBar}
+                duration={2000}
+                action={{
+                    label: 'Hide',
+                    onPress: () => {
+                        // Do something
+                    },
+                }}>
+                {favouritesSnapshot.length == 0 ?<Text style={{ fontFamily: 'CustomFont', fontSize: 16, color: 'white', textAlign: 'left' }}>Removed from favourites!</Text>: <Text style={{ fontFamily: 'CustomFont', fontSize: 16, color: 'white', textAlign: 'left' }}>Added to favourites!</Text>}
+            </Snackbar>
         </View >
     );
 };
@@ -471,7 +466,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '120%',
-        
+
 
 
     },
@@ -488,8 +483,8 @@ const styles = StyleSheet.create({
         height: 450,
         width: "100%",
         flexDirection: "column",
-        borderBottomEndRadius:30,
-        borderBottomStartRadius:30,
+        borderBottomEndRadius: 30,
+        borderBottomStartRadius: 30,
 
         overflow: 'hidden',
 
