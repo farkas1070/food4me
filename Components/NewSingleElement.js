@@ -58,20 +58,20 @@ const NewSingleElement = ({ navigation, route }) => {
     const [page, setPage] = useState(0);
     const [modifiedIngredients, setModifiedIngredients] = useState([]);
     const [modifiedTypes, setModifiedTypes] = useState([]);
-    
+
     const ITEMS_PER_PAGE = 4;
     const coloritem = getColor(item.healthscore)
 
     const docid = item.docid
     const recipeRef = doc(db, "Recipes", docid);
     const userRef = doc(db, "Users", auth.currentUser.uid);
-    
+
 
     const nutrientquery = query(collection(db, "Recipe_Nutrition"), where("Recipe_ID", "==", recipeRef));
     const typequery = query(collection(db, "Recipe_Types"), where("Recipe_ID", "==", recipeRef));
     const ingredientquery = query(collection(db, "Recipes_Ingredients"), where("Recipe_ID", "==", recipeRef));
     const stepsquery = query(collection(db, "Steps"), where("Recipe_ID", "==", recipeRef));
-    const favouritesquery = query(collection(db, "Favourites"), where("User_ID", "==", userRef),where("Recipe_ID", "==", recipeRef));
+    const favouritesquery = query(collection(db, "Favourites"), where("User_ID", "==", userRef), where("Recipe_ID", "==", recipeRef));
 
     const [nutritionSnapshot, nutritionSnapshotLoading, nutritionSnapshotError] = useCollectionData(nutrientquery);
     const [ingredientSnapshot, ingredientSnapshotLoading, ingredientSnapshotError] = useCollectionData(ingredientquery);
@@ -79,7 +79,7 @@ const NewSingleElement = ({ navigation, route }) => {
     const [stepsSnapshot, stepsSnapshotLoading, stepsSnapshotError] = useCollectionData(stepsquery);
     const [favouritesSnapshot, favouritesSnapshotLoading, favouritesSnapshotError] = useCollectionData(favouritesquery);
 
-    const getPaginatedData = () => { 
+    const getPaginatedData = () => {
         const startIndex = page * ITEMS_PER_PAGE;
         const endIndex = startIndex + ITEMS_PER_PAGE;
         return nutritionSnapshot.slice(startIndex, endIndex);
@@ -89,7 +89,7 @@ const NewSingleElement = ({ navigation, route }) => {
             return a.number - b.number;
         });
     }
-    
+
     const goBack = () => {
         navigation.goBack();
     }
@@ -175,16 +175,8 @@ const NewSingleElement = ({ navigation, route }) => {
                         source={Searching}
                     />
                 </View> :
-                <ImageBackground
-                    style={styles.backgroundImage}
-                    source={{
-                        uri: item.image,
-                        cache: 'force-cache',
-                    }}
+                <View style={{ width: '100%', height: '100%', }}>
 
-
-
-                >
                     <ScrollView style={{ width: '100%', flexGrow: 1, }}>
 
 
@@ -192,14 +184,24 @@ const NewSingleElement = ({ navigation, route }) => {
 
                         <View style={styles.overlay} />
                         <View style={styles.appBar}>
-                            <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", marginTop: 25 }}>
-                                <Appbar.Action icon="arrow-left-top" color="rgba(253, 90, 67, 1)" onPress={() => { goBack() }} style={{ backgroundColor: 'white', marginLeft: 10 }} />
+                            <ImageBackground
+                                style={styles.backgroundImage}
+                                source={{
+                                    uri: item.image,
+                                    cache: 'force-cache',
+                                }}
+                                
 
-                            </View>
 
+                            >
+                                <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", marginTop: 25 }}>
+                                    <Appbar.Action icon="arrow-left-top" color="rgba(253, 90, 67, 1)" onPress={() => { goBack() }} style={{ backgroundColor: 'white', marginLeft: 10 }} />
+
+                                </View>
+                            </ImageBackground>
                         </View>
 
-                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', borderTopStartRadius: 30, borderTopEndRadius: 30, backgroundColor: 'white' }}>
+                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
 
 
 
@@ -210,7 +212,7 @@ const NewSingleElement = ({ navigation, route }) => {
                                     </View>
                                     <TouchableOpacity onPress={() => { handleFavouriteChange() }} style={{ borderRadius: 50, width: 60, height: 60, backgroundColor: '#f44336', justifyContent: 'center', alignItems: 'center', top: -50, right: -40, borderColor: 'white', borderWidth: 2 }}>
 
-                                        {favouritesSnapshot.length==0? <MaterialCommunityIcons name="heart-outline" size={30} color="white" />:<MaterialCommunityIcons name="heart" size={30} color="white" />}
+                                        {favouritesSnapshot.length == 0 ? <MaterialCommunityIcons name="heart-outline" size={30} color="white" /> : <MaterialCommunityIcons name="heart" size={30} color="white" />}
 
                                     </TouchableOpacity>
                                 </View>
@@ -435,7 +437,8 @@ const NewSingleElement = ({ navigation, route }) => {
 
 
                     </ScrollView >
-                </ImageBackground>
+
+                </View>
 
             }
         </View >
@@ -465,8 +468,8 @@ const styles = StyleSheet.create({
     backgroundImage: {
         flex: 1,
         width: '100%',
-        height: '75%',
-        resizeMode: 'cover'
+        height: '120%',
+
 
     },
     noitemimage: {
