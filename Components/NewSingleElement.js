@@ -33,7 +33,7 @@ import { Snackbar } from 'react-native-paper';
 
 const NewSingleElement = ({ navigation, route }) => {
     const { item } = route.params;
-
+    
     const [page, setPage] = useState(0);
     const [modifiedIngredients, setModifiedIngredients] = useState([]);
     const [modifiedTypes, setModifiedTypes] = useState([]);
@@ -422,22 +422,22 @@ const NewSingleElement = ({ navigation, route }) => {
 
 
                     </ScrollView >
-
+                    <Snackbar
+                        visible={visible}
+                        onDismiss={onDismissSnackBar}
+                        duration={2000}
+                        action={{
+                            label: 'Hide',
+                            onPress: () => {
+                                // Do something
+                            },
+                        }}>
+                        {favouritesSnapshot.length == 0 ? <Text style={{ fontFamily: 'CustomFont', fontSize: 16, color: 'white', textAlign: 'left' }}>Removed from favourites!</Text> : <Text style={{ fontFamily: 'CustomFont', fontSize: 16, color: 'white', textAlign: 'left' }}>Added to favourites!</Text>}
+                    </Snackbar>
                 </View>
 
             }
-            <Snackbar
-                visible={visible}
-                onDismiss={onDismissSnackBar}
-                duration={2000}
-                action={{
-                    label: 'Hide',
-                    onPress: () => {
-                        // Do something
-                    },
-                }}>
-                {favouritesSnapshot.length == 0 ?<Text style={{ fontFamily: 'CustomFont', fontSize: 16, color: 'white', textAlign: 'left' }}>Removed from favourites!</Text>: <Text style={{ fontFamily: 'CustomFont', fontSize: 16, color: 'white', textAlign: 'left' }}>Added to favourites!</Text>}
-            </Snackbar>
+
         </View >
     );
 };

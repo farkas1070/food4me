@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ImageBackground, Image, FlatList, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import { collection, query, where, getDocs, doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { db } from "../firebase-config";
@@ -12,12 +12,13 @@ import { Surface, } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import CustomFont from '../fonts/myfont.otf';
-
+import { foodContext } from "../Components/SetData.js"
 const Favourites = ({ navigation }) => {
     const userRef = doc(db, "Users", auth.currentUser.uid);
     const favouritesquery = query(collection(db, "Favourites"), where("User_ID", "==", userRef));
     const [favouritesSnapshot, favouritesSnapshotLoading, favouritesSnapshotError] = useCollectionData(favouritesquery);
     const [favourites, setFavourites] = useState([])
+    const [foodarray] = useContext(foodContext)
 
     useEffect(() => {
         const getFavouriteRef = async () => {
@@ -44,6 +45,14 @@ const Favourites = ({ navigation }) => {
         }
 
     })
+    const handleNavigation = (favourite) => {
+        foodarray.map((data)=>{
+            if(data.name == favourite.name) {
+                navigation.navigate("SingleElement", { item: data })
+            }
+        })
+       
+    }
     const [loaded] = useFonts({
         CustomFont: CustomFont,
     });
@@ -82,10 +91,11 @@ const Favourites = ({ navigation }) => {
                     </ImageBackground>
                     <View style={{ flex: 1, width: '100%', height: '100%', }}>
                         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: 'center' }}>
-                            {favourites.map((favourite) => {
+                            {favourites.map((favourite,i) => {
+                                
                                 return (
-
-                                    <Surface style={{ padding: 8, height: 160, width: "95%", alignItems: 'center', elevation: 4, margin: 5, backgroundColor: 'white', borderRadius: 20, flexDirection: 'row' }}>
+                                    
+                                    <TouchableOpacity  style={{ padding: 8, height: 160, width: "95%", alignItems: 'center', elevation: 4, margin: 5, backgroundColor: 'white', borderRadius: 20, flexDirection: 'row' }} onPress={() => { handleNavigation(favourite) }} key={i}>
                                         <Image source={{ uri: favourite.image }} style={{ width: 100, height: 100, borderRadius: 10, marginLeft: 10 }} />
                                         <View style={{ flex: 1, marginLeft: 30, }}>
                                             <Text style={{ fontFamily: 'CustomFont', fontSize: 13, color: 'grey', marginBottom: 10, textAlign: 'left' }}>{favourite.name}</Text>
@@ -100,7 +110,7 @@ const Favourites = ({ navigation }) => {
                                             
 
                                         </View>
-                                    </Surface>
+                                    </TouchableOpacity>
                                 )
                             })}
                         </ScrollView>

@@ -5,7 +5,6 @@ import HomeScreen from "./Components/HomeScreen"
 import { DataProvider } from "./Components/SetData.js"
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import MenuCreator from "./Components/MenuCreator"
 import FilteredRecipeBrowser from "./Components/FilteredRecipeBrowser"
 import { Provider as PaperProvider } from 'react-native-paper';

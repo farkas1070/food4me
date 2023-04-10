@@ -20,30 +20,14 @@ const RecipeBrowser = ({ navigation }) => {
     const [darkTheme, setDarkTheme] = useContext(themeContext)
     const [foodarray] = useContext(foodContext)
 
-    const [searchvalue, setSearchValue] = useState("")
-    const [showsearch, setShowSearch] = useState(false)
-
-
-
-
-
-
-
     const [pagestart, setPageStart] = useState(0)
     const [pageend, setPageEnd] = useState(9)
     const [pagecount, setPageCount] = useState(0)
 
     const scrollRef = useRef();
-
-
-
-    const toggleSwitch = () => setDarkTheme(previousState => !previousState);
+ 
     const goBackToHome = () => {
         navigation.goBack();
-    }
-
-    const openMenu = () => {
-        navigation.openDrawer();
     }
     const pageBackwards = () => {
         setPageStart(pagestart - 10)
@@ -67,9 +51,7 @@ const RecipeBrowser = ({ navigation }) => {
 
         navigation.navigate("RecipeFilter");
     }
-    const changeToSearching = () => {
-
-    }
+    
 
     const [loaded] = useFonts({
         CustomFont: CustomFont,
