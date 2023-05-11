@@ -10,7 +10,7 @@ It was built with no css extrenal library, all styling is done with stylesheets
 The App provides multiple functionalities such as profile pictue updating, uploading, email and username changing, and so much more
  
 
-![Alt text](https://i.imgur.com/YCInF1X.jpeg)
+![Alt text](https://i.imgur.com/ZiuZQ09.jpeg)
 
 The main functionalities of the app constists of recipebrowsing, and the ability to generate a random meal and whole menu for yourself.
 
