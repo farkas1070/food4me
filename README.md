@@ -6,7 +6,7 @@ React Native app that focuses on food management
 It was built with no css extrenal library, all styling is done with stylesheets
 
 
-![Alt text](https://i.imgur.com/CUJCdpK.jpeg])
+![Alt text](https://i.imgur.com/CUJCdpK.jpeg)
 
 The App provides multiple functionalities such as profile pictue updating, uploading, email and username changing, and so much more
 
