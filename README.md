@@ -1,7 +1,7 @@
 React Native app that focuses on food management
 
 
-![Alt_text](https://i.imgur.com/JyBbLVL.jpg)
+![Alt_text](https://imgur.com/gallery/LT5D9UY)
 
 It was built with no css extrenal library, all styling is done with stylesheets
 
