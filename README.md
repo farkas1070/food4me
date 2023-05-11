@@ -5,7 +5,7 @@ React Native Social Media, food management app.
 
 It was built with no css extrenal library, all styling is done with stylesheets
 
-![Alt_text](https://i.imgur.com/tKwPB2q.jpeg)
+![Alt_text](https://imgur.com/a/zIBQORt)
 
 The App provides multiple functionalities such as profile pictue updating, uploading, email and username changing, and so much more
  
