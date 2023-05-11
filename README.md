@@ -15,7 +15,7 @@ The App provides multiple functionalities such as profile pictue updating, uploa
 The main functionalities of the app constists of recipebrowsing, and the ability to generate a random meal and whole menu for yourself.
 
 
-![Alt text](https://i.imgur.com/os6vHGn.jpeg)
+![Alt text](https://i.imgur.com/Wv7frrP.jpeg)
 
 For now Authentication is done with only email password and username, but google and other authentication possibilites will come in the future.
 
