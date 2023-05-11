@@ -26,4 +26,5 @@ The database is Firestore by google and the backend is written with Firebase, al
 
 
 ![Alt text](https://i.imgur.com/FfLoSbN.jpeg)
+The app will also have a social media reel watching section similar to instagram reels, but only to food recipes.
 
