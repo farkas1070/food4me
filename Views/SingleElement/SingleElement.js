@@ -2,29 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Image, View, ImageBackground, Text, ScrollView,  } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { useFonts } from 'expo-font';
-import CustomFont from '../fonts/myfont.otf';
+import CustomFont from '../../fonts/myfont.otf';
 import { Surface } from 'react-native-paper';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { collection, query, where, doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { db } from "../firebase-config";
+import { db } from "../../firebase-config";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Chip } from 'react-native-paper';
-import Searching from "../assets/searching.gif"
+import Searching from "../../assets/searching.gif"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import Cheese from '../assets/cheese.png'
-import Wheat from '../assets/wheat.png'
-import Heart from '../assets/like.png'
-import Dish from '../assets/dish.png'
-import Dollar from '../assets/dollar.png'
-import Leaf from '../assets/leaf.png'
-import Clocks from '../assets/stopwatch.png'
+import Cheese from '../../assets/cheese.png'
+import Wheat from '../../assets/wheat.png'
+import Heart from '../../assets/like.png'
+import Dish from '../../assets/dish.png'
+import Dollar from '../../assets/dollar.png'
+import Leaf from '../../assets/leaf.png'
+import Clocks from '../../assets/stopwatch.png'
 import { DataTable } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native';
-import { auth } from "../firebase-config";
+import { auth } from "../../firebase-config";
 import { Snackbar } from 'react-native-paper';
-
+import {styles} from "./SingleElementStyle"
 const NewSingleElement = ({ navigation, route }) => {
     const { item } = route.params;
     
@@ -436,97 +436,6 @@ const NewSingleElement = ({ navigation, route }) => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        width: '100%',
-        height: '100%'
-    },
-    topRightIcon: {
-        top: -10,
-        right: -10,
-    },
-    bottomLeftIcon: {
-        bottom: -10,
-        left: -10,
-    },
-    image: {
-        width: '100%',
-        height: undefined,
-        aspectRatio: 4 / 3, // Change this to match your image aspect ratio
-    },
-    backgroundImage: {
-        flex: 1,
-        width: '100%',
-        height: '120%',
 
-
-
-    },
-    noitemimage: {
-
-        width: 300,
-        height: 300
-    },
-    appBar: {
-
-        backgroundColor: 'transparent',
-        justifyContent: "flex-start",
-        alignItems: 'center',
-        height: 450,
-        width: "100%",
-        flexDirection: "column",
-        borderBottomEndRadius: 30,
-        borderBottomStartRadius: 30,
-
-        overflow: 'hidden',
-
-
-
-
-    },
-    bordercontainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1,
-    },
-    border: {
-        width: 200,
-        height: 200,
-        borderWidth: 2,
-        borderColor: 'grey',
-        position: 'relative',
-    },
-    iconContainer: {
-        position: 'absolute',
-        width: 20,
-        height: 20,
-        backgroundColor: 'white',
-    },
-    surface: {
-
-
-        width: '90%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        elevation: 4,
-        backgroundColor: '#ffffff',
-        borderRadius: 20,
-        marginTop: 10,
-        marginBottom: 20
-    },
-    overlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(253, 90, 67, 0.1)',
-
-        overflow: 'hidden', // Orange with 50% opacity
-    },
-    fade: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'white',
-        opacity: 0.5,
-    },
-});
 
 export default NewSingleElement;

@@ -1,25 +1,23 @@
 import React, { useContext } from 'react';
-import { StyleSheet, ImageBackground, View, Image, ScrollView } from 'react-native';
+import {  ImageBackground, View, Image, ScrollView } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { BlurView } from 'expo-blur';
-import { themeContext, userContext, userDataContext } from "../Components/SetData.js"
-import ProfilePic from "../assets/profile.png"
-import { Divider, Text, IconButton, Avatar } from 'react-native-paper';
+import { userDataContext } from "../../Components/SetData.js"
+import ProfilePic from "../../assets/profile.png"
+import { Text, IconButton,} from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import CustomFont from '../fonts/myfont.otf';
-import { AntDesign } from '@expo/vector-icons';
+import CustomFont from '../../fonts/myfont.otf';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { Button } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Surface } from 'react-native-paper';
-import AgeAsset from "../assets/age-group.png";
-import HeartAsset from "../assets/heartbeat.png";
-import DumbbellAsset from "../assets/dumbbell.png";
-import HeightAsset from "../assets/height-limit.png";
-import WeightAsset from "../assets/weight-scale.png";
+import AgeAsset from "../../assets/age-group.png";
+import HeightAsset from "../../assets/height-limit.png";
+import WeightAsset from "../../assets/weight-scale.png";
 import * as ImagePicker from 'expo-image-picker';
 import { updateProfile, getAuth } from "firebase/auth";
+import {styles} from "./ProfileStyle.js"
 const NewProfileComponent = () => {
 
     const [userData, setUserData] = useContext(userDataContext)
@@ -260,83 +258,6 @@ const NewProfileComponent = () => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
 
-
-
-        backgroundColor: "white"
-    },
-    AssetImage: {
-        height: 50,
-        width: 50
-    },
-    gradient: {
-        width: '100%',
-        alignItems: 'center'
-
-
-    },
-    surface: {
-        height: 80,
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: 10,
-        marginTop: 10,
-        marginBottom: 10,
-
-
-
-        flexDirection: 'row',
-    },
-    bigSurface: {
-
-
-        width: '90%',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        elevation: 10,
-        borderRadius: 30,
-        marginBottom: 20,
-        backgroundColor: '#ffffff',
-
-
-        flexDirection: 'column',
-    },
-    divider: {
-        width: "100%",
-        flex: 1,
-
-    },
-    overlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(253, 90, 67, 0.2)', // Orange with 50% opacity
-    },
-    profileImage: {
-        width: 150,
-        height: 150,
-        marginBottom: 50,
-        borderRadius: 400 / 2,
-
-    },
-    appBar: {
-
-        backgroundColor: 'transparent',
-        justifyContent: "center",
-        height: 300,
-        width: "100%",
-        flexDirection: "column",
-
-
-    },
-    title: {
-        color: 'white',
-        fontSize: 20,
-        marginTop: 20,
-        fontWeight: "bold",
-    },
-});
 
 export default NewProfileComponent;

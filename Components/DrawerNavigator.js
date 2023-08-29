@@ -2,19 +2,17 @@ import 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native'
 import React, { useContext } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Homepage from "./HomePage"
-import RecipeBrowser from "./RecipeBrowser"
-import ProfileComponent from "./ProfileComponent"
-import MenuElement from './MenuElement';
-import RecipeComponent from "./RecipeComponent"
-import { foodContext } from "../Components/SetData.js"
-import RestaurantFinder from "./RestaurantFinder"
-import NewRecipeBrowser from "../Components/NewRecipeBrowser"
-import BottomTabs from "./BottomTabs"
-import MyFridge from "./MyFridge"
-import ShoppingList from './ShoppingList';
+
+import MenuElement from '../Views/MenuCreator/MenuCreator';
+import RecipeComponent from "../Views/RecipeFinder/RecipeFinder"
+import { foodContext } from "./SetData.js"
+
+import NewRecipeBrowser from "../Views/RecipeBrowser/RecipeBrowser"
+import BottomTabs from "./BottomNavigator"
+import MyFridge from "../Views/MyFridge/MyFridge"
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-import Favourites from './Favourites';
+import Favourites from '../Views/Favourites/Favourites';
+
 const HomeScreen = () => {
   const [foodarray] = useContext(foodContext)
   const Drawer = createDrawerNavigator();
@@ -82,14 +80,7 @@ const HomeScreen = () => {
         }}
         component={MyFridge}
       />
-      <Drawer.Screen
-        name="Shopping List"
-        options={{
-          headerShown: false,
-          drawerIcon: () => (<MaterialCommunityIcons name="shopping-outline" size={24} color="white" />)
-        }}
-        component={ShoppingList}
-      />
+      
       <Drawer.Screen
         name="Menu Creator"
         options={{
