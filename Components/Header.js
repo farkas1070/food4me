@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Switch } from 'react-native';
 
 import { Feather } from '@expo/vector-icons';
-import { themeContext, } from "../Components/SetData.js"
+import { themeContext, } from "../Context/GlobalContext.js"
 import { useContext, } from "react";
 import { useNavigation } from '@react-navigation/native';
 

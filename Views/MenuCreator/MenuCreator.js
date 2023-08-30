@@ -1,7 +1,7 @@
 import { StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity, View, Switch, ImageBackground } from 'react-native'
 import React from 'react'
 import { useContext } from "react";
-import { foodContext, themeContext } from "../../Components/SetData.js"
+import { foodContext, themeContext } from "../../Context/GlobalContext.js"
 
 import menubackground from "../../assets/menubackground.jpg"
 import Header from "../../Components/Header.js"

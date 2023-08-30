@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import {  ImageBackground, View, Image, ScrollView } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { BlurView } from 'expo-blur';
-import { userDataContext } from "../../Components/SetData.js"
+import { userDataContext } from "../../Context/GlobalContext.js"
 import ProfilePic from "../../assets/profile.png"
 import { Text, IconButton,} from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';

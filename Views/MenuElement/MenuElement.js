@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ImageBackground, Image } from 'react-native'
 import React,{useContext } from 'react'
-import { themeContext } from "../../Components/SetData.js"
+import { themeContext } from "../../Context/GlobalContext.js"
 import Carousel from 'react-native-reanimated-carousel';
 import Recipelight1 from "../../assets/recipelight1.png"
 import Recipedark1 from "../../assets/recipedark1.png"

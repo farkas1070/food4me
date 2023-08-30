@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword, onAuthStateChanged, } from "firebase/auth";
 import { useState, useContext, } from "react";
 import { auth } from "../../firebase-config";
 import Logo from "../../assets/Logo.png"
-import { userContext, userDataContext } from "../../Components/SetData"
+import { userContext, userDataContext } from "../../Context/GlobalContext"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Video, VideoOverlay } from 'expo-av';
 import { TextInput } from 'react-native-paper';

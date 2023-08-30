@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import HomeScreen from "../Components/DrawerNavigator"
+import HomeScreen from "./DrawerNavigator"
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import MenuElement from "../Views/MenuElement/MenuElement";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';

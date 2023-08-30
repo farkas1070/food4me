@@ -5,7 +5,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import MenuElement from '../Views/MenuCreator/MenuCreator';
 import RecipeComponent from "../Views/RecipeFinder/RecipeFinder"
-import { foodContext } from "./SetData.js"
+import { foodContext } from "../Context/GlobalContext.js"
 
 import NewRecipeBrowser from "../Views/RecipeBrowser/RecipeBrowser"
 import BottomTabs from "./BottomNavigator"

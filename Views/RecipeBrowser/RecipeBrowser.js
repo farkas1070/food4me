@@ -1,7 +1,7 @@
 
 import React, { useContext, useState } from 'react'
 import {  Text, View, Image, TouchableOpacity, ScrollView,  ImageBackground } from 'react-native'
-import { themeContext, foodContext } from "../../Components/SetData.js"
+import { themeContext, foodContext } from "../../Context/GlobalContext.js"
 import { useRef } from 'react';
 import { Appbar } from 'react-native-paper';
 import { useFonts } from 'expo-font';

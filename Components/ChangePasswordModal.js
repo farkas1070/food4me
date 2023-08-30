@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TextInput,TouchableOpacity, Alert } from 'react-native'
 import React,{useState,useContext} from 'react'
 import { getAuth,updatePassword,reauthenticateWithCredential,EmailAuthProvider } from "firebase/auth";
-import {  themeContext } from "../Components/SetData.js"
+import {  themeContext } from "../Context/GlobalContext.js"
 
 
 const ChangePasswordModal = () => {

@@ -9,7 +9,7 @@ import Searching from "../../assets/searching.gif"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import CustomFont from '../../fonts/myfont.otf';
-import { foodContext } from "../../Components/SetData.js"
+import { foodContext } from "../../Context/GlobalContext.js"
 import {styles} from "./FavouritesStyle"
 const Favourites = ({ navigation }) => {
     const userRef = doc(db, "Users", auth.currentUser.uid);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, SafeAreaView, ScrollView, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { themeContext, userContext, userDataContext } from "../../Components/SetData"
+import { themeContext, userContext, userDataContext } from "../../Context/GlobalContext"
 import { useContext, useState, useEffect } from "react";
 import SecondLogo from "../../assets/second.png"
 import FirstLogo from "../../assets/first.jpeg"
@@ -78,7 +78,7 @@ export default function ScreenOne({ navigation }) {
             <Text style={styles.whatwillyoudotext(darkTheme)} >What will you do today?</Text>
             <SafeAreaView style={styles.container}>
               <ScrollView horizontal={true} style={styles.scrollView}>
-                <TouchableOpacity onPress={() => { navigation.navigate("RecipeFinder") }}>
+                <TouchableOpacity onPress={() => { navigation.navigate("Recipe Finder") }}>
                   <View style={styles.innerBox}>
                     <View style={{ backgroundColor: '#fd5a43', borderRadius: 30 }}>
                       <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
@@ -93,7 +93,7 @@ export default function ScreenOne({ navigation }) {
                     </View>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { navigation.navigate("MenuCreator") }} >
+                <TouchableOpacity onPress={() => { navigation.navigate("Menu Creator") }} >
                   <View style={styles.innerBox}>
                     <View style={{ backgroundColor: '#fd5a43', borderRadius: 30 }}>
                       <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
@@ -108,7 +108,7 @@ export default function ScreenOne({ navigation }) {
                     </View>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { navigation.navigate("RecipeBrowser") }} >
+                <TouchableOpacity onPress={() => { navigation.navigate("Recipe Browser") }} >
                   <View style={styles.innerBox}>
                     <View style={{ backgroundColor: '#fd5a43', borderRadius: 30 }}>
                       <View style={{ backgroundColor: '#fd5a43', borderTopEndRadius: 30, borderTopStartRadius: 30, }}>
