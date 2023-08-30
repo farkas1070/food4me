@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react'
 import { useWindowDimensions } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import NewProfileComponent from '../Views/Profile/Profile';
 import Homepage from "../Views/Home/Home"
 import DiscoveryReel from '../Views/Discover/Discover';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-
+import RecipeBrowser from '../Views/RecipeBrowser/RecipeBrowser';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { foodContext } from "../Context/GlobalContext.js"
+import { Ionicons } from '@expo/vector-icons'; 
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   const { height } = useWindowDimensions();
-
+  const [foodarray] = useContext(foodContext)
   return (
     <Tab.Navigator
       screenOptions={{
@@ -32,10 +34,10 @@ const BottomTabNavigator = () => {
       <Tab.Screen
         name="Home"
         options={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => (
+          tabBarIcon: ({ focused,}) => (
             <MaterialCommunityIcons
               name={focused ? 'home' : 'home-outline'}
-              size={24}
+              size={34}
               color={'white'}
             />
           ),
@@ -43,12 +45,22 @@ const BottomTabNavigator = () => {
         component={Homepage}
       />
       <Tab.Screen
+        name="Recipe Browser"
+        initialParams={{ item: foodarray }}
+        options={({ route }) => ({
+          tabBarIcon: ({ focused,}) => (
+            <Ionicons name={focused ? 'fast-food' : 'fast-food-outline'} size={34} color="white" />
+          ),
+        })}
+        component={RecipeBrowser}
+      />
+      <Tab.Screen
         name="Discover"
         options={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => (
+          tabBarIcon: ({ focused,}) => (
             <MaterialCommunityIcons
               name={focused ? 'compass' : 'compass-outline'}
-              size={24}
+              size={34}
               color={'white'}
             />
           ),
@@ -58,10 +70,10 @@ const BottomTabNavigator = () => {
       <Tab.Screen
         name="Profile"
         options={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => (
+          tabBarIcon: ({ focused,}) => (
             <MaterialCommunityIcons
               name={focused ? 'account' : 'account-outline'}
-              size={24}
+              size={34}
               color={'white'}
             />
           ),

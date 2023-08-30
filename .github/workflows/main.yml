@@ -1,5 +1,0 @@
-name: Expo CI CD
-
-on:
-  push :
-    branches : [release]

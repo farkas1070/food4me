@@ -60,18 +60,7 @@ const HomeScreen = () => {
         }}
         component={RecipeComponent}
       />
-      <Drawer.Screen
-        name="Recipe Browser"
-        options={{
-          headerShown: false,
-          drawerIcon: () => (<MaterialCommunityIcons name="search-web" size={24} color="white" />)
-          
-
-
-        }}
-        initialParams={{ item: foodarray }}
-        component={NewRecipeBrowser}
-      />
+      
       <Drawer.Screen
         name="My Fridge"
         options={{
