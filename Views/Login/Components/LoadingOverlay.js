@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { useFonts } from 'expo-font';
-import CustomFont from '../fonts/myfont.otf';
+import CustomFont from '../../../fonts/myfont.otf';
 
 const LoadingOverlay = () => {
   

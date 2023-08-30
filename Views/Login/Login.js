@@ -13,7 +13,7 @@ import { useFonts } from 'expo-font';
 import CustomFont from '../../fonts/myfont.otf';
 import { Button } from 'react-native-paper';
 import { ActivityIndicator } from 'react-native-paper';
-import LoadingOverlay from '../../Components/LoadingOverlay';
+import LoadingOverlay from './Components/LoadingOverlay';
 import {styles} from "./LoginStyle"
 
 const LoginScreen = ({ navigation }) => {
