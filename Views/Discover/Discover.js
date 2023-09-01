@@ -1,27 +1,36 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect, useMemo, useContext } from "react";
 import {
   View,
   Text,
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import PagerView from "react-native-pager-view";
 import { Video, ResizeMode } from "expo-av";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { storage } from "../../firebase-config";
+import { storage, db, auth } from "../../firebase-config";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { FontAwesome } from "@expo/vector-icons";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
-  
 } from "@gorhom/bottom-sheet";
 import BottomSheet from "@gorhom/bottom-sheet";
-
+import { videosContext } from "../../Context/GlobalContext";
+import {
+  collection,
+  where,
+  getDocs,
+  doc,
+  setDoc,
+  updateDoc,
+  query,
+  deleteDoc,
+} from "firebase/firestore";
 const SlideItem = ({
   item,
   isCurrent,
@@ -32,6 +41,29 @@ const SlideItem = ({
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [showVolume, setShowVolume] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likesCount,setLikesCount] = useState(item.likes);
+
+  useEffect(() => {
+    // Check if the video has been liked by the current user
+    const checkLikes = async () => {
+      const likesQuery = query(
+        collection(db, "Likes"),
+        where("videoId", "==", item.docid)
+      );
+      const snapshot = await getDocs(likesQuery);
+      // Check if the current user has liked the video
+
+      const liked = snapshot.docs.some(
+        (doc) => doc.data().userId === auth.currentUser.uid
+      );
+
+      setIsLiked(liked);
+      console.log(liked);
+    };
+
+    checkLikes();
+  }, [video.id]);
 
   useEffect(() => {
     if (video.current) {
@@ -51,11 +83,42 @@ const SlideItem = ({
       setShowVolume(false);
     }, 1000);
   };
-  const openBottomSheet = () => {
-    
-    bottomSheetRef.current.expand();
-    
 
+  const openBottomSheet = () => {
+    bottomSheetRef.current.expand();
+  };
+
+  const likeVideo = async () => {
+    const likesRef = collection(db, "Likes");
+    const newLike = {
+      userId: auth.currentUser.uid,
+      videoId: item.docid, // Adjust this to your data structure
+    };
+
+    if (isLiked) {
+      //If liked then we delete it from the collection, and remove 1 like from videos count//
+      const videoRef = doc(db, "Videos", item.docid);
+      
+      await deleteDoc(doc(db, "Likes", `${item.docid}-${auth.currentUser.uid}`));
+      await updateDoc(videoRef, {
+        likes: likesCount - 1
+      });
+      setLikesCount(likesCount - 1);
+      setIsLiked(!isLiked);
+    } else {
+      //If not liked then we set it in the collection, andadd 1 to the videos like count//
+      await setDoc(doc(db, "Likes", `${item.docid}-${auth.currentUser.uid}`), {
+        userId: auth.currentUser.uid,
+        videoId: item.docid, // Adjust this to your data structure
+      });
+      
+      const videoRef = doc(db, "Videos", item.docid);
+      await updateDoc(videoRef, {
+        likes: likesCount + 1
+      });
+      setLikesCount(likesCount + 1);
+      setIsLiked(!isLiked);
+    }
   };
 
   return (
@@ -83,17 +146,19 @@ const SlideItem = ({
           <Ionicons name="arrow-back-outline" size={35} color="white" />
           <Text style={styles.reelsText}>Reels</Text>
         </View>
-        <TouchableOpacity>
-          <FontAwesome
-            name="plus-square-o"
-            size={38}
-            color="white"
-            style={styles.plusIcon}
-          />
-        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.likeButton}>
-        <AntDesign name="hearto" size={35} color="white" />
+      <TouchableOpacity
+        style={styles.likeButton}
+        onPress={() => {
+          likeVideo();
+        }}
+      >
+        <AntDesign
+          name={isLiked ? "heart" : "hearto"}
+          size={35}
+          color="white"
+        />
+        <Text style={styles.likesCountText}>{likesCount}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.commentButton}
@@ -102,6 +167,7 @@ const SlideItem = ({
         }}
       >
         <Feather name="message-circle" size={40} color="white" />
+        <Text style={styles.commentCountText}>{item.comments}</Text>
       </TouchableOpacity>
       {showVolume && (
         <TouchableOpacity style={styles.volumeButton}>
@@ -119,8 +185,7 @@ const SlideItem = ({
 };
 
 const YourScreen = () => {
-  
-  const [videoURLs, setVideoURLs] = useState([]);
+  const [videoURLs, setVideoURLs] = useContext(videosContext);
   const pagerViewRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [isGlobalMuted, setIsGlobalMuted] = useState(false);
@@ -134,28 +199,9 @@ const YourScreen = () => {
   const toggleGlobalMute = () => {
     setIsGlobalMuted((prevIsGlobalMuted) => !prevIsGlobalMuted);
   };
-  useEffect(() => {
-    let listreference = ref(storage, `Videos/`);
-    listAll(listreference)
-      .then((res) => {
-        res.items.forEach((itemRef) => {
-          let newobject = {};
-          newobject.path = itemRef._location.path;
-
-          getDownloadURL(itemRef).then((url) => {
-            newobject.url = url;
-            setVideoURLs((prev) => [...prev, newobject]);
-          });
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
   return (
     <View style={styles.container}>
-      
       <PagerView
         style={styles.pagerView}
         initialPage={0}
@@ -175,36 +221,31 @@ const YourScreen = () => {
           </View>
         ))}
       </PagerView>
-      
-        <BottomSheet
-          ref={bottomSheetModalRef}
-          index={0}
-          snapPoints={snapPoints}
-          backgroundStyle={{
-            backgroundColor: "#262626",
-           
-          }}
-          
-          handleIndicatorStyle={{
-            backgroundColor: "#a9a9a9",
-            
-            
-          }}
-        >
-          <View >
-            <View style={styles.commentsTextContainer}>
+
+      <BottomSheet
+        ref={bottomSheetModalRef}
+        index={0}
+        snapPoints={snapPoints}
+        backgroundStyle={{
+          backgroundColor: "#262626",
+        }}
+        handleIndicatorStyle={{
+          backgroundColor: "#a9a9a9",
+        }}
+      >
+        <View>
+          <View style={styles.commentsTextContainer}>
             <Text style={styles.commentsText}>Comments</Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                bottomSheetModalRef.current.close();
-              }}
-            >
-              <Text>Close</Text>
-            </TouchableOpacity>
           </View>
-        </BottomSheet>
-      
+          <TouchableOpacity
+            onPress={() => {
+              bottomSheetModalRef.current.close();
+            }}
+          >
+            <Text>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </BottomSheet>
     </View>
   );
 };
@@ -281,15 +322,20 @@ const styles = StyleSheet.create({
   plusIcon: {
     marginRight: 15,
   },
-  commentsTextContainer:{
-    width:'100%',
+  commentsTextContainer: {
+    width: "100%",
     alignItems: "center",
-    marginTop:10
+    marginTop: 10,
   },
-  commentsText:{
-    color:'white',
-    
-  }
+  commentsText: {
+    color: "white",
+  },
+  likesCountText: {
+    color: "white",
+  },
+  commentCountText: {
+    color: "white",
+  },
 });
 
 export default YourScreen;
