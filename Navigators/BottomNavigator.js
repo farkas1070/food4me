@@ -9,6 +9,7 @@ import RecipeBrowser from '../Views/RecipeBrowser/RecipeBrowser';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { foodContext } from "../Context/GlobalContext.js"
 import { Ionicons } from '@expo/vector-icons'; 
+import UploadVideo from '../Views/UploadVideo/UploadVideo';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,6 +54,16 @@ const BottomTabNavigator = () => {
           ),
         })}
         component={RecipeBrowser}
+      />
+      <Tab.Screen
+        name="Upload Video"
+        initialParams={{ item: foodarray }}
+        options={({ route }) => ({
+          tabBarIcon: ({ focused,}) => (
+            <MaterialCommunityIcons name={focused ? 'video-plus' : 'video-plus-outline'} size={34} color="white" />
+          ),
+        })}
+        component={UploadVideo}
       />
       <Tab.Screen
         name="Discover"

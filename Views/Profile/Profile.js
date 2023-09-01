@@ -18,6 +18,8 @@ import WeightAsset from "../../assets/weight-scale.png";
 import * as ImagePicker from 'expo-image-picker';
 import { updateProfile, getAuth } from "firebase/auth";
 import {styles} from "./ProfileStyle.js"
+import { storage } from '../../firebase-config.js';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 const NewProfileComponent = () => {
 
     const [userData, setUserData] = useContext(userDataContext)
@@ -34,28 +36,38 @@ const NewProfileComponent = () => {
         navigation.openDrawer();
     }
     const userRef = user.uid
+    
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images, // Only allow images
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         });
-
-        console.log(result);
-
+    
         if (!result.canceled) {
-            updateProfile(auth.currentUser, {
-                photoURL: result.assets[0].uri
-            }).then(() => {
-                Alert.alert("Successfully updated profile pic,Login and logout to see your new pic")
-            }).catch((error) => {
-                console.log(error)
-            });
-            console.log(user)
+            const imageUri = result.assets[0];
+            const response = await fetch(imageUri);
+            const blob = await response.blob();
+    
+            // Upload the image blob to Firebase Storage
+            const storageRef = ref(storage, 'Profile_Pictures/' + new Date().toISOString() + '.jpg'); // Use .jpg extension
+            try {
+                await uploadBytes(storageRef, blob);
+                const downloadURL = await getDownloadURL(storageRef);
+    
+                // Update user's profile pic in Firebase
+                updateProfile(auth.currentUser, {
+                    photoURL: downloadURL,
+                }).then(() => {
+                    Alert.alert("Successfully updated profile pic. Log in and out to see your new pic.");
+                }).catch((error) => {
+                    console.log(error);
+                });
+            } catch (error) {
+                console.error("Error uploading image:", error);
+            }
         }
-
     };
 
     return (
