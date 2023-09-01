@@ -7,6 +7,8 @@ import * as ImagePicker from "expo-image-picker";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase-config";
 import SuccessModal from "./Components/SucessModal";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { auth,db } from "../../firebase-config";
 
 const UploadVideo = () => {
 
@@ -35,7 +37,18 @@ const UploadVideo = () => {
       try {
         await uploadBytes(storageRef, blob);
         const downloadURL = await getDownloadURL(storageRef);
-        console.log("Video uploaded successfully. Download URL:", downloadURL);
+
+        //upload video data to firestore//
+        const videoData = {
+          url: downloadURL,
+          uploader: auth.currentUser.uid,
+          likes: 0,
+          comments: 0,
+          timestamp: serverTimestamp(),
+        };
+        const videosCollection = collection(db, "Videos");
+        await addDoc(videosCollection, videoData);
+
         setShowModal(true);
       } catch (error) {
         console.error("Error uploading video:", error);

@@ -10,6 +10,7 @@ import NewFilteredRecipeBrowser from '../Views/FilteredRecipeBrowser/FilteredRec
 import NewLoginComponent from '../Views/Login/Login';
 import NewRegisterComponent from '../Views/Register/Register';
 import Search from '../Views/Search/Search';
+
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
   return (
@@ -24,6 +25,7 @@ const StackNavigator = () => {
             <Stack.Screen options={{ headerShown: false }} name="FilteredRecipeBrowser" component={NewFilteredRecipeBrowser} />
             <Stack.Screen options={{ headerShown: false }} name="RecipeFilter" component={FilterRecipes} />
             <Stack.Screen options={{ headerShown: false }} name="SearchComponent" component={Search} />
+            
           </Stack.Navigator>
         </NavigationContainer>
   )

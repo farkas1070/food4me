@@ -62,17 +62,10 @@ const WelcomeScreen = ({ navigation }) => {
           updateProfile(auth.currentUser, {
             displayName: name,
 
-          }).then(() => {
-
-            const userRef = doc(db, 'Users', auth.currentUser.uid);
-            setDoc(userRef, { merge: true });
-
-          }).catch((error) => {
-            console.log(error)
-          });
+          })
         })
 
-        navigation.navigate('GenderComponent')
+        navigation.navigate('OnBoarding')
 
       }
 
@@ -154,8 +147,8 @@ const WelcomeScreen = ({ navigation }) => {
           }}
 
         />
-        <Button icon="login" mode="contained" buttonColor='#fd5a43' onPress={() => console.log('Pressed')} style={{ marginTop: 20, width: '60%' }}>
-          Login
+        <Button icon="login" mode="contained" buttonColor='#fd5a43' onPress={() => {register()}} style={{ marginTop: 20, width: '60%' }}>
+          Register
         </Button>
       </View>
     </View>
