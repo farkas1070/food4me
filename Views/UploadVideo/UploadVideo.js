@@ -9,11 +9,13 @@ import { storage } from "../../firebase-config";
 import SuccessModal from "./Components/SucessModal";
 import { addDoc, collection, serverTimestamp ,doc} from "firebase/firestore";
 import { auth,db } from "../../firebase-config";
+import { TextInput } from 'react-native-paper';
 
 const UploadVideo = () => {
 
     const [showModal, setShowModal] = useState(false);
-    
+    const [title, setTitle] = useState("Healthy Meal");
+    const [description, setDescription] = useState("I will Show you how to make a healthy meal, you need: etc etc etc....");
   const pickVideo = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Videos, // Only allow videos
@@ -43,6 +45,8 @@ const UploadVideo = () => {
           url: downloadURL,
           uploader: doc(db, `Users/${auth.currentUser.uid}`),
           likes: 0,
+          title:title,
+          description:description,
           comments: 0,
           timestamp: serverTimestamp(),
         };
@@ -63,6 +67,37 @@ const UploadVideo = () => {
       <Header />
       <View style={styles.bodyContainer}>
         <Text>Select, an Upload your Video:</Text>
+        <Text style={{ fontFamily: 'CustomFont', fontSize: 22, color: 'white', marginBottom: 10, textAlign: 'left', }}> Login: </Text>
+        <TextInput
+          label="Video Title"
+          value={title}
+
+
+          mode='flat'
+          
+          onChangeText={title => setTitle(title)}
+          style={{ width: '80%', marginTop: 20, backgroundColor: 'white' }}
+          theme={{
+            colors: {
+              primary: '#fd5a43',
+            },
+          }}
+        />
+        <TextInput
+          label="Video Description"
+
+          
+          value={description}
+          mode='flat'
+          
+          onChangeText={description => setDescription(description)}
+          style={{ width: '80%', marginTop: 20, backgroundColor: 'white' }}
+          theme={{
+            colors: {
+              primary: '#fd5a43',
+            },
+          }}
+        />
         <TouchableOpacity
           style={styles.uploadButton}
           onPress={() => {

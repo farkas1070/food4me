@@ -76,7 +76,8 @@ const OnBoarding = ({ navigation }) => {
       BMI: bmi,
       uid:auth.currentUser.uid,
       excersize:parseFloat(checked),
-      profilepic:'None'
+      profilepic:'None',
+      username:auth.currentUser.displayName
 
     })
       .then(() => {

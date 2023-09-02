@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  StatusBar,
+  Image,
+  ScrollView,
 } from "react-native";
 import PagerView from "react-native-pager-view";
 import { Video, ResizeMode } from "expo-av";
@@ -15,11 +16,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { storage, db, auth } from "../../firebase-config";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { FontAwesome } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { videosContext } from "../../Context/GlobalContext";
 import {
   collection,
@@ -27,10 +29,15 @@ import {
   getDocs,
   doc,
   setDoc,
+  getDoc,
   updateDoc,
   query,
   deleteDoc,
 } from "firebase/firestore";
+import ProfilePicPlaceholder from "../../assets/profileAssets/profilePicPlaceholder.jpg";
+import { TextInput } from "react-native-paper";
+
+
 const SlideItem = ({
   item,
   isCurrent,
@@ -42,8 +49,10 @@ const SlideItem = ({
   const [status, setStatus] = useState({});
   const [showVolume, setShowVolume] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const [likesCount,setLikesCount] = useState(item.likes);
+  const [likesCount, setLikesCount] = useState(item.likes);
+  const [uploader, setUploader] = useState("");
 
+  const navigation = useNavigation();
   useEffect(() => {
     // Check if the video has been liked by the current user
     const checkLikes = async () => {
@@ -61,8 +70,15 @@ const SlideItem = ({
       setIsLiked(liked);
       console.log(liked);
     };
+    const getUploader = async () => {
+      const uploaderDoc = await getDoc(item.uploader);
+      if (uploaderDoc.exists()) {
+        setUploader(uploaderDoc.data());
+      }
+    };
 
     checkLikes();
+    getUploader();
   }, [video.id]);
 
   useEffect(() => {
@@ -89,19 +105,15 @@ const SlideItem = ({
   };
 
   const likeVideo = async () => {
-    const likesRef = collection(db, "Likes");
-    const newLike = {
-      userId: auth.currentUser.uid,
-      videoId: item.docid, // Adjust this to your data structure
-    };
-
     if (isLiked) {
       //If liked then we delete it from the collection, and remove 1 like from videos count//
       const videoRef = doc(db, "Videos", item.docid);
-      
-      await deleteDoc(doc(db, "Likes", `${item.docid}-${auth.currentUser.uid}`));
+
+      await deleteDoc(
+        doc(db, "Likes", `${item.docid}-${auth.currentUser.uid}`)
+      );
       await updateDoc(videoRef, {
-        likes: likesCount - 1
+        likes: likesCount - 1,
       });
       setLikesCount(likesCount - 1);
       setIsLiked(!isLiked);
@@ -111,10 +123,10 @@ const SlideItem = ({
         userId: auth.currentUser.uid,
         videoId: item.docid, // Adjust this to your data structure
       });
-      
+
       const videoRef = doc(db, "Videos", item.docid);
       await updateDoc(videoRef, {
-        likes: likesCount + 1
+        likes: likesCount + 1,
       });
       setLikesCount(likesCount + 1);
       setIsLiked(!isLiked);
@@ -143,9 +155,34 @@ const SlideItem = ({
 
       <View style={styles.topContainer}>
         <View style={styles.backContainer}>
-          <Ionicons name="arrow-back-outline" size={35} color="white" />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Ionicons name="arrow-back-outline" size={35} color="white" />
+          </TouchableOpacity>
           <Text style={styles.reelsText}>Reels</Text>
         </View>
+      </View>
+      <View style={styles.infoContainer}>
+        <View style={styles.userInfoContainer}>
+          <Image
+            source={
+              uploader.profilepic == null
+                ? ProfilePicPlaceholder
+                : { uri: uploader.profilepic }
+            }
+            style={{
+              width: 30, // Set the desired width
+              height: 30, // Set the desired height
+              borderRadius: 50,
+            }}
+          />
+          <Text style={styles.profileNameText}>{uploader.username}</Text>
+        </View>
+        <Text style={styles.infoText}>{item.title}</Text>
+        <Text style={styles.infoText}>{item.description}</Text>
       </View>
       <TouchableOpacity
         style={styles.likeButton}
@@ -190,7 +227,8 @@ const YourScreen = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isGlobalMuted, setIsGlobalMuted] = useState(false);
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ["1%", "40%"], []);
+  const snapPoints = useMemo(() => ["1%", "60%"], []);
+  const [comment, setComment] = useState("test komment");
 
   const onPageSelected = (e) => {
     setCurrentPage(e.nativeEvent.position);
@@ -233,17 +271,31 @@ const YourScreen = () => {
           backgroundColor: "#a9a9a9",
         }}
       >
-        <View>
-          <View style={styles.commentsTextContainer}>
-            <Text style={styles.commentsText}>Comments</Text>
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              bottomSheetModalRef.current.close();
-            }}
+        <View style={styles.bottomSheetBody}>
+          <BottomSheetScrollView
+            style={styles.commentsTextContainer}
+            contentContainerStyle={{ alignItems: "center" }}
           >
-            <Text>Close</Text>
-          </TouchableOpacity>
+            <Text>Comment</Text>
+          </BottomSheetScrollView>
+
+          <TextInput
+            label="Comment on the Video..."
+            value={comment}
+            mode="flat"
+            right={
+              <TextInput.Icon
+                icon={() => <Feather name="send" size={24} color="#a9a9a9" />}
+              />
+            }
+            onChangeText={(comment) => setComment(comment)}
+            style={{ width: "100%", backgroundColor: "#262626" }}
+            theme={{
+              colors: {
+                primary: "#a9a9a9",
+              },
+            }}
+          />
         </View>
       </BottomSheet>
     </View>
@@ -322,10 +374,15 @@ const styles = StyleSheet.create({
   plusIcon: {
     marginRight: 15,
   },
+  bottomSheetBody: {
+    width: "100%",
+    height: "100%",
+  },
   commentsTextContainer: {
     width: "100%",
-    alignItems: "center",
-    marginTop: 10,
+
+    backgroundColor: "#262626",
+    flexGrow: 1,
   },
   commentsText: {
     color: "white",
@@ -335,6 +392,24 @@ const styles = StyleSheet.create({
   },
   commentCountText: {
     color: "white",
+  },
+  infoContainer: {
+    position: "absolute",
+    left: 10,
+    bottom: 90,
+    width: "60%",
+  },
+  infoText: {
+    color: "white",
+  },
+  userInfoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  profileNameText: {
+    color: "white",
+    marginLeft: 10,
   },
 });
 
