@@ -33,6 +33,11 @@ const NewHeader = () => {
                 navigation.openDrawer();
               }}
             />
+            <Appbar.Action
+              icon="dots-vertical"
+              color="white"
+              onPress={() => console.log("cog-outline")}
+            />
             
           </View>
 
