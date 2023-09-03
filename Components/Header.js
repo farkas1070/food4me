@@ -6,7 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import { themeContext, } from "../Context/GlobalContext.js"
 import { useContext, } from "react";
 import { useNavigation } from '@react-navigation/native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function Header() {
     const navigation = useNavigation();
     const [darkTheme, setDarkTheme] = useContext(themeContext)

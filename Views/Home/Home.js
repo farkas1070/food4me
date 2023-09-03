@@ -13,7 +13,7 @@ import { Linking } from 'react-native';
 import { auth,db } from "../../firebase-config";
 import { doc, getDoc, } from "firebase/firestore"
 import {generateStyles } from "./HomeStyle"
-
+import NewHeader from '../../Components/NewHeader';
 
 export default function ScreenOne({ navigation }) {
 
@@ -63,7 +63,7 @@ export default function ScreenOne({ navigation }) {
   return (
     <View style={styles.container}>
 
-      <Header />
+      <NewHeader/>
       <View style={{ height: "88%", width: "100%" }}>
         <ScrollView style={styles.bodyContainer(darkTheme)}>
           <View>
