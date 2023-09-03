@@ -209,11 +209,12 @@ const SlideItem = ({ item, isCurrent, isGlobalMuted, toggleGlobalMute }) => {
 
       <BottomSheet
         ref={bottomSheetModalRef}
-        index={1}
+        index={-1}
         snapPoints={snapPoints}
         backgroundStyle={{
           backgroundColor: "#262626",
         }}
+        
         handleIndicatorStyle={{
           backgroundColor: "#a9a9a9",
         }}
@@ -379,9 +380,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   slide: {
-    borderBottomWidth: 1,
+    
     flex: 1,
-    borderBottomColor: "#ccc",
+    
     backgroundColor: "black",
 
     height: Dimensions.get("window").height,

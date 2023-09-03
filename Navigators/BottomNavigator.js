@@ -31,7 +31,7 @@ const BottomTabNavigator = () => {
           {
             backgroundColor: "black",
             height: 60,
-            borderColor: "transparent",
+            
           },
         ],
       }}
