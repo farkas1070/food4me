@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import PagerView from "react-native-pager-view";
 import { Video, ResizeMode } from "expo-av";
@@ -28,31 +29,31 @@ import {
   where,
   getDocs,
   doc,
+  addDoc,
   setDoc,
   getDoc,
   updateDoc,
   query,
   deleteDoc,
+  serverTimestamp,
+  DocumentReference,
 } from "firebase/firestore";
 import ProfilePicPlaceholder from "../../assets/profileAssets/profilePicPlaceholder.jpg";
 import { TextInput } from "react-native-paper";
 
-
-const SlideItem = ({
-  item,
-  isCurrent,
-  isGlobalMuted,
-  toggleGlobalMute,
-  bottomSheetRef,
-}) => {
+const SlideItem = ({ item, isCurrent, isGlobalMuted, toggleGlobalMute }) => {
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [showVolume, setShowVolume] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(item.likes);
   const [uploader, setUploader] = useState("");
-
+  const bottomSheetModalRef = useRef(null);
+  const snapPoints = useMemo(() => ["1%", "60%"], []);
+  const [comment, setComment] = useState("test komment");
+  const [comments, setComments] = useState([]);
   const navigation = useNavigation();
+
   useEffect(() => {
     // Check if the video has been liked by the current user
     const checkLikes = async () => {
@@ -76,9 +77,35 @@ const SlideItem = ({
         setUploader(uploaderDoc.data());
       }
     };
+    const getComments = async () => {
+      const commentsQuery = query(
+        collection(db, "Comments"),
+        where("videoId", "==", item.docid)
+      );
+      const snapshot = await getDocs(commentsQuery);
+
+      const commentsData = await Promise.all(
+        snapshot.docs.map(async (doc) => {
+          const commentData = doc.data(); // Extract comment data
+
+          // If 'uploader' is a reference field, fetch the referenced document
+          if (commentData.uploader instanceof DocumentReference) {
+            const uploaderDoc = await getDoc(commentData.uploader);
+            if (uploaderDoc.exists()) {
+              commentData.uploader = uploaderDoc.data(); // Replace the reference with the actual data
+            }
+          }
+
+          return commentData;
+        })
+      );
+
+      setComments(commentsData); // Set the comments state with the extracted data
+    };
 
     checkLikes();
     getUploader();
+    getComments();
   }, [video.id]);
 
   useEffect(() => {
@@ -101,7 +128,21 @@ const SlideItem = ({
   };
 
   const openBottomSheet = () => {
-    bottomSheetRef.current.expand();
+    bottomSheetModalRef.current.expand();
+  };
+  const sendComment = async () => {
+    try {
+      const commentsRef = collection(db, "Comments");
+      await addDoc(commentsRef, {
+        videoId: item.docid,
+        uploader: doc(db, `Users/${auth.currentUser.uid}`),
+        text: comment,
+        timestamp: serverTimestamp(),
+      });
+      console.log("Comment added successfully.");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
   };
 
   const likeVideo = async () => {
@@ -134,10 +175,10 @@ const SlideItem = ({
   };
 
   return (
-    <View style={styles.slide}>
+    <KeyboardAvoidingView style={styles.slide}>
       <TouchableOpacity
         activeOpacity={1}
-        style={{ width: "100%", heighht: "100%" }}
+        style={{ width: "100%", heighht: "100%", zIndex: -2 }}
         onPress={toggleMute}
       >
         <Video
@@ -165,6 +206,76 @@ const SlideItem = ({
           <Text style={styles.reelsText}>Reels</Text>
         </View>
       </View>
+
+      <BottomSheet
+        ref={bottomSheetModalRef}
+        index={1}
+        snapPoints={snapPoints}
+        backgroundStyle={{
+          backgroundColor: "#262626",
+        }}
+        handleIndicatorStyle={{
+          backgroundColor: "#a9a9a9",
+        }}
+      >
+        <View style={styles.bottomSheetBody}>
+          <BottomSheetScrollView
+            style={styles.commentsTextContainer}
+            contentContainerStyle={{ alignItems: "center" }}
+          >
+            <Text style={styles.CommentsTitleText}>Comments</Text>
+            {comments.map((comment, index) => {
+              return (
+                <View style={styles.commentView} key={index}>
+                  <Image
+                    source={
+                      comment.uploader.profilepic == null
+                        ? ProfilePicPlaceholder
+                        : { uri: comment.uploader.profilepic }
+                    }
+                    style={{
+                      width: 30, // Set the desired width
+                      height: 30, // Set the desired height
+                      borderRadius: 50,
+                    }}
+                  />
+                  <View style={styles.commentTextView}>
+                    <Text style={styles.commentsTextTitle}>{comment.uploader.username}</Text>
+                    <Text style={styles.commentsText}>{comment.text}</Text>
+                  </View>
+                </View>
+              );
+            })}
+          </BottomSheetScrollView>
+
+          <TextInput
+            label="Comment on the Video..."
+            value={comment}
+            mode="flat"
+            right={
+              <TextInput.Icon
+                icon={() => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      sendComment();
+                    }}
+                  >
+                    <Feather name="send" size={24} color="#a9a9a9" />
+                  </TouchableOpacity>
+                )}
+              />
+            }
+            onChangeText={(comment) => setComment(comment)}
+            style={{ width: "100%", backgroundColor: "white" }}
+            theme={{
+              colors: {
+                primary: "#a9a9a9",
+              },
+            }}
+          />
+        </View>
+      </BottomSheet>
+
       <View style={styles.infoContainer}>
         <View style={styles.userInfoContainer}>
           <Image
@@ -217,7 +328,7 @@ const SlideItem = ({
           />
         </TouchableOpacity>
       )}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -226,9 +337,6 @@ const YourScreen = () => {
   const pagerViewRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [isGlobalMuted, setIsGlobalMuted] = useState(false);
-  const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ["1%", "60%"], []);
-  const [comment, setComment] = useState("test komment");
 
   const onPageSelected = (e) => {
     setCurrentPage(e.nativeEvent.position);
@@ -254,50 +362,10 @@ const YourScreen = () => {
               isCurrent={index === currentPage}
               isGlobalMuted={isGlobalMuted}
               toggleGlobalMute={toggleGlobalMute}
-              bottomSheetRef={bottomSheetModalRef}
             />
           </View>
         ))}
       </PagerView>
-
-      <BottomSheet
-        ref={bottomSheetModalRef}
-        index={0}
-        snapPoints={snapPoints}
-        backgroundStyle={{
-          backgroundColor: "#262626",
-        }}
-        handleIndicatorStyle={{
-          backgroundColor: "#a9a9a9",
-        }}
-      >
-        <View style={styles.bottomSheetBody}>
-          <BottomSheetScrollView
-            style={styles.commentsTextContainer}
-            contentContainerStyle={{ alignItems: "center" }}
-          >
-            <Text>Comment</Text>
-          </BottomSheetScrollView>
-
-          <TextInput
-            label="Comment on the Video..."
-            value={comment}
-            mode="flat"
-            right={
-              <TextInput.Icon
-                icon={() => <Feather name="send" size={24} color="#a9a9a9" />}
-              />
-            }
-            onChangeText={(comment) => setComment(comment)}
-            style={{ width: "100%", backgroundColor: "#262626" }}
-            theme={{
-              colors: {
-                primary: "#a9a9a9",
-              },
-            }}
-          />
-        </View>
-      </BottomSheet>
     </View>
   );
 };
@@ -312,6 +380,7 @@ const styles = StyleSheet.create({
   },
   slide: {
     borderBottomWidth: 1,
+    flex: 1,
     borderBottomColor: "#ccc",
     backgroundColor: "black",
 
@@ -331,6 +400,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
+    zIndex: -1,
   },
   commentButton: {
     position: "absolute",
@@ -341,6 +411,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
+    zIndex: -1,
   },
   volumeButton: {
     position: "absolute",
@@ -352,6 +423,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
+    zIndex: -1,
   },
   topContainer: {
     width: "100%",
@@ -360,11 +432,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    zIndex: -1,
   },
   backContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginLeft: 15,
+    zIndex: -1,
   },
   reelsText: {
     color: "white",
@@ -384,8 +458,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#262626",
     flexGrow: 1,
   },
+  CommentsTitleText: {
+    color: "white",
+    marginTop: 20,
+  },
   commentsText: {
     color: "white",
+  },
+  commentsTextTitle:{
+    color:'white',
+    fontWeight:'bold'
   },
   likesCountText: {
     color: "white",
@@ -398,6 +480,7 @@ const styles = StyleSheet.create({
     left: 10,
     bottom: 90,
     width: "60%",
+    zIndex: -1,
   },
   infoText: {
     color: "white",
@@ -410,6 +493,16 @@ const styles = StyleSheet.create({
   profileNameText: {
     color: "white",
     marginLeft: 10,
+  },
+  commentView: {
+    width: "100%",
+    flexDirection: "row",
+    padding: 20,
+    marginBottom: 10,
+    alignItems: "center",
+  },
+  commentTextView:{
+    marginLeft:20
   },
 });
 
