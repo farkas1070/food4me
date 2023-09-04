@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Text, TouchableOpacity, Image } from "react-native";
 
 import { themeContext } from "../../Context/GlobalContext";
 import { useContext, useEffect } from "react";
@@ -11,6 +11,8 @@ import NewHeader from "../../Components/NewHeader";
 import InfoCarousel from "./Components/InfoCarousel";
 import Footer from "./Components/Footer";
 import GridView from "./Components/GridView";
+import TopImage from "./Components/TopImage";
+import Card from "./Components/Card"
 export default function ScreenOne() {
   const [darkTheme, setDarkTheme] = useContext(themeContext);
   const styles = generateStyles(darkTheme);
@@ -27,7 +29,14 @@ export default function ScreenOne() {
     <ScrollView style={styles.container}>
       <NewHeader />
       <View style={styles.bodyContainer(darkTheme)}>
-        <View>
+        <View style={styles.topCard}>
+          <Text style={styles.welcomeText}>Welcome To Food4Me,{"\n"}Have a Look Around 🍔</Text>
+          <Card></Card>
+        </View>
+        <View style={styles.ImageContainer}>
+          <TopImage></TopImage>
+        </View>
+        <View style={styles.GridContainer}>
           <GridView></GridView>
         </View>
         <View style={styles.homepictureview(darkTheme)}>

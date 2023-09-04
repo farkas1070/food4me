@@ -45,7 +45,7 @@ export const generateStyles = (darkTheme) => {
       alignItems: "center",
 
       width: "100%",
-      height: 400,
+      
 
       backgroundImage: "url",
     }),
@@ -57,5 +57,19 @@ export const generateStyles = (darkTheme) => {
       backgroundColor: darkTheme ? "#181616" : "black",
       flexDirection: "row",
     }),
+    topCard: {
+      width: "100%",
+
+      padding: 20,
+      marginBottom: 60,
+    },
+    welcomeText: {
+      fontSize: 24,
+      fontWeight: "bold",
+      marginTop: 20,
+      marginBottom: 60,
+    },
+    ImageContainer: {},
+    GridContainer: {marginTop:50},
   });
 };
