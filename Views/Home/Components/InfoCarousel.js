@@ -3,14 +3,23 @@ import { View, Text, Image,  StyleSheet, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native';
 import {styles} from "./InfoCarouselStyle"
 import { foodContext } from '../../../Context/GlobalContext';
-
+import { useNavigation } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import CustomFont from '../../../fonts/Raleway-Bold.ttf';
 const RecipeCard = ({ item }) => {
-  
+  const navigation = useNavigation();
+  const [loaded] = useFonts({
+    CustomFont: CustomFont,
+});
+
+if (!loaded) {
+    return null;
+}
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={() => { navigation.navigate("SingleElement", { item: item }) }}>
       <Image source={{ uri: item.image }} style={styles.image} />
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>{item.name}</Text>
+      <View >
+        <Text style={[styles.title,{fontFamily:'CustomFont'}]}>{item.name}</Text>
         
       </View>
     </TouchableOpacity>
@@ -22,6 +31,7 @@ const InfoCarousel = () => {
   const promoArray = foodArray.slice(0, 10);
   return (
     <View style={styles.container}>
+      
       <FlatList
         data={promoArray}
         horizontal={true}

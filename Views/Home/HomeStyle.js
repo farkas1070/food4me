@@ -69,7 +69,20 @@ export const generateStyles = (darkTheme) => {
       marginTop: 20,
       marginBottom: 60,
     },
-    ImageContainer: {},
-    GridContainer: {marginTop:50},
+    ImageContainer: {marginTop:60},
+    GridContainer: { marginTop: 50 },
+    topContainer: {
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    popularText: {
+      marginLeft: 20,
+      
+    },
+    viewAllText: {
+      marginRight: 20,
+    },
   });
 };

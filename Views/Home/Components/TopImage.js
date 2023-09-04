@@ -16,7 +16,7 @@ const TopImage = () => {
         colors={[
           "rgba(255, 255, 255, 1)",
           "rgba(255, 255, 255, 0)",
-          "rgba(255, 255, 255, 1)",
+          "rgba(0, 0, 0, 1)",
         ]}
         style={styles.gradient}
         start={{ x: 0.5, y: 0 }} // Start at the top (0) of the container

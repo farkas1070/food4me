@@ -4,31 +4,34 @@ import { StyleSheet } from 'react-native'
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
-    paddingHorizontal: 16,
+    
+    
     paddingTop: 20,
   },
   listContainer: {
     paddingBottom: 20,
   },
   card: {
-    backgroundColor: 'white',
+    
     borderRadius: 12,
-    elevation: 5,
+    
     marginBottom: 16,
+    marginLeft:20,
+    marginRight:5,
     overflow: 'hidden',
+    width:300
   },
   image: {
     width: '100%',
     height: 200,
+    borderRadius:20
   },
-  textContainer: {
-    padding: 16,
-  },
+   
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 8,
+    
+    marginTop: 15,
+    marginLeft:2
   },
   description: {
     fontSize: 16,
