@@ -19,8 +19,8 @@ if (!loaded) {
     <TouchableOpacity style={styles.card} onPress={() => { navigation.navigate("SingleElement", { item: item }) }}>
       <Image source={{ uri: item.image }} style={styles.image} />
       <View >
-        <Text style={[styles.title,{fontFamily:'CustomFont'}]}>{item.name}</Text>
-        
+        <Text style={[styles.title,{fontFamily:'CustomFont'}]}>{item.name.length > 40 ? item.name.slice(0, 40) + '...' : item.name}</Text>
+        <Text style={[styles.title,{fontFamily:'CustomFont'}]}>{}</Text>
       </View>
     </TouchableOpacity>
   );

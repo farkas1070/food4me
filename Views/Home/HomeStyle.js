@@ -65,7 +65,7 @@ export const generateStyles = (darkTheme) => {
     },
     welcomeText: {
       fontSize: 24,
-      fontWeight: "bold",
+      
       marginTop: 20,
       marginBottom: 60,
     },
@@ -83,6 +83,7 @@ export const generateStyles = (darkTheme) => {
     },
     viewAllText: {
       marginRight: 20,
+      color:'orange'
     },
   });
 };
