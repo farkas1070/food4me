@@ -1,0 +1,60 @@
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
+  mainContainer: { width: "100%" },
+  container: { padding: 20, flexDirection: "row" },
+  secondaryContainer: { width: "70%" },
+  nameText: {
+    fontFamily: "CustomFont",
+    fontSize: 18,
+    color: "black",
+    marginTop: 20,
+    textAlign: "left",
+  },
+  button: {
+    borderRadius: 50,
+    width: 60,
+    height: 60,
+    backgroundColor: "#f44336",
+    justifyContent: "center",
+    alignItems: "center",
+    top: -50,
+    right: -30,
+    borderColor: "white",
+    borderWidth: 2,
+  },
+  infoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 20,
+    borderBottomColor: "#efefef",
+    borderBottomWidth: 1.3,
+  },
+  nutritionName: {
+    fontFamily: "CustomFont",
+    fontSize: 13,
+    color: "grey",
+    marginTop: 5,
+    textAlign: "left",
+  },
+  nutritionAmount: {
+    fontFamily: "CustomFont",
+    fontSize: 14,
+    color: "#fd5a43",
+    fontWeight: "700",
+    marginTop: 5,
+    textAlign: "left",
+  },
+  chipContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    padding: 20,
+  },
+  chip: {
+    marginTop: 5,
+    marginRight: 5,
+    marginBottom: 5,
+    backgroundColor: "rgba(253, 90, 67, 1)",
+  },
+});

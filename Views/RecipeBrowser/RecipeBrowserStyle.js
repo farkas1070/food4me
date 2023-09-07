@@ -22,7 +22,7 @@ export const generateStyles  = (darkTheme) => {
         },
         overlay: {
             ...StyleSheet.absoluteFillObject,
-            backgroundColor: 'rgba(253, 90, 67, 0.6)', // Orange with 50% opacity
+            backgroundColor: 'rgba(253, 90, 67, 0.1)', // Orange with 50% opacity
         },
     
         input: (darkTheme) => ({

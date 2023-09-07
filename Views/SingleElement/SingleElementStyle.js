@@ -21,36 +21,9 @@ export const styles = StyleSheet.create({
         height: undefined,
         aspectRatio: 4 / 3, // Change this to match your image aspect ratio
     },
-    backgroundImage: {
-        flex: 1,
-        width: '100%',
-        height: '120%',
-
-
-
-    },
-    noitemimage: {
-
-        width: 300,
-        height: 300
-    },
-    appBar: {
-
-        backgroundColor: 'transparent',
-        justifyContent: "flex-start",
-        alignItems: 'center',
-        height: 450,
-        width: "100%",
-        flexDirection: "column",
-        borderBottomEndRadius: 30,
-        borderBottomStartRadius: 30,
-
-        overflow: 'hidden',
-
-
-
-
-    },
+    
+    
+    
     bordercontainer: {
         alignItems: 'center',
         justifyContent: 'center',

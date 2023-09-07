@@ -36,7 +36,7 @@ const InfoCarousel = () => {
         data={promoArray}
         horizontal={true}
         renderItem={({ item }) => <RecipeCard item={item} />}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.docid}
         contentContainerStyle={styles.listContainer}
       />
     </View>

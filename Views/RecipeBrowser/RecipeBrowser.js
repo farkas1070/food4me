@@ -13,6 +13,7 @@ import Dollar from '../../assets/dollar.png'
 import Leaf from '../../assets/leaf.png'
 import { Button } from 'react-native-paper';
 import { generateStyles } from './RecipeBrowserStyle.js';
+import HeaderBackground from "../../assets/HomeAssets/HeaderBackground.jpg"
 const RecipeBrowser = ({ navigation }) => {
 
     const [darkTheme, setDarkTheme] = useContext(themeContext)
@@ -65,10 +66,7 @@ const RecipeBrowser = ({ navigation }) => {
             <View style={{ width: '100%', height: '100%', flexGrow: 1 }}>
                 <ImageBackground
                     style={styles.backgroundImage}
-                    source={{
-                        uri: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=962&q=80',
-                        cache: 'force-cache',
-                    }}
+                    source={HeaderBackground}
                     resizeMode="cover"
 
                 >

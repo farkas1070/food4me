@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   },
   textInput: {
     width: "80%",
-    marginTop: '40%',
+    marginTop: "40%",
   },
   backButton: {
     position: "absolute",
@@ -25,9 +25,9 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 1,
   },
-  generateButton:{
+  generateButton: {
     position: "absolute",
-    flexDirection:'row',
+    flexDirection: "row",
     top: 50,
     right: 20,
     borderRadius: 40,
@@ -35,9 +35,9 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 1,
   },
-  generateText:{
-    color:'white',
-    fontSize:18
+  generateText: {
+    color: "white",
+    fontSize: 18,
   },
   chiplistContainer: {
     flexDirection: "row",
@@ -45,18 +45,38 @@ export const styles = StyleSheet.create({
     backgroundColor: "white",
     height: "100%",
     width: "100%",
-    borderTopLeftRadius:60,
-    borderTopRightRadius:60,
+    borderTopLeftRadius: 60,
+    borderTopRightRadius: 60,
   },
-  topTextContainer:{
-    width:'100%',
+  topTextContainer: {
+    width: "100%",
     alignItems: "center",
   },
-  topText:{
-    marginTop:10
+  topText: {
+    marginTop: 10,
   },
-  chipContainer:{
-    padding:20
+  chipContainer: {
+    padding: 20,
   },
-  
+  emptySearchContainer: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "flex-start",
+
+    alignItems: "center",
+  },
+  emptySearchImage: {
+    width: "50%",
+    height: "50%",
+  },
+  selectText: {
+    marginTop: 20,
+  },
+  loadingOverlay: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: { textAlign: "center",marginTop:20 },
 });

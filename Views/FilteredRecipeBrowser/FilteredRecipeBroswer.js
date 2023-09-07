@@ -14,6 +14,7 @@ import Leaf from '../../assets/leaf.png'
 import noitemfound from "../../assets/noitemfound.png"
 import { Button } from 'react-native-paper';
 import {generateStyles} from "./FilteredRecipeBrowserStyle.js"
+import HeaderBackground from "../../assets/HomeAssets/HeaderBackground.jpg"
 const RecipeBrowser = ({ navigation,route }) => {
     const { item } = route.params;
     const [darkTheme, setDarkTheme] = useContext(themeContext)
@@ -63,10 +64,7 @@ const RecipeBrowser = ({ navigation,route }) => {
 
             <ImageBackground
                 style={styles.backgroundImage}
-                source={{
-                    uri: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=962&q=80',
-                    cache: 'force-cache',
-                }}
+                source={HeaderBackground}
                 resizeMode="cover"
 
             >
