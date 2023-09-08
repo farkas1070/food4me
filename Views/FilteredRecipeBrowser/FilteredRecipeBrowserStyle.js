@@ -91,10 +91,13 @@ export const generateStyles  = (darkTheme) => {
     
         }),
         pagingview: {
-            height: 90,
-            alignItems: 'center',
-            flexDirection: 'row',
-        },
+            height: 70,
+            width: "100%",
+            justifyContent: "center",
+            backgroundColor: "white",
+            alignItems: "center",
+            flexDirection: "row",
+          },
         Button: (darkTheme) => ({
             justifyContent: 'center',
             marginLeft: 20,

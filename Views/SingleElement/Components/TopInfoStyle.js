@@ -48,8 +48,8 @@ export const styles = StyleSheet.create({
   },
   chipContainer: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    padding: 20,
+    flexWrap: "wrap",   
+    padding: 20,  
   },
   chip: {
     marginTop: 5,

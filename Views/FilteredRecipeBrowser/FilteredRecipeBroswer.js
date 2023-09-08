@@ -20,7 +20,7 @@ const RecipeBrowser = ({ navigation,route }) => {
     const [darkTheme, setDarkTheme] = useContext(themeContext)
     const styles = generateStyles(darkTheme)
     const [pagestart, setPageStart] = useState(0)
-    const [pageend, setPageEnd] = useState(9)
+    const [pageend, setPageEnd] = useState(18)
     const [pagecount, setPageCount] = useState(0)
     const scrollRef = useRef();
     
@@ -30,8 +30,8 @@ const RecipeBrowser = ({ navigation,route }) => {
 
     
     const pageBackwards = () => {
-        setPageStart(pagestart - 10)
-        setPageEnd(pageend - 10)
+        setPageStart(pagestart - 20)
+        setPageEnd(pageend - 20)
         setPageCount(pagecount - 1)
         scrollRef.current?.scrollTo({
             y: 0,
@@ -39,8 +39,8 @@ const RecipeBrowser = ({ navigation,route }) => {
         });
     }
     const pageForward = () => {
-        setPageStart(pagestart + 10)
-        setPageEnd(pageend + 10)
+        setPageStart(pagestart + 20)
+        setPageEnd(pageend + 20)
         setPageCount(pagecount + 1)
         scrollRef.current?.scrollTo({
             y: 0,
