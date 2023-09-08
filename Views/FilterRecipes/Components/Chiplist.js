@@ -1,7 +1,7 @@
-import { StyleSheet,  View } from 'react-native'
+import {   View } from 'react-native'
 import React from 'react'
 import { Chip } from 'react-native-paper';
-
+import {styles} from "./ChiplistStyle"
 const ChipList = ({ options, selectedIndices, setSelectedIndices }) => {
 
     const handleChipPress = (index) => {
@@ -14,14 +14,14 @@ const ChipList = ({ options, selectedIndices, setSelectedIndices }) => {
     };
   
     return (
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+      <View style={styles.container}>
         {options.map((option, index) => (
           <Chip
             key={option}
   
             selectedColor={selectedIndices.includes(option) ? 'white' : '#fd5a43'}
             onPress={() => handleChipPress(option)}
-            style={{ marginTop: 5, marginRight: 5, marginBottom: 5, backgroundColor: selectedIndices.includes(option) ? '#fd5a43' : 'white', borderColor: '#fd5a43', borderWidth: 0.5 }}
+            style={[styles.chip,{backgroundColor: selectedIndices.includes(option) ? '#fd5a43' : 'white',}]}
           >
             {option}
           </Chip>
@@ -32,4 +32,3 @@ const ChipList = ({ options, selectedIndices, setSelectedIndices }) => {
 
 export default ChipList
 
-const styles = StyleSheet.create({})
