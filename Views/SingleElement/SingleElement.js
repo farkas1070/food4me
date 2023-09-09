@@ -23,7 +23,7 @@ import GeneralInformation from "./Components/GeneralInformation";
 import Ingredients from "./Components/Ingredients";
 import Steps from "./Components/Steps";
 import DataTableComponent from "./Components/DataTable";
-const NewSingleElement = ({ navigation, route }) => {
+const NewSingleElement = ({ route }) => {
   const { item } = route.params;
 
   const [page, setPage] = useState(0);
@@ -90,7 +90,6 @@ const NewSingleElement = ({ navigation, route }) => {
     });
   }
 
-  
   const handleFavouriteChange = async () => {
     if (favouritesSnapshot.length == 0) {
       await setDoc(doc(db, "Favourites", `${docid}-${auth.currentUser.uid}`), {
@@ -124,18 +123,15 @@ const NewSingleElement = ({ navigation, route }) => {
         setModifiedIngredients(newarray);
       }
     };
-    const getTypeRef = async () => {
+    const getTypeRef = () => {
       if (!typeSnapshotLoading) {
         let newarray = [];
-        await Promise.all(
-          typeSnapshot.map(async (type) => {
-            const docSnap = await getDoc(type.Type_ID);
-            var subdata = { ...type };
-            subdata.name = docSnap.data().name;
 
-            newarray.push({ ...subdata });
-          })
-        );
+        typeSnapshot.map((type) => {
+          const typeName = type.name; // Get the "name" field value directly
+          newarray.push({ ...type, name: typeName });
+        });
+
         setModifiedTypes(newarray);
       }
     };
