@@ -147,7 +147,7 @@ const FilterRecipes = ({ navigation }) => {
     foodarrayCopy = filterRecipesByTime(foodarrayCopy);
     console.log(foodarrayCopy.length);
 
-    //navigation.navigate("FilteredRecipeBrowser", { item: foodarrayCopy });
+    navigation.navigate("FilteredRecipeBrowser", { item: foodarrayCopy });
   };
 
   const [loaded] = useFonts({

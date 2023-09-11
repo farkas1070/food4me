@@ -20,13 +20,7 @@ export default function ScreenOne() {
   const [darkTheme, setDarkTheme] = useContext(themeContext);
   const styles = generateStyles(darkTheme);
   const navigation = useNavigation();
-  useEffect(() => {
-    const getUserData = async (recipeId) => {
-      console.log(auth.currentUser.uid);
-      const docRef = doc(db, "Users", auth.currentUser.uid);
-    };
-    getUserData();
-  }, []);
+ 
   const [loaded] = useFonts({
     CustomFont: CustomFont,
 });

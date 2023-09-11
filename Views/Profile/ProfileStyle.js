@@ -51,10 +51,7 @@ export const styles = StyleSheet.create({
         flex: 1,
 
     },
-    overlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(253, 90, 67, 0.2)', // Orange with 50% opacity
-    },
+    
     profileImage: {
         width: 150,
         height: 150,
@@ -62,20 +59,6 @@ export const styles = StyleSheet.create({
         borderRadius: 400 / 2,
 
     },
-    appBar: {
-
-        backgroundColor: 'transparent',
-        justifyContent: "center",
-        height: 300,
-        width: "100%",
-        flexDirection: "column",
-
-
-    },
-    title: {
-        color: 'white',
-        fontSize: 20,
-        marginTop: 20,
-        fontWeight: "bold",
-    },
+    
+    
 })
