@@ -1,19 +1,10 @@
 import { Text, View, ScrollView } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useFonts } from "expo-font";
 import CustomFont from "../../fonts/myfont.otf";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "../../firebase-config";
-import {
-  query,
-  collection,
-  where,
-  getDocs,
-  getDoc,
-  updateDoc,
-  doc,
-  deleteField 
-} from "firebase/firestore";
+import { query, collection, where, getDoc } from "firebase/firestore";
 import { ActivityIndicator } from "react-native-paper";
 import RangeSlider from "react-native-range-slider-expo";
 import { foodContext } from "../../Context/GlobalContext";
@@ -26,18 +17,20 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 const FilterRecipes = ({ navigation }) => {
   const [typessnapshot, typesloading, typeserror] = useCollectionData(
-    query(collection(db, "Types"))
+    query(collection(db, "Recipe_Types"))
   );
   const [nutrientsnapshot, nutrientloading, nutrienterror] = useCollectionData(
     query(collection(db, "Recipe_Nutrition"), where("name", "==", "Calories"))
   );
   const [selectedGeneralChips, setSelectedGeneralChips] = useState([]);
+
   const [selectedTypeChips, setSelectedTypeChips] = useState([]);
+  const [distinctTypes, setDistinctTypes] = useState([]);
   const [foodarray] = useContext(foodContext);
   const [ServingfromValue, setServingFromValue] = useState(1);
   const [ServingtoValue, setServingToValue] = useState(15);
-  const [KcalfromValue, setKcalFromValue] = useState("");
-  const [KcaltoValue, setKcalToValue] = useState("");
+  const [KcalfromValue, setKcalFromValue] = useState("0");
+  const [KcaltoValue, setKcalToValue] = useState("2000");
   const [MinutesfromValue, setMinutesFromValue] = useState(1);
   const [MinutestoValue, setMinutesToValue] = useState(180);
 
@@ -48,37 +41,54 @@ const FilterRecipes = ({ navigation }) => {
     "healthy",
     "vegetarian",
   ];
+  useEffect(() => {
+    if (!typesloading) {
+      const distinctNames = new Set();
+
+      typessnapshot.forEach((doc) => {
+        const name = doc.name; // Assuming 'name' is the field in your Recipe_Types collection
+        distinctNames.add(name);
+      });
+
+      const distinctArray = Array.from(distinctNames);
+      setDistinctTypes(distinctArray);
+    }
+  }, [typesloading]);
 
   const GoBackToRecipeBrowser = () => {
     navigation.goBack();
   };
-  const filterRecipesByGeneralFilters = () => {
-    if (selectedGeneralChips.length === 0) {
-      return foodarray; // Return the original array when no filters are selected
-    } else {
-      let filteredlist = foodarray.filter((item) => {
+  const filterRecipesByGeneralFilters = (array) => {
+    if (selectedGeneralChips.length > 0) {
+      return array.filter((item) => {
         return selectedGeneralChips.every((chip) => item[chip] === true);
       });
-      console.log("Filtered list:", filteredlist);
-      return filteredlist;
+    } else {
+      return array;
     }
   };
-  const filterRecipesByServingValues = () => {
-    let filteredlist = foodarray.filter((item) => {
-      return (
-        item.servings >= ServingfromValue && item.servings <= ServingtoValue
-      );
-    });
-    return filteredlist;
+  const filterRecipesByServingValues = (array) => {
+    if (ServingfromValue > 1 || ServingtoValue < 15) {
+      return array.filter((item) => {
+        return (
+          item.servings >= ServingfromValue && item.servings <= ServingtoValue
+        );
+      });
+    } else {
+      return array;
+    }
   };
-  
-  const filterRecipesByTime = () => {
-    let filteredlist = foodarray.filter((item) => {
-      return item.ready >= MinutesfromValue && item.ready <= MinutestoValue;
-    });
-    return filteredlist;
+
+  const filterRecipesByTime = (array) => {
+    if (MinutesfromValue > 1 || MinutestoValue < 180) {
+      return array.filter((item) => {
+        return item.ready >= MinutesfromValue && item.ready <= MinutestoValue;
+      });
+    } else {
+      return array;
+    }
   };
-  const filterRecipesByKcal = async () => {
+  const filterRecipesByKcal = async (array) => {
     let permanentList = [];
     if (!nutrientloading) {
       // Map the snapshot to an array of promises
@@ -90,53 +100,54 @@ const FilterRecipes = ({ navigation }) => {
           ) {
             const docSnap = await getDoc(item.Recipe_ID);
             const recipeData = docSnap.data(); // Get the recipe data
+            console.log(recipeData);
             permanentList.push({ ...recipeData });
           }
         })
       );
     }
 
-    // Filter the foodarray based on the permanentList's name property
-    const filteredFoodArray = foodarray.filter((foodItem) =>
+    return array.filter((foodItem) =>
       permanentList.some(
         (permanentItem) => permanentItem.name === foodItem.name
       )
     );
-
-    return filteredFoodArray;
   };
-  const filterRecipesByTypes = async () => {
-    let permanentList = [];
-    if (!typesloading) {
-      // Map the snapshot to an array of promises
+
+  const filterRecipesByTypes = async (array) => {
+    if (selectedTypeChips.length > 0) {
+      const filteredTypes = typessnapshot.filter((type) => {
+        return selectedTypeChips.includes(type.name);
+      });
+
+      let permanentList = [];
       await Promise.all(
-        typessnapshot.map(async (item) => {
-          if (
-            item.amount >= parseInt(KcalfromValue) &&
-            item.amount <= parseInt(KcaltoValue)
-          ) {
-            const docSnap = await getDoc(item.Recipe_ID);
-            const recipeData = docSnap.data(); // Get the recipe data
-            permanentList.push({ ...recipeData });
-          }
+        filteredTypes.map(async (item) => {
+          const docSnap = await getDoc(item.Recipe_ID);
+          const recipeData = docSnap.data(); // Get the recipe data
+          permanentList.push({ ...recipeData });
         })
       );
+      return array.filter((foodItem) =>
+        permanentList.some(
+          (permanentItem) => permanentItem.name === foodItem.name
+        )
+      );
+    } else {
+      return array;
     }
-
-    // Filter the foodarray based on the permanentList's name property
-    const filteredFoodArray = foodarray.filter((foodItem) =>
-      permanentList.some(
-        (permanentItem) => permanentItem.name === foodItem.name
-      )
-    );
-
-    return filteredFoodArray;
   };
 
   const filterRecipesAndNavigate = async () => {
-    await updateCollection();
+    let foodarrayCopy = foodarray.map((i) => ({ ...i }));
+    foodarrayCopy = filterRecipesByGeneralFilters(foodarrayCopy);
+    foodarrayCopy = await filterRecipesByTypes(foodarrayCopy);
+    foodarrayCopy = filterRecipesByServingValues(foodarrayCopy);
+    foodarrayCopy = await filterRecipesByKcal(foodarrayCopy);
+    foodarrayCopy = filterRecipesByTime(foodarrayCopy);
+    console.log(foodarrayCopy.length);
 
-    //navigation.navigate("FilteredRecipeBrowser", { item: filteredlist });
+    //navigation.navigate("FilteredRecipeBrowser", { item: foodarrayCopy });
   };
 
   const [loaded] = useFonts({
@@ -319,7 +330,7 @@ const FilterRecipes = ({ navigation }) => {
                   <ActivityIndicator animating={true} color="grey" />
                 ) : (
                   <ChipList
-                    options={typessnapshot.map((a) => a.name)}
+                    options={distinctTypes.map((a) => a)}
                     selectedIndices={selectedTypeChips}
                     setSelectedIndices={setSelectedTypeChips}
                   />

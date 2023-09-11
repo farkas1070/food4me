@@ -24,8 +24,8 @@ const Header = ({filterRecipesAndNavigate ,GoBackToRecipeBrowser}) => {
             icon="check"
             color="grey"
             style={{ backgroundColor: "white" }}
-            onPress={() => {
-              filterRecipesAndNavigate();
+            onPress={async () => {
+              await filterRecipesAndNavigate();
             }}
           />
           <Appbar.Content
