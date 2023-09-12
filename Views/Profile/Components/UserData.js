@@ -11,7 +11,7 @@ import Gender from "../../../assets/profileAssets/gender.png";
 import Dumbbell from "../../../assets/profileAssets/gym.png";
 import Chart from "../../../assets/profileAssets/chart.png";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import DeleteUser from "../../../assets/profileAssets/deleteuser.png"
 import CustomInfo from "./CustomInfo";
 import { styles } from "./UserDataStyle";
 const UserData = ({ userData }) => {
@@ -92,6 +92,19 @@ const UserData = ({ userData }) => {
             leftIcon={Gender} // Pass the left icon
             ageText="Gender" // Pass the age text
             actualValue={userData.gender} // Pass the actual value
+            measure={""}
+          />
+        </View>
+        <View style={styles.informationContainer}>
+          <View style={styles.infoTextContainer}>
+            <Text style={[styles.topText, { fontFamily: "MontserratBold" }]}>
+              Other Options:
+            </Text>
+          </View>
+          <CustomInfo
+            leftIcon={DeleteUser} // Pass the left icon
+            ageText="Delete Account" // Pass the age text
+            actualValue={''} // Pass the actual value
             measure={""}
           />
         </View>

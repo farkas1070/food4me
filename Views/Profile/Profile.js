@@ -1,40 +1,50 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import { ImageBackground, View, Image, ScrollView, Alert } from "react-native";
-
 import { userDataContext } from "../../Context/GlobalContext.js";
-
 import { useNavigation } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import CustomFont from "../../fonts/myfont.otf";
-
 import * as ImagePicker from "expo-image-picker";
 import { updateProfile, getAuth } from "firebase/auth";
 import { styles } from "./ProfileStyle.js";
 import { storage, db } from "../../firebase-config.js";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc,query,getDocs,collection,where } from "firebase/firestore";
 import UserDataComponent from "./Components/UserData.js";
 import Header from "./Components/Header";
 import Videos from "./Components/Videos.js";
 import MontserratBold from "../../fonts/Montserrat-Bold.ttf"
+import { auth } from "../../firebase-config";
 const NewProfileComponent = () => {
   const [userData, setUserData] = useContext(userDataContext);
+  const [userVideos,setUserVideos] = useState([])
   const [showUserData, setShowUserData] = useState(true);
   const navigation = useNavigation();
   const auth = getAuth();
   const user = auth.currentUser;
-  const [loaded] = useFonts({
-    CustomFont: CustomFont,
-    MontserratBold:MontserratBold
-  });
-  if (!loaded) {
-    return null;
-  }
-
-  const userRef = user.uid;
-  const changeView=()=>{
-    setShowUserData(!showUserData);
-  }
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const userRef = doc(db, "Users", auth.currentUser.uid);
+      const userVideosQuery = query(
+        collection(db, "Videos"),
+        where("uploader", "==", userRef)
+      );
+      const videosSnapshot = await getDocs(userVideosQuery);
+      const videosData = [];
+  
+      videosSnapshot.forEach((doc) => {
+        const videoData = doc.data(); // Extract the video data
+        videosData.push(videoData); // Add video data to the array
+      });
+      console.log(videosData.length);
+      setUserVideos(videosData); // Set the state with video data
+    };
+  
+    fetchData();
+  }, []);
+  
+  
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -83,6 +93,13 @@ const NewProfileComponent = () => {
       }
     }
   };
+  const [loaded] = useFonts({
+    CustomFont: CustomFont,
+    MontserratBold:MontserratBold
+  });
+  if (!loaded) {
+    return null;
+  }
 
   return (
     <View
@@ -98,7 +115,7 @@ const NewProfileComponent = () => {
         <View style={styles.container}>
           {showUserData? 
             <UserDataComponent userData={userData} />
-          :<Videos/>
+          :<Videos userVideos={userVideos}/>
           }
         </View>
       </ScrollView>

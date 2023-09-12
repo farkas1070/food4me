@@ -1,28 +1,49 @@
-import { Text, View, TouchableOpacity } from "react-native";
 import React from "react";
-import { styles } from "./HeaderStyle";
-import { MaterialIcons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-const Header = () => {
-    const navigation = useNavigation();
-  return (
-    <SafeAreaView style={styles.header}>
-      <View style={styles.leftContainer}>
-        <TouchableOpacity onPress={()=>{navigation.goBack()}}>
-          <MaterialIcons
-            name="keyboard-backspace"
-            size={24}
-            color="white"
-            style={styles.backIcon}
-          />
-        </TouchableOpacity>
-        
-      </View>
-      <Text style={styles.uploadText}>Upload Video</Text>
+import { ImageBackground, View, Image, StyleSheet, Text } from "react-native";
+import { Appbar } from "react-native-paper";
 
-    </SafeAreaView>
+import HeaderBackground from "../../../assets/HomeAssets/HeaderBackground.jpg";
+import { useNavigation } from "@react-navigation/native";
+import BoldMontserrat from "../../../fonts/Montserrat-Bold.ttf";
+import { useFonts } from "expo-font";
+import { styles } from "./HeaderStyle";
+const NewHeader = () => {
+  const navigation = useNavigation();
+  const [loaded] = useFonts({
+    MontserratBold: BoldMontserrat,
+  });
+  if (!loaded) {
+    return null;
+  }
+  return (
+    <ImageBackground
+      style={styles.backgroundImage}
+      source={HeaderBackground}
+      resizeMode="cover"
+    >
+      <View style={styles.overlay} />
+      <Appbar.Header style={styles.appBar}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <Text style={styles.text}>Upload Video</Text>
+          <Appbar.Action
+            icon="close"
+            color="white"
+            onPress={() => {
+              navigation.goBack();
+            }}
+          />
+        </View>
+      </Appbar.Header>
+    </ImageBackground>
   );
 };
 
-export default Header;
+export default NewHeader;

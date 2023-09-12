@@ -1,29 +1,73 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-  header: {
+  container: {
+    flex: 1,
+
+    backgroundColor: "white",
+  },
+  AssetImage: {
+    height: 50,
+    width: 50,
+  },
+  gradient: {
     width: "100%",
-    height:80,
-    backgroundColor: "#fd5a43",
-    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
   },
-  leftContainer: {
-    flexDirection: "row",
+  surface: {
+    height: 80,
+    width: "100%",
     alignItems: "center",
-    justifyContent: "center",
-    justifyContent: "center",
-    position:'absolute',
-    left:-5,
-    top:42
+    justifyContent: "space-between",
+    padding: 10,
+    marginTop: 10,
+    marginBottom: 10,
+
+    flexDirection: "row",
   },
-  uploadText:{
-    fontSize:18,
-    color:'white',
-    marginLeft:20
+  bigSurface: {
+    width: "90%",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    elevation: 10,
+    borderRadius: 30,
+    marginBottom: 20,
+    backgroundColor: "#ffffff",
+
+    flexDirection: "column",
   },
-  backIcon:{
-    marginLeft:20
+  divider: {
+    width: "100%",
+    flex: 1,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(253, 90, 67, 0.1)", // Orange with 50% opacity
+  },
+  profileImage: {
+    width: 150,
+    height: 150,
+    marginBottom: 50,
+    borderRadius: 400 / 2,
+  },
+  appBar: {
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    height: 60,
+    width: "100%",
+    flexDirection: "column",
+  },
+  title: {
+    color: "white",
+    fontSize: 20,
+    marginTop: 20,
+    fontWeight: "bold",
+  },
+  text:{
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginLeft: 16,
   }
+  
 });
