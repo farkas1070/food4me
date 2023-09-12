@@ -19,7 +19,8 @@ export const styles = StyleSheet.create({
       informationText:{
         fontSize:16,
         marginLeft:10,
-        marginBottom:2
+        marginBottom:2,
+        color:'#989898'
       },
       leftContainer:{
         flexDirection:'row',
@@ -32,6 +33,16 @@ export const styles = StyleSheet.create({
         alignItems:'flex-end'
       },
       rightIcon:{
+        marginLeft:5
+      },
+      changeButton:{
+        backgroundColor:'#fd5a43',
+        borderRadius:50,
+        justifyContent:'center',
+        alignItems:'center',
+        width:35,height:35,
         marginLeft:10
+        
+
       }
 })

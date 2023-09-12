@@ -15,12 +15,12 @@ const CustomInfo = ({ leftIcon, ageText, actualValue,measure }) => {
             </View>
             <View style={styles.rightContainer}>
               <Text
-                style={[styles.informationText, { fontFamily: "CustomFont" }]}
+                style={[ { fontFamily: "CustomFont" }]}
               >
-                {actualValue}, {measure}
+                {actualValue} {measure}
               </Text>
-              <TouchableOpacity>
-              <FontAwesome name="pencil-square-o" size={30} color="black" style={styles.rightIcon} />
+              <TouchableOpacity style={styles.changeButton}>
+              <FontAwesome name="pencil-square-o" size={25} color="white" style={styles.rightIcon} />
               
               </TouchableOpacity>
               

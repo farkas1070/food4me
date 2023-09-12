@@ -39,40 +39,60 @@ const UserData = ({ userData }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.informationContainer}>
+          <View style={styles.infoTextContainer}>
+            <Text style={[styles.topText, { fontFamily: "MontserratBold" }]}>
+              General Information:
+            </Text>
+          </View>
+          <CustomInfo
+            leftIcon={Chart} // Pass the left icon
+            ageText="BMI" // Pass the age text
+            actualValue={userData.BMI.toFixed(2)} // Pass the actual value
+            measure={""}
+          />
+          <CustomInfo
+            leftIcon={Dumbbell} // Pass the left icon
+            ageText="AMR" // Pass the age text
+            actualValue={userData.AMR.toFixed(2)} // Pass the actual value
+            measure={""}
+          />
+          <CustomInfo
+            leftIcon={Hearth} // Pass the left icon
+            ageText="BMR" // Pass the age text
+            actualValue={userData.BMR.toFixed(2)} // Pass the actual value
+            measure={""}
+          />
+        </View>
+        <View style={styles.informationContainer}>
+          <View style={styles.infoTextContainer}>
+            <Text style={[styles.topText, { fontFamily: "MontserratBold" }]}>
+              User Data:
+            </Text>
+          </View>
           <CustomInfo
             leftIcon={Clock} // Pass the left icon
             ageText="Age" // Pass the age text
             actualValue={userData.age} // Pass the actual value
+            measure={"y. old"}
           />
           <CustomInfo
             leftIcon={Ruler} // Pass the left icon
             ageText="Height" // Pass the age text
             actualValue={userData.height} // Pass the actual value
+            measure={"cm"}
           />
-          <CustomInfo
-            leftIcon={Hearth} // Pass the left icon
-            ageText="BMI" // Pass the age text
-            actualValue={userData.BMI} // Pass the actual value
-          />
-          <CustomInfo
-            leftIcon={Dumbbell} // Pass the left icon
-            ageText="AMR" // Pass the age text
-            actualValue={userData.AMR} // Pass the actual value
-          />
+
           <CustomInfo
             leftIcon={Scale} // Pass the left icon
             ageText="Weight" // Pass the age text
             actualValue={userData.weight} // Pass the actual value
+            measure={"kg"}
           />
           <CustomInfo
             leftIcon={Gender} // Pass the left icon
             ageText="Gender" // Pass the age text
             actualValue={userData.gender} // Pass the actual value
-          />
-          <CustomInfo
-            leftIcon={Chart} // Pass the left icon
-            ageText="BMI" // Pass the age text
-            actualValue={userData.BMI} // Pass the actual value
+            measure={""}
           />
         </View>
       </View>

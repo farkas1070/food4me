@@ -16,6 +16,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import UserDataComponent from "./Components/UserData.js";
 import Header from "./Components/Header";
 import Videos from "./Components/Videos.js";
+import MontserratBold from "../../fonts/Montserrat-Bold.ttf"
 const NewProfileComponent = () => {
   const [userData, setUserData] = useContext(userDataContext);
   const [showUserData, setShowUserData] = useState(true);
@@ -24,6 +25,7 @@ const NewProfileComponent = () => {
   const user = auth.currentUser;
   const [loaded] = useFonts({
     CustomFont: CustomFont,
+    MontserratBold:MontserratBold
   });
   if (!loaded) {
     return null;
