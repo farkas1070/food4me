@@ -8,6 +8,7 @@ export const foodContext = createContext();
 export const userContext = createContext();
 export const userDataContext = createContext();
 export const videosContext = createContext();
+export const singleOrAllvideosContext = createContext();
 
 export const DataProvider = (props) => {
   const [darkTheme, setDarkTheme] = useState(false);
@@ -15,6 +16,7 @@ export const DataProvider = (props) => {
   const [user, setUser] = useState({});
   const [userData, setUserData] = useState({});
   const [videos, setVideos] = useState([]);
+  const [singleVideo, setSingleVideo] = useState(false);
 
   const foodCollectionRef = collection(db, "Recipes");
   const videosCollectionRef = collection(db, "Videos");
@@ -62,7 +64,9 @@ export const DataProvider = (props) => {
         <themeContext.Provider value={[darkTheme, setDarkTheme]}>
           <userDataContext.Provider value={[userData, setUserData]}>
             <videosContext.Provider value={[videos, setVideos]}>
+              <singleOrAllvideosContext.Provider value={[singleVideo, setSingleVideo]}>
               {props.children}
+              </singleOrAllvideosContext.Provider>
             </videosContext.Provider>
           </userDataContext.Provider>
         </themeContext.Provider>

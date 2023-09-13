@@ -1,13 +1,19 @@
-import React, { useState, useRef,  useContext } from "react";
-import {
-  View,
-} from "react-native";
+import React, { useState, useRef, useContext, useEffect } from "react";
+import { View } from "react-native";
 import PagerView from "react-native-pager-view";
-import { videosContext } from "../../Context/GlobalContext";
-import SlideItem from "./Components/SlideItem"
-import {styles} from "./DiscoverStyle"
+import {
+  videosContext,
+  singleOrAllvideosContext,
+} from "../../Context/GlobalContext";
+import SlideItem from "./Components/SlideItem";
+import { styles } from "./DiscoverStyle";
+import { sin } from "react-native-reanimated";
 
-const YourScreen = () => {
+const Discover = ({ route }) => {
+  const [singleVideo, setSingleVideo] = useContext(singleOrAllvideosContext);
+  const singleUserVideo = route.params?.item || false;
+  console.log(singleVideo);
+
   const [videoURLs, setVideoURLs] = useContext(videosContext);
   const pagerViewRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -21,6 +27,8 @@ const YourScreen = () => {
     setIsGlobalMuted((prevIsGlobalMuted) => !prevIsGlobalMuted);
   };
 
+  // Rest of your component logic...
+
   return (
     <View style={styles.container}>
       <PagerView
@@ -30,19 +38,30 @@ const YourScreen = () => {
         onPageSelected={onPageSelected}
         ref={pagerViewRef}
       >
-        {videoURLs.map((item, index) => (
-          <View key={index}>
-            <SlideItem
-              item={item}
-              isCurrent={index === currentPage}
-              isGlobalMuted={isGlobalMuted}
-              toggleGlobalMute={toggleGlobalMute}
-            />
-          </View>
-        ))}
+        {singleVideo
+          ? singleUserVideo.map((item, index) => (
+              <View key={index}>
+                <SlideItem
+                  item={item}
+                  isCurrent={index === currentPage}
+                  isGlobalMuted={isGlobalMuted}
+                  toggleGlobalMute={toggleGlobalMute}
+                />
+              </View>
+            ))
+          : videoURLs.map((item, index) => (
+              <View key={index}>
+                <SlideItem
+                  item={item}
+                  isCurrent={index === currentPage}
+                  isGlobalMuted={isGlobalMuted}
+                  toggleGlobalMute={toggleGlobalMute}
+                />
+              </View>
+            ))}
       </PagerView>
     </View>
   );
 };
 
-export default YourScreen;
+export default Discover;

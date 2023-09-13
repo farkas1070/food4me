@@ -15,8 +15,10 @@ import Header from "./Components/Header";
 import Videos from "./Components/Videos.js";
 import MontserratBold from "../../fonts/Montserrat-Bold.ttf"
 import { auth } from "../../firebase-config";
+
 const NewProfileComponent = () => {
   const [userData, setUserData] = useContext(userDataContext);
+  
   const [userVideos,setUserVideos] = useState([])
   const [showUserData, setShowUserData] = useState(true);
   const navigation = useNavigation();
@@ -37,7 +39,7 @@ const NewProfileComponent = () => {
         const videoData = doc.data(); // Extract the video data
         videosData.push(videoData); // Add video data to the array
       });
-      console.log(videosData.length);
+      
       setUserVideos(videosData); // Set the state with video data
     };
   

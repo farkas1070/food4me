@@ -14,10 +14,13 @@ import { View,Image } from "react-native";
 import { auth } from "../firebase-config";
 import ProfilePicPlaceholder from "../assets/profileAssets/profilePicPlaceholder.jpg"
 const Tab = createBottomTabNavigator();
+import { videosContext } from "../Context/GlobalContext.js";
 
 const BottomTabNavigator = () => {
   const { height } = useWindowDimensions();
   const [foodarray] = useContext(foodContext);
+  const [videos] = useContext(videosContext)
+  
   
 
   return (
@@ -65,7 +68,7 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Upload Video"
-        initialParams={{ item: foodarray }}
+        initialParams={{ item: videos }}
         options={({ route }) => ({
           tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons
@@ -79,6 +82,7 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Discover"
+        
         options={({ route }) => ({
           tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons
@@ -88,6 +92,7 @@ const BottomTabNavigator = () => {
             />
           ),
         })}
+        
         component={DiscoveryReel}
       />
       <Tab.Screen
