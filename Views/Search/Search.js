@@ -27,8 +27,8 @@ const SearchComponent = ({navigation}) => {
                     <TextInput
                         label="Search for Foods"
                         value={searchvalue}
-                        mode='outlined'
-                        right={<TextInput.Icon icon={() => <MaterialCommunityIcons name="food-apple-outline" size={24} color="black" />} />}
+                        mode='outlined'right={<TextInput.Icon icon={() => <MaterialCommunityIcons name="food-apple-outline" size={24} color="black" />} />}
+                        
                         onChangeText={searchvalue => setSearchValue(searchvalue)}
                         style={{ flexGrow: 1 }}
                     />

@@ -14,30 +14,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import DeleteUser from "../../../assets/profileAssets/deleteuser.png"
 import CustomInfo from "./CustomInfo";
 import { styles } from "./UserDataStyle";
+import CalorieCounter from "./CalorieCounter";
 const UserData = ({ userData }) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.circularProgressContainer}>
-        <View>
-          <CircularProgress
-            value={20}
-            radius={110}
-            duration={2000}
-            progressValueColor={"#808080"}
-            maxValue={userData.AMR}
-            activeStrokeColor={"white"}
-            inActiveStrokeColor={"#fd5a43"}
-            inActiveStrokeOpacity={0.5}
-            inActiveStrokeWidth={20}
-            activeStrokeWidth={10}
-            title={"Calories"}
-            titleColor={"#fd5a43"}
-            titleStyle={{ fontFamily: "CustomFont" }}
-          />
-          <TouchableOpacity style={styles.addButon}>
-            <MaterialIcons name="add-circle-outline" size={30} color="white" />
-          </TouchableOpacity>
-        </View>
+        <CalorieCounter userData={userData} />
         <View style={styles.informationContainer}>
           <View style={styles.infoTextContainer}>
             <Text style={[styles.topText, { fontFamily: "MontserratBold" }]}>
