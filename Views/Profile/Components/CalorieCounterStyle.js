@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-  calorieContainer: { width: "100%", alignItems: "center",marginTop:20 },
+  calorieContainer: { width: "100%", alignItems: "center", marginTop: 20 },
   addButon: {
     position: "absolute",
     top: 0,
@@ -14,8 +14,8 @@ export const styles = StyleSheet.create({
   },
   foodContainer: {
     width: "90%",
-    marginTop:40,
-    borderColor:'#fd5a43',
+    marginTop: 40,
+    borderColor: "#fd5a43",
     borderWidth: 1,
     padding: 20,
     borderRadius: 10,
@@ -47,11 +47,11 @@ export const styles = StyleSheet.create({
     fontSize: 14, // Font size for the calorie text
     color: "#888", // Text color for calories
   },
-  textContainer: {width:'100%'},
+  textContainer: { width: "100%" },
   topText: {
-    marginBottom:20,
-    
-    color:'#fd5a43',
-    fontSize:18
+    marginBottom: 20,
+
+    color: "#fd5a43",
+    fontSize: 18,
   },
 });

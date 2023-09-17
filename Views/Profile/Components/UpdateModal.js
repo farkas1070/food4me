@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Modal, View, Text, Button, StatusBar } from "react-native";
+import { Modal, View, Text, Button, StatusBar,Image } from "react-native";
 import { styles } from "./UpdateModalStyle";
 import { TextInput } from "react-native-paper";
 import { doc, updateDoc } from "firebase/firestore";
 import { auth } from "../../../firebase-config";
 import { db } from "../../../firebase-config";
+import ModalPic from "../../../assets/profileAssets/modalPic.png"
 const UpdateModal = ({ isVisible, onClose, fieldName }) => {
   const [newValue, setNewValue] = useState("");
 
@@ -63,14 +64,19 @@ const UpdateModal = ({ isVisible, onClose, fieldName }) => {
 
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text>Update {fieldName}:</Text>
+          <Text style={[styles.topText,{fontFamily:'CustomFont'}]}>Almost There, Add your New {fieldName} to Update :</Text>
+          <Image source={ModalPic} resizeMode="contain" style={styles.image} />
           <TextInput
             value={newValue}
             onChangeText={(newValue) => setNewValue(newValue)}
+            mode="outlined"
+            style={styles.textInput}
             placeholder={`Enter new ${fieldName}`}
           />
-          <Button title="Update" onPress={handleUpdate} />
-          <Button title="Cancel" onPress={onClose} />
+          <View style={styles.buttonsContainer}>
+          <Button title="Update" onPress={handleUpdate} color="#fd5a43"  />
+          <Button title="Cancel" onPress={onClose} color="grey" />
+          </View>
         </View>
       </View>
     </Modal>
