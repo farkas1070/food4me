@@ -14,7 +14,7 @@ import {
   getDocs,
   doc,
   getDoc,
-  deleteDoc
+  deleteDoc,
 } from "firebase/firestore";
 import { auth, db } from "../../../firebase-config";
 import NoItem from "../../../assets/profileAssets/noItem.png";
@@ -27,72 +27,57 @@ const CalorieCounter = ({ userData }) => {
     setModalVisible(!isModalVisible);
   };
   useEffect(() => {
-    const getOldData = async () => {
-      let sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 4);
-      const userRef = doc(db, "Users", auth.currentUser.uid);
-      
-      const oldRecordsQuery = query(
-        collection(db, "User_Calories"),
-        where("userId", "==", userRef),
-        where("consumedDate", "<=", sevenDaysAgo.toISOString().split("T")[0])
-      );
-      const oldRecordsSnapshot = await getDocs(oldRecordsQuery);
-        console.log(oldRecordsSnapshot.docs)
-      // Delete the old records
-      const fetchRecipeDataPromises = oldRecordsSnapshot.docs.map(async (item) => {
-        console.log(item)
-      });
-      await Promise.all(fetchRecipeDataPromises);
-      
-    };
-
     const getUserData = async () => {
       const userRef = doc(db, "Users", auth.currentUser.uid);
       const today = new Date().toISOString().split("T")[0];
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    
+
       let value = 0;
-    
+
       const userCalorieQuery = query(
         collection(db, "User_Calories"),
         where("userId", "==", userRef)
       );
-    
+
       const querySnapshot = await getDocs(userCalorieQuery);
       const fetchRecipeDataPromises = [];
-    
+
       for (const item of querySnapshot.docs) {
         const data = item.data();
         const consumedDate = data.consumedDate; // Assuming 'consumedDate' is a field in your document.
-    
+
         if (consumedDate === today) {
           value += data.caloriesConsumed;
-    
+
           // Process and filter the data as needed
           const recipeDoc = await getDoc(data.recipeId);
           if (recipeDoc.exists()) {
             const recipeData = recipeDoc.data();
             fetchRecipeDataPromises.push({ ...data, recipeId: recipeData });
           }
-        } else if (consumedDate < today && consumedDate >= sevenDaysAgo.toISOString().split("T")[0]) {
+        } else if (
+          
+          consumedDate >= sevenDaysAgo.toISOString().split("T")[0]
+        ) {
           // Delete the document if it's older than 7 days
           await deleteDoc(item.ref);
         }
       }
-    
+
       // Use Promise.all to ensure all promises are resolved before setting the state
       const userFoodData = await Promise.all(fetchRecipeDataPromises);
       setUserFoodForToday(userFoodData);
       setUserCalorie(value);
     };
-    
+
     getUserData();
   }, []);
   return (
     <View style={styles.calorieContainer}>
-      <Text style={[styles.titleText,{fontFamily:'MontserratBold'}]}>Stats For Today:</Text>
+      <Text style={[styles.titleText, { fontFamily: "MontserratBold" }]}>
+        Stats For Today:
+      </Text>
       <CircularProgress
         value={userCalorie}
         radius={110}
@@ -135,7 +120,7 @@ const CalorieCounter = ({ userData }) => {
               resizeMode="contain"
               style={styles.noItemImage}
             />
-            <Text style={[styles.noItemText,{fontFamily:'CustomFont'}]}>
+            <Text style={[styles.noItemText, { fontFamily: "CustomFont" }]}>
               You have not eaten anything Today, select something, and it will
               appear here
             </Text>
@@ -149,7 +134,11 @@ const CalorieCounter = ({ userData }) => {
                   style={styles.foodImage}
                 />
                 <View style={styles.foodDetails}>
-                  <Text style={[styles.foodName,{fontFamily:'MontserratBold'}]}>{item.recipeId.name}</Text>
+                  <Text
+                    style={[styles.foodName, { fontFamily: "MontserratBold" }]}
+                  >
+                    {item.recipeId.name}
+                  </Text>
                   <Text style={styles.foodCalories}>
                     {item.caloriesConsumed} Kcal
                   </Text>
