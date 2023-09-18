@@ -1,13 +1,12 @@
-import { StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity, View, Switch, ImageBackground } from 'react-native'
-import React from 'react'
+import {  Text, KeyboardAvoidingView, TouchableOpacity, View,  ImageBackground } from 'react-native'
+import React,{useEffect}from 'react'
 import { useContext } from "react";
 import { foodContext, themeContext } from "../../Context/GlobalContext.js"
-
 import menubackground from "../../assets/menubackground.jpg"
 import NewHeader from '../../Components/NewHeader.js';
 import { generateStyles } from './MenuCreatorStyle.js';
 const MenuElement = ({ navigation }) => {
-  const [darkTheme, setDarkTheme] = useContext(themeContext)
+  const [darkTheme] = useContext(themeContext)
   const [foodarray] = useContext(foodContext)
   console.log(foodarray)
   const styles = generateStyles(darkTheme)

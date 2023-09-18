@@ -1,5 +1,5 @@
-import React, { useContext, useState,useEffect } from "react";
-import { ImageBackground, View, Image, ScrollView, Alert } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import { View, ScrollView, Alert } from "react-native";
 import { userDataContext } from "../../Context/GlobalContext.js";
 import { useNavigation } from "@react-navigation/native";
 import { useFonts } from "expo-font";
@@ -9,22 +9,28 @@ import { updateProfile, getAuth } from "firebase/auth";
 import { styles } from "./ProfileStyle.js";
 import { storage, db } from "../../firebase-config.js";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { doc, updateDoc,query,getDocs,collection,where } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  query,
+  getDocs,
+  collection,
+  where,
+} from "firebase/firestore";
 import UserDataComponent from "./Components/UserData.js";
 import Header from "./Components/Header";
 import Videos from "./Components/Videos.js";
-import MontserratBold from "../../fonts/Montserrat-Bold.ttf"
-import { auth } from "../../firebase-config";
+import MontserratBold from "../../fonts/Montserrat-Bold.ttf";
+
 
 const NewProfileComponent = () => {
-  const [userData, setUserData] = useContext(userDataContext);
-  
-  const [userVideos,setUserVideos] = useState([])
+  const [userData] = useContext(userDataContext);
+
+  const [userVideos, setUserVideos] = useState([]);
   const [showUserData, setShowUserData] = useState(true);
-  const navigation = useNavigation();
   const auth = getAuth();
   const user = auth.currentUser;
-  
+
   useEffect(() => {
     const fetchData = async () => {
       const userRef = doc(db, "Users", auth.currentUser.uid);
@@ -34,19 +40,18 @@ const NewProfileComponent = () => {
       );
       const videosSnapshot = await getDocs(userVideosQuery);
       const videosData = [];
-  
+
       videosSnapshot.forEach((doc) => {
         const videoData = doc.data(); // Extract the video data
         videosData.push(videoData); // Add video data to the array
       });
-      
+
       setUserVideos(videosData); // Set the state with video data
     };
-  
+
     fetchData();
   }, []);
-  
-  
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -97,7 +102,7 @@ const NewProfileComponent = () => {
   };
   const [loaded] = useFonts({
     CustomFont: CustomFont,
-    MontserratBold:MontserratBold
+    MontserratBold: MontserratBold,
   });
   if (!loaded) {
     return null;
@@ -105,20 +110,21 @@ const NewProfileComponent = () => {
 
   return (
     <View
-      style={{
-        width: "100%",
-        height: "100%",
-        flex: 1,
-        backgroundColor: "white",
-      }}
+      style={styles.mainContainer}
     >
       <ScrollView style={{ width: "100%", flexGrow: 1 }}>
-        <Header user={user} pickImage={pickImage} setShowUserData={setShowUserData} userData={userData} />
+        <Header
+          user={user}
+          pickImage={pickImage}
+          setShowUserData={setShowUserData}
+          userData={userData}
+        />
         <View style={styles.container}>
-          {showUserData? 
+          {showUserData ? (
             <UserDataComponent userData={userData} />
-          :<Videos userVideos={userVideos}/>
-          }
+          ) : (
+            <Videos userVideos={userVideos} />
+          )}
         </View>
       </ScrollView>
     </View>
