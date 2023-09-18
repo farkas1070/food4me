@@ -14,6 +14,7 @@ import {
   getDocs,
   doc,
   getDoc,
+  deleteDoc
 } from "firebase/firestore";
 import { auth, db } from "../../../firebase-config";
 import NoItem from "../../../assets/profileAssets/noItem.png";
@@ -28,56 +29,65 @@ const CalorieCounter = ({ userData }) => {
   useEffect(() => {
     const getOldData = async () => {
       let sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 4);
+      const userRef = doc(db, "Users", auth.currentUser.uid);
+      
       const oldRecordsQuery = query(
-        collection(userRef, "User_Calories"),
+        collection(db, "User_Calories"),
         where("userId", "==", userRef),
-        where("consumedDate", "<", sevenDaysAgo.toISOString().split("T")[0])
+        where("consumedDate", "<=", sevenDaysAgo.toISOString().split("T")[0])
       );
       const oldRecordsSnapshot = await getDocs(oldRecordsQuery);
-
+        console.log(oldRecordsSnapshot.docs)
       // Delete the old records
-      oldRecordsSnapshot.forEach(async (doc) => {
-        await deleteDoc(doc.ref);
+      const fetchRecipeDataPromises = oldRecordsSnapshot.docs.map(async (item) => {
+        console.log(item)
       });
+      await Promise.all(fetchRecipeDataPromises);
+      
     };
 
     const getUserData = async () => {
       const userRef = doc(db, "Users", auth.currentUser.uid);
-
+      const today = new Date().toISOString().split("T")[0];
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    
+      let value = 0;
+    
       const userCalorieQuery = query(
         collection(db, "User_Calories"),
-        where("userId", "==", userRef),
-        where("consumedDate", "==", new Date().toISOString().split("T")[0])
+        where("userId", "==", userRef)
       );
-      let value = 0;
-
+    
       const querySnapshot = await getDocs(userCalorieQuery);
-
-      const fetchRecipeDataPromises = querySnapshot.docs.map(async (item) => {
-        let data = item.data();
-        value += data.caloriesConsumed;
-
-        const recipeDoc = await getDoc(data.recipeId);
-
-        if (recipeDoc.exists()) {
-          data.recipeId = recipeDoc.data();
-          console.log(data);
-          return { ...data };
-        } else {
-          return null;
+      const fetchRecipeDataPromises = [];
+    
+      for (const item of querySnapshot.docs) {
+        const data = item.data();
+        const consumedDate = data.consumedDate; // Assuming 'consumedDate' is a field in your document.
+    
+        if (consumedDate === today) {
+          value += data.caloriesConsumed;
+    
+          // Process and filter the data as needed
+          const recipeDoc = await getDoc(data.recipeId);
+          if (recipeDoc.exists()) {
+            const recipeData = recipeDoc.data();
+            fetchRecipeDataPromises.push({ ...data, recipeId: recipeData });
+          }
+        } else if (consumedDate < today && consumedDate >= sevenDaysAgo.toISOString().split("T")[0]) {
+          // Delete the document if it's older than 7 days
+          await deleteDoc(item.ref);
         }
-      });
-
+      }
+    
+      // Use Promise.all to ensure all promises are resolved before setting the state
       const userFoodData = await Promise.all(fetchRecipeDataPromises);
-      const filteredUserFoodData = userFoodData.filter(
-        (foodData) => foodData !== null
-      );
-
-      setUserFoodForToday(filteredUserFoodData);
+      setUserFoodForToday(userFoodData);
       setUserCalorie(value);
     };
-
+    
     getUserData();
   }, []);
   return (
