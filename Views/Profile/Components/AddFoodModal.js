@@ -37,6 +37,7 @@ const AddFoodModal = ({ isVisible, onClose, options }) => {
         consumedDate: new Date().toISOString().split("T")[0], // Current date in 'YYYY-MM-DD' format
         caloriesConsumed: matchingDocument.data().amount,
       });
+      onClose()
     } catch (error) {
       console.error("Error querying database:", error);
     }

@@ -16,7 +16,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { auth, db } from "../../../firebase-config";
-
+import NoItem from "../../../assets/profileAssets/noItem.png";
 const CalorieCounter = ({ userData }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [userCalorie, setUserCalorie] = useState(0);
@@ -26,6 +26,22 @@ const CalorieCounter = ({ userData }) => {
     setModalVisible(!isModalVisible);
   };
   useEffect(() => {
+    const getOldData = async () => {
+      let sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      const oldRecordsQuery = query(
+        collection(userRef, "User_Calories"),
+        where("userId", "==", userRef),
+        where("consumedDate", "<", sevenDaysAgo.toISOString().split("T")[0])
+      );
+      const oldRecordsSnapshot = await getDocs(oldRecordsQuery);
+
+      // Delete the old records
+      oldRecordsSnapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+      });
+    };
+
     const getUserData = async () => {
       const userRef = doc(db, "Users", auth.currentUser.uid);
 
@@ -66,6 +82,7 @@ const CalorieCounter = ({ userData }) => {
   }, []);
   return (
     <View style={styles.calorieContainer}>
+      <Text style={[styles.titleText,{fontFamily:'MontserratBold'}]}>Stats For Today:</Text>
       <CircularProgress
         value={userCalorie}
         radius={110}
@@ -101,22 +118,36 @@ const CalorieCounter = ({ userData }) => {
             Today's Food:
           </Text>
         </View>
-        {UserFoodForToday.map((item, index) => {
-          return (
-            <View key={index} style={styles.foodItemContainer}>
-              <Image
-                source={{ uri: item.recipeId.image }} // Replace with the actual image URL
-                style={styles.foodImage}
-              />
-              <View style={styles.foodDetails}>
-                <Text style={styles.foodName}>{item.recipeId.name}</Text>
-                <Text style={styles.foodCalories}>
-                  {item.caloriesConsumed} Kcal
-                </Text>
+        {UserFoodForToday.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <Image
+              source={NoItem} // Replace with the actual image URL
+              resizeMode="contain"
+              style={styles.noItemImage}
+            />
+            <Text style={[styles.noItemText,{fontFamily:'CustomFont'}]}>
+              You have not eaten anything Today, select something, and it will
+              appear here
+            </Text>
+          </View>
+        ) : (
+          UserFoodForToday.map((item, index) => {
+            return (
+              <View key={index} style={styles.foodItemContainer}>
+                <Image
+                  source={{ uri: item.recipeId.image }} // Replace with the actual image URL
+                  style={styles.foodImage}
+                />
+                <View style={styles.foodDetails}>
+                  <Text style={[styles.foodName,{fontFamily:'MontserratBold'}]}>{item.recipeId.name}</Text>
+                  <Text style={styles.foodCalories}>
+                    {item.caloriesConsumed} Kcal
+                  </Text>
+                </View>
               </View>
-            </View>
-          );
-        })}
+            );
+          })
+        )}
       </View>
     </View>
   );

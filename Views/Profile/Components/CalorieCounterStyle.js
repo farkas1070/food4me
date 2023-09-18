@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-  calorieContainer: { width: "100%", alignItems: "center", marginTop: 20 },
+  calorieContainer: { width: "100%", alignItems: "center" },
   addButon: {
     position: "absolute",
-    top: 0,
+    top: "10%",
     right: "20%",
     borderRadius: 50,
     backgroundColor: "#ffe4e0",
@@ -13,16 +13,16 @@ export const styles = StyleSheet.create({
     padding: 10,
   },
   foodContainer: {
-    width: "90%",
-    marginTop: 40,
-    borderColor: "#fd5a43",
-    borderWidth: 1,
-    padding: 20,
+    width: "100%",
+    marginTop: 20,
+
+    padding: 10,
     borderRadius: 10,
   },
   foodItemContainer: {
     flexDirection: "row", // Align items horizontally
     alignItems: "center", // Center items vertically
+    backgroundColor: "black",
     marginBottom: 10, // Add margin between each food item
     padding: 10, // Add padding to each food item
     backgroundColor: "#fff", // Background color for the card
@@ -40,12 +40,13 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   foodName: {
-    fontSize: 16, // Font size for the food name
-    fontWeight: "bold", // Bold text for the food name
+    fontSize: 12, // Font size for the food name
+    color: "grey",
+    width: "70%",
   },
   foodCalories: {
     fontSize: 14, // Font size for the calorie text
-    color: "#888", // Text color for calories
+    color: "#fd5a43", // Text color for calories
   },
   textContainer: { width: "100%" },
   topText: {
@@ -53,5 +54,24 @@ export const styles = StyleSheet.create({
 
     color: "#fd5a43",
     fontSize: 18,
+  },
+  emptyContainer: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noItemImage: {
+    width: "100%",
+    height: 150,
+  },
+  noItemText: {
+    color: "grey",
+    textAlign: "center",
+    marginTop: 10,
+  },
+  titleText: {
+    fontSize: 20,
+    marginBottom: 30,
+    color:'grey'
   },
 });

@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { foodContext, themeContext } from "../../Context/GlobalContext.js"
 
 import menubackground from "../../assets/menubackground.jpg"
-import Header from "../../Components/Header.js"
+import NewHeader from '../../Components/NewHeader.js';
 import { generateStyles } from './MenuCreatorStyle.js';
 const MenuElement = ({ navigation }) => {
   const [darkTheme, setDarkTheme] = useContext(themeContext)
@@ -27,8 +27,8 @@ const MenuElement = ({ navigation }) => {
   }
 
   return (
-    <View>
-      <Header/>
+    <View style={{flex:1}}>
+      <NewHeader></NewHeader>
       <KeyboardAvoidingView style={styles.mainContainer(darkTheme)}>
 
 
