@@ -1,92 +1,99 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from "react-native";
 
-export const generateStyles  = (darkTheme) => {
-    return StyleSheet.create({
-        maincontainer: (darkTheme) => ({
-            width: '100%',
-            height: '100%',
-            
-            backgroundColor: darkTheme ? "black" : "white",
-            
-          }),
-          carouselcontainer: (darkTheme) => ({
-            flex: 1,
-            borderWidth: 1,
-            justifyContent: 'center',
-          }),
-          backgroundimage: {
-            width: '100%',
-            height: '100%',
-            
-            flexDirection: 'row'
-          },
-          image: {
-            marginTop: 30,
-            width: '70%',
-            height: 200,
-            borderRadius:20,
-          },
-          leftbuttoncontainer: (darkTheme) => ({
-            width:'10%',
-            alignItems: 'center',
-            justifyContent: 'center'
-        
-          }),
-          rightbuttoncontainer: (darkTheme) => ({
-            width:'10%',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }),
-          toptext: (darkTheme) => ({
-            textAlign: 'center',
-             fontSize: 20,
-             marginTop:50,
-             fontWeight: 'bold',
-             color:darkTheme? "white" : "black"
-          }),
-          leftbutton: (darkTheme) => ({
-            backgroundColor:'white',
-            width:'100%',
-            height:200,
-            alignItems:"center",
-            justifyContent: 'center',
-            borderTopEndRadius:30,
-            borderBottomRightRadius:30
-          }),
-          rightbutton: (darkTheme) => ({
-            backgroundColor:'white',
-            width:'100%',
-            height:200,
-            alignItems:"center",
-            justifyContent: 'center',
-            borderTopStartRadius:30,
-            borderBottomLeftRadius:30
-          }),
-          difficultytext: (darkTheme) => ({
-            alignItems: 'center',
-            marginTop: 20,
-            marginBottom:10,
-            fontWeight: 'bold',
-            color:darkTheme? "white" : "black"
-          }),
-          descriptiontext: (darkTheme) => ({
-            alignItems: 'center',
-            marginTop: 20,
-            marginBottom:10,
-            fontWeight: 'bold',
-            color:darkTheme? "white" : "black"
-          }),
-          recipebutton: (darkTheme) => ({
-            backgroundColor:"white",
-            marginBottom: 30,
-            width:120,
-            height:60,
-            borderRadius:30,
-            justifyContent: 'center',
-            alignItems:"center",
-            padding:10,
-            borderWidth:2,
-            BorderColor:"black"
-          })
-    });
-  };
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  pagerView: {
+    flex: 1,
+  },
+  page: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent:'space-between',
+    backgroundColor: "white",
+    
+    width: "100%",
+    height: "100%",
+  },
+  imageBackgroundTopView: {
+    width: "100%",
+    marginTop: 30,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    padding: 20,
+  },
+  typeText: {
+    color: "black",
+    fontSize: 20,
+  },
+  backButton: {
+    backgroundColor: "rgba(255,255,255,0.8)",
+    borderRadius: 40,
+    padding: 5,
+    justifyContent: "center",
+    width: 50,
+    height: 50,
+    alignItems: "center",
+  },
+  typeContainer: {
+    backgroundColor: "rgba(255,255,255,0.8)",
+    borderRadius: 40,
+    padding: 10,
+    paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  image: {
+    width: Dimensions.get("window").width,
+    height: 300,
+  },
+  content: {
+    padding: 20,
+    flexGrow:1,
+    width: "100%",
+    
+  },
+  recipeName: {
+    fontSize: 24,
+    color: "gray",
+    marginTop: 10,
+  },
+  recipeDescription: {
+    fontSize: 16,
+    textAlign: "center",
+  },
+  pageIndicator: {
+    textAlign: "center",
+    fontSize: 16,
+    marginVertical: 10,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+  },
+  miniContainer: {
+    width: "100%",
+    paddingHorizontal:20,
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  subText: {
+    color: "grey",
+    marginLeft: 20,
+    fontSize: 16,
+  },
+  jumpToFoodButton: {
+    width: "60%",
+    height: 60,
+    alignItems: "center",
+    justifyContent: "center",
+    
+    backgroundColor: "green",
+    borderRadius: 10,
+  },
+});

@@ -1,77 +1,94 @@
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ImageBackground, Image } from 'react-native'
-import React,{useContext } from 'react'
-import { themeContext } from "../../Context/GlobalContext.js"
-import Carousel from 'react-native-reanimated-carousel';
-import Recipelight1 from "../../assets/recipelight1.png"
-import Recipedark1 from "../../assets/recipedark1.png"
-import Recipelight2 from "../../assets/recipelight2.png"
-import Recipedark2 from "../../assets/recipedark2.png"
-import Recipelight3 from "../../assets/recipelight3.png"
-import Recipedark3 from "../../assets/recipedark3.png"
-import { Ionicons } from '@expo/vector-icons'; 
-import { generateStyles } from './MenuElementStyle.js';
-
-const MenuCreator = ({navigation,route}) => {
-  const [darkTheme] = useContext(themeContext)
-  const styles = generateStyles(darkTheme)
-  const darkpictures = [Recipedark1,Recipedark2,Recipedark3]
-  const lightpictures = [Recipelight1,Recipelight2,Recipelight3]
+import React, { useState } from "react";
+import { View, Text, ScrollView, ImageBackground, Image } from "react-native";
+import PagerView from "react-native-pager-view"; // Import PagerView from react-native-pager-view
+import { styles } from "./MenuElementStyle";
+import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
+import { useFonts } from "expo-font";
+import CustomFont from "../../fonts/myfont.otf";
+import MontserratBold from "../../fonts/Montserrat-Bold.ttf";
+import { useNavigation } from "@react-navigation/native";
+import Dish from "../../assets/dish.png";
+import Clocks from "../../assets/stopwatch.png";
+export default function RecipeCarousel({ route }) {
+  const [activeIndex, setActiveIndex] = useState(0);
   const { item } = route.params;
-
-  const width = Dimensions.get('window').width;
-
-
+  console.log(item[0].docid)
+  const types = ["Breakfast", "Lunch", "Dinner"];
+  const navigation = useNavigation();
+  const [loaded] = useFonts({
+    CustomFont: CustomFont,
+    MontserratBold: MontserratBold,
+  });
+  if (!loaded) {
+    return null;
+  }
   return (
-    <View style={styles.maincontainer(darkTheme)}>
-
-      <View style={{ flex: 1 }}>
-        <Carousel
-          loop
-          width={width}
-          height="100%"
-          autoPlay={true}
-          data={item}
-          scrollAnimationDuration={7000}
-          renderItem={({ index }) => (
-            <View
-              style={styles.carouselcontainer(darkTheme)}>
-              <ImageBackground source={darkTheme? darkpictures[index]:lightpictures[index]} style={styles.backgroundimage}>
-                <View style={styles.leftbuttoncontainer(darkTheme)}>
-                  <View onPress={() => { goBack(index)  }} style={styles.leftbutton(darkTheme)}><Ionicons name="return-up-back" size={24} color="black" style={{}} /></View>
-                
+    <View style={styles.container}>
+      <PagerView
+        style={styles.pagerView}
+        initialPage={activeIndex}
+        onPageSelected={(event) => setActiveIndex(event.nativeEvent.position)}
+      >
+        {item.map((item, index) => (
+          <View key={index} style={styles.page}>
+            <View style={{width:'100%'}}>
+              <ImageBackground
+                source={{ uri: item.image }}
+                style={styles.image}
+              >
+                <View style={styles.imageBackgroundTopView}>
+                  <TouchableOpacity
+                    style={styles.backButton}
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
+                  >
+                    <Ionicons
+                      name="md-arrow-back-outline"
+                      size={30}
+                      color="black"
+                    />
+                  </TouchableOpacity>
+                  <View style={styles.typeContainer}>
+                    <Text
+                      style={[styles.typeText, { fontFamily: "CustomFont" }]}
+                    >
+                      {types[activeIndex]}
+                    </Text>
+                  </View>
                 </View>
-                <View style={{width:'80%'}}>
-                <Text style={styles.toptext(darkTheme)}>
-                  For {item[index].type}, We suggest Today you cook: {item[index].name}
-                </Text>
-                <View style={{alignItems: 'center'}}>
-                  <Image
-                    style={styles.image}
-                    source={{ uri: item[index].image }}
-                  />
-                </View>
-                <View style={{alignItems: 'center',padding:40 }}>
-                <Text style={styles.difficultytext(darkTheme)}>Difficulty: {item[index].difficulty}</Text>
-                <Text style={styles.descriptiontext(darkTheme)} >Descripion: {item[index].description}</Text>
-                </View>
-                <View style={{flex:1,alignItems: 'center',justifyContent: 'flex-end'}}><TouchableOpacity onPress={() => { navigation.navigate("SingleElement", { item: item[index] })  }} style={styles.recipebutton(darkTheme)}><Text style={{textAlign:"center"}}>Click Here For the Recipe</Text></TouchableOpacity></View>
-                  
-                </View>
-                <View style={styles.rightbuttoncontainer(darkTheme)} >
-                  <View onPress={() => { }} style={styles.rightbutton(darkTheme)}><Ionicons name="return-up-forward" size={24} color="black" style={{}} /></View>
-                
-                </View>
-                
               </ImageBackground>
+              <View style={{ width: "100%", alignItems: "center" }}>
+                <Text
+                  style={[styles.recipeName, { fontFamily: "MontserratBold" }]}
+                >
+                  {item.name}
+                </Text>
+              </View>
+              <View style={styles.miniContainer}>
+                <Image source={Clocks} style={styles.icon} />
+                <Text style={[styles.subText, { fontFamily: "CustomFont" }]}>
+                  Time To Cook: {item.ready < 60 ? item.ready : item.ready / 60}{" "}
+                  {item.ready < 60 ? "Minutes" : "Hours"}
+                </Text>
+              </View>
+              <View style={styles.miniContainer}>
+                <Image source={Dish} style={styles.icon} />
+                <Text style={[styles.subText, { fontFamily: "CustomFont" }]}>
+                  servings: {item.servings}
+                </Text>
+              </View>
             </View>
-          )}
-        />
-      </View>
-
+            <TouchableOpacity style={styles.jumpToFoodButton} onPress={()=>{navigation.navigate("SingleElement", { item: item });}}>
+              <Text>Learn How to Make it!</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </PagerView>
+      <Text style={styles.pageIndicator}>
+        {activeIndex + 1} / {item.length}
+      </Text>
     </View>
   );
-
 }
-
-export default MenuCreator
-

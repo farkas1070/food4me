@@ -35,7 +35,7 @@ const NewSingleElement = ({ route }) => {
   const onDismissSnackBar = () => setVisible(false);
 
   const ITEMS_PER_PAGE = 4;
-
+  console.log(item.docid)
   const docid = item.docid;
   const recipeRef = doc(db, "Recipes", docid);
   const userRef = doc(db, "Users", auth.currentUser.uid);
@@ -64,20 +64,12 @@ const NewSingleElement = ({ route }) => {
 
   const [nutritionSnapshot, nutritionSnapshotLoading, nutritionSnapshotError] =
     useCollectionData(nutrientquery);
-  const [
-    ingredientSnapshot,
-    ingredientSnapshotLoading,
-    ingredientSnapshotError,
-  ] = useCollectionData(ingredientquery);
-  const [typeSnapshot, typeSnapshotLoading, typeSnapshotError] =
-    useCollectionData(typequery);
-  const [stepsSnapshot, stepsSnapshotLoading, stepsSnapshotError] =
-    useCollectionData(stepsquery);
-  const [
-    favouritesSnapshot,
-    favouritesSnapshotLoading,
-    favouritesSnapshotError,
-  ] = useCollectionData(favouritesquery);
+  const [ingredientSnapshot, ingredientSnapshotLoading] =
+    useCollectionData(ingredientquery);
+  const [typeSnapshot, typeSnapshotLoading] = useCollectionData(typequery);
+  const [stepsSnapshot, stepsSnapshotLoading] = useCollectionData(stepsquery);
+  const [favouritesSnapshot, favouritesSnapshotLoading] =
+    useCollectionData(favouritesquery);
 
   const getPaginatedData = () => {
     const startIndex = page * ITEMS_PER_PAGE;
