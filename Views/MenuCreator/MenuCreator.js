@@ -45,8 +45,7 @@ const MenuElement = ({ navigation }) => {
         const recipeData = await getDoc(randomData.Recipe_ID);
           let recipe = recipeData.data()
           recipe.docid = recipeData.id
-          console.log(recipe.docid)
-        // Add the recipe to the Set
+          
         uniqueRecipes.add({...recipe});
       })
     );
