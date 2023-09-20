@@ -6,7 +6,6 @@ import {
   ImageBackground,
   Text,
   Image,
-  
 } from "react-native";
 import { styles } from "./VideosStyle";
 import { useNavigation } from "@react-navigation/native";
@@ -29,9 +28,18 @@ const YourComponent = ({ userVideos }) => {
               source={NoVideoPic}
               style={styles.nothingPic}
             />
-            <Text style={[styles.text,{fontFamily:'CustomFont'}]}>No Videos Yet, Upload Some</Text>
-            <TouchableOpacity style={styles.uploadVideoButton} onPress={()=>{navigation.navigate("Upload Video")}}>
-              <Text style={styles.buttonText}>Upload Your Fisrt Video Here</Text>
+            <Text style={[styles.text, { fontFamily: "CustomFont" }]}>
+              No Videos Yet, Upload Some
+            </Text>
+            <TouchableOpacity
+              style={styles.uploadVideoButton}
+              onPress={() => {
+                navigation.navigate("Upload Video");
+              }}
+            >
+              <Text style={styles.buttonText}>
+                Upload Your Fisrt Video Here
+              </Text>
             </TouchableOpacity>
           </View>
         ) : (

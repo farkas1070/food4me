@@ -55,15 +55,15 @@ const LoginScreen = ({ navigation }) => {
   const login = async () => {
     try {
       setIsAuthenticating(true);
-      const user = await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
 
       const userQuery = query(
         collection(db, "Users"),
         where("uid", "==", auth.currentUser.uid)
       );
-      console.log(auth.currentUser.uid)
+      
       const querySnapshot = await getDocs(userQuery);
-      console.log(querySnapshot.docs)
+      
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         

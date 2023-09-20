@@ -1,9 +1,6 @@
 import React from "react";
-import { ImageBackground, View, Image, StyleSheet } from "react-native";
+import { ImageBackground, View, StyleSheet } from "react-native";
 import { Appbar } from "react-native-paper";
-import { BlurView } from "expo-blur";
-import ProfilePic from "../assets/profile.png";
-import { IconButton } from "react-native-paper";
 import HeaderBackground from "../assets/HomeAssets/HeaderBackground.jpg"
 import { useNavigation } from "@react-navigation/native";
 const NewHeader = () => {

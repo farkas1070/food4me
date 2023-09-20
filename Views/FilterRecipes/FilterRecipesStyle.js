@@ -10,18 +10,15 @@ export const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
   },
-  text:{
-    
+  text: {
     fontSize: 20,
     color: "black",
     textAlign: "left",
   },
-  chiplistContainer:{
+  chiplistContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     padding: 20,
     width: "100%",
-  }
-
-
+  },
 });

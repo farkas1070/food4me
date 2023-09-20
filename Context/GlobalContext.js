@@ -21,41 +21,28 @@ export const DataProvider = (props) => {
   const foodCollectionRef = collection(db, "Recipes");
   const videosCollectionRef = collection(db, "Videos");
 
+  const fetchDataFromFirestore = async (ref, setState) => {
+    try {
+      await getDocs(ref)
+        .then((snapshot) => {
+          const newData = snapshot.docs.map((doc) => {
+            const subdata = doc.data();
+            subdata.docid = doc.id;
+            return { ...subdata };
+          });
+          setState(newData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  };
   useEffect(() => {
-    const getFood = async () => {
-      getDocs(foodCollectionRef)
-        .then((snapshot) => {
-          let newarray = [];
-          snapshot.docs.forEach((doc) => {
-            var subdata = doc.data();
-            subdata.docid = doc.id;
-            newarray.push({ ...subdata });
-          });
-          setFoodArray(newarray);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-    getFood();
-
-    const getVideos = async () => {
-      getDocs(videosCollectionRef)
-        .then((snapshot) => {
-          let newarray = [];
-          snapshot.docs.forEach((doc) => {
-            var subdata = doc.data();
-            subdata.docid = doc.id;
-            newarray.push({ ...subdata });
-          });
-          setVideos(newarray);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-    getFood();
-    getVideos();
+    fetchDataFromFirestore(foodCollectionRef, setFoodArray);
+    fetchDataFromFirestore(videosCollectionRef, setVideos);
   }, []);
 
   return (
@@ -64,8 +51,10 @@ export const DataProvider = (props) => {
         <themeContext.Provider value={[darkTheme, setDarkTheme]}>
           <userDataContext.Provider value={[userData, setUserData]}>
             <videosContext.Provider value={[videos, setVideos]}>
-              <singleOrAllvideosContext.Provider value={[singleVideo, setSingleVideo]}>
-              {props.children}
+              <singleOrAllvideosContext.Provider
+                value={[singleVideo, setSingleVideo]}
+              >
+                {props.children}
               </singleOrAllvideosContext.Provider>
             </videosContext.Provider>
           </userDataContext.Provider>

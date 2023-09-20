@@ -2,7 +2,7 @@ import React from "react";
 import { ImageBackground, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "./TopImageStyle";
-import { Text ,TouchableOpacity} from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 
 const TopImage = () => {
   return (
@@ -16,7 +16,7 @@ const TopImage = () => {
         colors={[
           "rgba(255, 255, 255, 1)",
           "rgba(255, 255, 255, 0)",
-          "rgba(0, 0, 0, 1)",
+          "rgba(255, 255, 255, 1)",
         ]}
         style={styles.gradient}
         start={{ x: 0.5, y: 0 }} // Start at the top (0) of the container
@@ -24,7 +24,7 @@ const TopImage = () => {
         locations={[0, 0.5, 1]} // Specify the position of each color stop
       >
         <TouchableOpacity style={styles.menuButton}>
-        <Text style={styles.buttonText}>Create Your Own Menu</Text>
+          <Text style={styles.buttonText}>Create Your Own Menu</Text>
         </TouchableOpacity>
       </LinearGradient>
     </ImageBackground>
