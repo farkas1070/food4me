@@ -2,8 +2,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  StyleSheet,
   Image,
   Alert,
   useWindowDimensions,
@@ -15,13 +13,12 @@ import { auth } from "../../firebase-config";
 import Logo from "../../assets/Logo.png";
 import { userContext, userDataContext } from "../../Context/GlobalContext";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Video, VideoOverlay } from "expo-av";
+import { Video } from "expo-av";
 import { TextInput } from "react-native-paper";
 import Videofootage from "../../assets/food4me.mp4";
 import { useFonts } from "expo-font";
 import CustomFont from "../../fonts/myfont.otf";
 import { Button } from "react-native-paper";
-import { ActivityIndicator } from "react-native-paper";
 import LoadingOverlay from "./Components/LoadingOverlay";
 import { styles } from "./LoginStyle";
 import { collection, query, where, getDocs } from "firebase/firestore";

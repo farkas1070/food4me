@@ -112,7 +112,7 @@ const NewProfileComponent = () => {
     <View
       style={styles.mainContainer}
     >
-      <ScrollView style={{ width: "100%", flexGrow: 1 }}>
+      <ScrollView style={{ width: "100%" }} contentContainerStyle={{flexGrow:1}}>
         <Header
           user={user}
           pickImage={pickImage}
