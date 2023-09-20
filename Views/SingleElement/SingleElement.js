@@ -35,7 +35,7 @@ const NewSingleElement = ({ route }) => {
   const onDismissSnackBar = () => setVisible(false);
 
   const ITEMS_PER_PAGE = 4;
-  console.log(item.docid)
+  console.log(item.docid);
   const docid = item.docid;
   const recipeRef = doc(db, "Recipes", docid);
   const userRef = doc(db, "Users", auth.currentUser.uid);

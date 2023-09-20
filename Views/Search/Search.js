@@ -1,47 +1,91 @@
-import React,{useState,useContext} from 'react'
-import {  View, } from 'react-native'
-import { Appbar } from 'react-native-paper';
-import { TextInput } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { foodContext } from "../../Context/GlobalContext.js"
+import React, { useState, useContext } from "react";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { Appbar } from "react-native-paper";
+import { TextInput } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { foodContext } from "../../Context/GlobalContext.js";
+import { styles } from "./SearchStyle.js";
 
-const SearchComponent = ({navigation}) => {
+const SearchComponent = ({ navigation }) => {
+  const [searchvalue, setSearchValue] = useState("");
+  const [foodarray] = useContext(foodContext);
+
+  const filterItems = () => {
+    return foodarray.filter((item) =>
+      item.name.toLowerCase().includes(searchvalue.toLowerCase())
+    );
+  };
+  const navigateWithList = () => {
+    navigation.navigate("FilteredRecipeBrowser", { item: filterItems() });
+  };
+  const setAndNavigate = (item) => {
     
-    const [searchvalue, setSearchValue] = useState("")
-    const [foodarray] = useContext(foodContext)
+    navigation.navigate("FilteredRecipeBrowser", { item: [item] });
+  };
+  return (
+    <View style={styles.mainContainer}>
+      <View style={styles.container}>
+        <Appbar.Header
+          style={{
+            backgroundColor: "transparent",
+            width: "100%",
+            borderBottomColor: "rgba(253, 90, 67, 1)",
+            borderBottomWidth: 0.6,
+          }}
+        >
+          <Appbar.BackAction
+            color="rgba(253, 90, 67, 1)"
+            onPress={() => {
+              navigation.goBack();
+            }}
+          />
 
-    const filterAndNavigate = () => {
-        let filteredlist = foodarray.filter(item => {
-            if (item.name.toLowerCase().includes(searchvalue.toLowerCase())) {
-                return item;
+          <TextInput
+            label="Search for Foods"
+            value={searchvalue}
+            mode="outlined"
+            right={
+              <TextInput.Icon
+                icon={() => (
+                  <MaterialCommunityIcons
+                    name="food-apple-outline"
+                    size={24}
+                    color="black"
+                  />
+                )}
+              />
             }
-        })
-        navigation.navigate("FilteredRecipeBrowser", { item: filteredlist });
-    }
-    return (
-        <View style={{ width: '100%', height: '100%', flex: 1, backgroundColor: 'white' }}>
-            <View style={{ width: '100%', height: '100%', backgroundColor: 'white', flex: 1 }}>
-                <Appbar.Header style={{ backgroundColor: 'transparent', width: "100%", borderBottomColor: 'rgba(253, 90, 67, 1)', borderBottomWidth: 0.6 }}>
-                    <Appbar.BackAction color="rgba(253, 90, 67, 1)" onPress={() => { navigation.goBack() }} />
+            onChangeText={(searchvalue) => setSearchValue(searchvalue)}
+            style={{ flexGrow: 1 }}
+          />
+          <Appbar.Action
+            color="rgba(253, 90, 67, 1)"
+            icon="magnify"
+            onPress={() => {
+              navigateWithList();
+            }}
+          />
+        </Appbar.Header>
+        <ScrollView
+          style={{ width: "100%" }}
+          contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}
+        >
+          {filterItems().map((item) => {
+            return (
+              <TouchableOpacity
+                style={styles.suggestionField}
+                onPress={() => {
+                  setAndNavigate(item);
+                }}
+              >
+                <Text>{item.name}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
+    </View>
+  );
+};
 
-                    <TextInput
-                        label="Search for Foods"
-                        value={searchvalue}
-                        mode='outlined'right={<TextInput.Icon icon={() => <MaterialCommunityIcons name="food-apple-outline" size={24} color="black" />} />}
-                        
-                        onChangeText={searchvalue => setSearchValue(searchvalue)}
-                        style={{ flexGrow: 1 }}
-                    />
-                    <Appbar.Action color="rgba(253, 90, 67, 1)" icon="magnify" onPress={() => { filterAndNavigate() }} />
-
-                </Appbar.Header>
-                <View style={{ flexGrow: 1, alignItems: 'center' }}>
-
-                </View>
-            </View>
-        </View>
-    )
-}
-
-export default SearchComponent
-
+export default SearchComponent;
