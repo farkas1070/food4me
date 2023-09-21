@@ -15,13 +15,7 @@ const SearchComponent = ({ navigation }) => {
       item.name.toLowerCase().includes(searchvalue.toLowerCase())
     );
   };
-  const navigateWithList = () => {
-    navigation.navigate("FilteredRecipeBrowser", { item: filterItems() });
-  };
-  const setAndNavigate = (item) => {
-    
-    navigation.navigate("FilteredRecipeBrowser", { item: [item] });
-  };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.container}>
@@ -62,7 +56,9 @@ const SearchComponent = ({ navigation }) => {
             color="rgba(253, 90, 67, 1)"
             icon="magnify"
             onPress={() => {
-              navigateWithList();
+              navigation.navigate("FilteredRecipeBrowser", {
+                item: filterItems(),
+              });
             }}
           />
         </Appbar.Header>
@@ -75,7 +71,9 @@ const SearchComponent = ({ navigation }) => {
               <TouchableOpacity
                 style={styles.suggestionField}
                 onPress={() => {
-                  setAndNavigate(item);
+                  navigation.navigate("FilteredRecipeBrowser", {
+                    item: [item],
+                  });
                 }}
               >
                 <Text>{item.name}</Text>

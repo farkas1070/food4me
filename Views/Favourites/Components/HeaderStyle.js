@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet } from 'react-native'
 
-const HeaderStyle = () => {
-  return (
-    <View>
-      <Text>HeaderStyle</Text>
-    </View>
-  )
-}
 
-export default HeaderStyle
-
-const styles = StyleSheet.create({})
+export const styles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(253, 90, 67, 0.6)", // Orange with 50% opacity
+  },
+appBar: {
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    width: "100%",
+  },
+})

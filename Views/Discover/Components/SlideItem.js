@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect, useMemo,useContext } from "react";
+import React, { useState, useRef, useEffect, useMemo, useContext } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
-  BackHandler 
+  BackHandler,
 } from "react-native";
 import { Video, ResizeMode } from "expo-av";
 import { AntDesign } from "@expo/vector-icons";
@@ -48,17 +48,20 @@ const SlideItem = ({ item, isCurrent, isGlobalMuted, toggleGlobalMute }) => {
   const snapPoints = useMemo(() => ["60%"], []);
   const [comment, setComment] = useState("test komment");
   const [comments, setComments] = useState([]);
-  const [singleVideo, setSingleVideo] = useContext(singleOrAllvideosContext)
+  const [singleVideo, setSingleVideo] = useContext(singleOrAllvideosContext);
   const navigation = useNavigation();
 
   const handleBackPress = () => {
     // Navigate to a different screen when the back button is pressed
-    setSingleVideo(false)
+    setSingleVideo(false);
   };
   useEffect(() => {
     // Add a listener for the back button press event
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-  
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBackPress
+    );
+
     // Remove the listener when the component unmounts
     return () => backHandler.remove();
   }, []);
@@ -206,7 +209,7 @@ const SlideItem = ({ item, isCurrent, isGlobalMuted, toggleGlobalMute }) => {
         <View style={styles.backContainer}>
           <TouchableOpacity
             onPress={() => {
-              setSingleVideo(false)
+              setSingleVideo(false);
               navigation.goBack();
             }}
           >

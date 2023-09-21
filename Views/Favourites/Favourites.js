@@ -18,7 +18,8 @@ import { useFonts } from "expo-font";
 import CustomFont from "../../fonts/myfont.otf";
 import { foodContext } from "../../Context/GlobalContext.js";
 import { styles } from "./FavouritesStyle";
-
+import Header from "./Components/Header";
+import LoadingOverlay from "./Components/LoadingOverlay";
 const Favourites = ({ navigation }) => {
   const userRef = doc(db, "Users", auth.currentUser.uid);
   const favouritesquery = query(
@@ -29,7 +30,7 @@ const Favourites = ({ navigation }) => {
     useCollectionData(favouritesquery);
   const [favourites, setFavourites] = useState([]);
   const [foodarray] = useContext(foodContext);
-    
+
   useEffect(() => {
     const getFavouriteRef = async () => {
       try {
@@ -76,61 +77,11 @@ const Favourites = ({ navigation }) => {
   return (
     <View style={styles.maincontainer}>
       {favouritesSnapshotLoading ? (
-        <View
-          style={{
-            width: "100%",
-            height: "100%",
-            backgroundColor: "#ffffff",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <Text>Just a sec, loading data...</Text>
-          <Image style={styles.noitemimage} source={Searching} />
-        </View>
+        <LoadingOverlay />
       ) : (
         <>
-          <ImageBackground
-            style={styles.backgroundImage}
-            source={{
-              uri: "https://images.unsplash.com/photo-1496412705862-e0088f16f791?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
-              cache: "force-cache",
-            }}
-            resizeMode="cover"
-          >
-            <View style={styles.overlay} />
-            <Appbar.Header style={styles.appBar}>
-              <Appbar.BackAction
-                color="rgba(255, 255, 255, 1)"
-                onPress={() => {
-                  navigation.goBack();
-                }}
-              />
-
-              <Appbar.Content
-                color="rgba(255, 255, 255, 1)"
-                title={
-                  <Text
-                    style={{
-                      fontFamily: "CustomFont",
-                      fontSize: 20,
-                      color: "white",
-                      textAlign: "left",
-                    }}
-                  >
-                    Favourites
-                  </Text>
-                }
-              />
-              <Appbar.Action
-                color="rgba(255, 255, 255, 1)"
-                icon="magnify"
-                onPress={() => {}}
-              />
-            </Appbar.Header>
-          </ImageBackground>
-          <View style={{ flex: 1, width: "100%", height: "100%" }}>
+          <Header />
+          <View style={styles.bodyContainer}>
             <ScrollView
               style={{ flex: 1 }}
               contentContainerStyle={{ alignItems: "center" }}
@@ -138,17 +89,7 @@ const Favourites = ({ navigation }) => {
               {favourites.map((favourite, i) => {
                 return (
                   <TouchableOpacity
-                    style={{
-                      padding: 8,
-                      height: 160,
-                      width: "95%",
-                      alignItems: "center",
-                      elevation: 4,
-                      margin: 5,
-                      backgroundColor: "white",
-                      borderRadius: 20,
-                      flexDirection: "row",
-                    }}
+                    style={styles.card}
                     onPress={() => {
                       handleNavigation(favourite);
                     }}
@@ -156,41 +97,21 @@ const Favourites = ({ navigation }) => {
                   >
                     <Image
                       source={{ uri: favourite.image }}
-                      style={{
-                        width: 100,
-                        height: 100,
-                        borderRadius: 10,
-                        marginLeft: 10,
-                      }}
+                      style={styles.image}
                     />
-                    <View style={{ flex: 1, marginLeft: 30 }}>
+                    <View style={styles.textContainer}>
                       <Text
-                        style={{
-                          fontFamily: "CustomFont",
-                          fontSize: 13,
-                          color: "grey",
-                          marginBottom: 10,
-                          textAlign: "left",
-                        }}
+                        style={[styles.nameText, { fontFamily: "CustomFont" }]}
                       >
                         {favourite.name}
                       </Text>
-                      <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                      >
+                      <View style={styles.subTextContainer}>
                         <MaterialCommunityIcons
                           name="camera-timer"
                           size={24}
                           color="black"
                         />
-                        <Text
-                          style={{
-                            fontFamily: "CustomFont",
-                            fontSize: 13,
-                            color: "grey",
-                            textAlign: "left",
-                          }}
-                        >
+                        <Text style={styles.subText}>
                           {" "}
                           {favourite.servings} People
                         </Text>
@@ -203,14 +124,7 @@ const Favourites = ({ navigation }) => {
                           size={24}
                           color="black"
                         />
-                        <Text
-                          style={{
-                            fontFamily: "CustomFont",
-                            fontSize: 13,
-                            color: "grey",
-                            textAlign: "left",
-                          }}
-                        >
+                        <Text style={styles.subText}>
                           {" "}
                           {favourite.ready} Minutes
                         </Text>

@@ -158,24 +158,15 @@ const FilterRecipes = ({ navigation }) => {
   }
 
   return (
-    <View style={{ width: "100%", height: "100%" }}>
+    <View style={styles.mainContainer}>
       <Header
         filterRecipesAndNavigate={filterRecipesAndNavigate}
         GoBackToRecipeBrowser={GoBackToRecipeBrowser}
       />
 
-      <ScrollView
-        style={{ backgroundColor: "white", width: "100%", flexGrow: 1 }}
-      >
-        <ScrollView style={{ flexGrow: 1, width: "100%" }}>
-          <View
-            style={{
-              width: "100%",
-              padding: 10,
-              borderBottomWidth: 0.2,
-              borderBottomColor: "#040507",
-            }}
-          >
+      <ScrollView style={styles.bodyContainer}>
+        <View style={styles.innerView}>
+          <View style={styles.sectionView}>
             <View style={styles.textContainer}>
               <MaterialCommunityIcons
                 name="filter"
@@ -201,14 +192,7 @@ const FilterRecipes = ({ navigation }) => {
               </ScrollView>
             </View>
           </View>
-          <View
-            style={{
-              width: "100%",
-              padding: 10,
-              borderBottomWidth: 0.2,
-              borderBottomColor: "#040507",
-            }}
-          >
+          <View style={styles.sectionView}>
             <View style={styles.textContainer}>
               <MaterialCommunityIcons
                 name="food-apple"
@@ -222,16 +206,7 @@ const FilterRecipes = ({ navigation }) => {
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <TextInput
-                style={{
-                  flex: 1,
-                  marginRight: 20,
-                  padding: 2,
-                  marginLeft: 20,
-                  marginTop: 20,
-                  marginBottom: 20,
-                  backgroundColor: "white",
-                  borderColor: "black",
-                }}
+                style={styles.textInput}
                 placeholder="Min (0)"
                 mode="outlined"
                 keyboardType="numeric"
@@ -246,16 +221,7 @@ const FilterRecipes = ({ navigation }) => {
                 }}
               />
               <TextInput
-                style={{
-                  flex: 1,
-                  marginLeft: 20,
-                  padding: 2,
-                  marginRight: 20,
-                  marginTop: 20,
-                  marginBottom: 20,
-                  backgroundColor: "white",
-                  borderColor: "black",
-                }}
+                style={styles.textInput}
                 placeholder="Max (2000)"
                 mode="outlined"
                 keyboardType="numeric"
@@ -269,14 +235,7 @@ const FilterRecipes = ({ navigation }) => {
               />
             </View>
           </View>
-          <View
-            style={{
-              width: "100%",
-              padding: 10,
-              borderBottomWidth: 0.2,
-              borderBottomColor: "#040507",
-            }}
-          >
+          <View style={styles.sectionView}>
             <View style={styles.textContainer}>
               <FontAwesome5
                 name="utensils"
@@ -305,14 +264,7 @@ const FilterRecipes = ({ navigation }) => {
               />
             </View>
           </View>
-          <View
-            style={{
-              width: "100%",
-              padding: 10,
-              borderBottomWidth: 0.2,
-              borderBottomColor: "#040507",
-            }}
-          >
+          <View style={styles.sectionView}>
             <View style={styles.textContainer}>
               <MaterialCommunityIcons
                 name="food-takeout-box"
@@ -338,14 +290,7 @@ const FilterRecipes = ({ navigation }) => {
               </ScrollView>
             </View>
           </View>
-          <View
-            style={{
-              width: "100%",
-              padding: 10,
-              borderBottomWidth: 0.2,
-              borderBottomColor: "#040507",
-            }}
-          >
+          <View style={styles.sectionView}>
             <View style={styles.textContainer}>
               <MaterialCommunityIcons
                 name="clock"
@@ -374,7 +319,7 @@ const FilterRecipes = ({ navigation }) => {
               />
             </View>
           </View>
-        </ScrollView>
+        </View>
       </ScrollView>
     </View>
   );

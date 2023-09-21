@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { View } from "react-native";
 import PagerView from "react-native-pager-view";
 import {
@@ -7,7 +7,6 @@ import {
 } from "../../Context/GlobalContext";
 import SlideItem from "./Components/SlideItem";
 import { styles } from "./DiscoverStyle";
-import { sin } from "react-native-reanimated";
 
 const Discover = ({ route }) => {
   const [singleVideo, setSingleVideo] = useContext(singleOrAllvideosContext);

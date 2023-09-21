@@ -3,11 +3,13 @@ import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
     mainContainer: {
+      
         flex: 1,
-        justifyContent: "center",
+        position: "relative",
+        justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: "#fd5a43",
-        padding: 20
+        
+      
       },
       overlay: {
         flex: 1,
@@ -18,61 +20,31 @@ export const styles = StyleSheet.create({
         left: 0,
         right: 0,
       },
-      image: {
-    
-        width: 300,
-        height: 300
-      },
-      topText: {
-        fontWeight: "700",
-        color: "white"
-      },
-      formContainer: {
-        width: "95%",
-        padding: 10,
-    
-      },
-      input: {
-        height: 50,
-        width: "80%",
-        color: "#fd5a43",
-        fontWeight: "700",
-        backgroundColor: "white",
-        borderRadius: 15,
-        marginTop: 10,
-        marginBottom: 10,
-        paddingLeft: 20,
-    
-      },
-      topinput: {
-        height: 50,
+      container:{
         width: "100%",
-        color: "#fd5a43",
-        fontWeight: "700",
-        backgroundColor: "white",
-        borderRadius: 15,
-        marginTop: 10,
-        marginBottom: 10,
-        paddingLeft: 20,
+        flex: 1,
+        height: "100%",
+        brightness: 0.7,
+        contrast: 0.7,
+        zIndex: -10,
+        position: "absolute",
       },
-      buttonContainer: {
-        marginTop: 50,
-        width: "50%",
-        height: 50,
-        backgroundColor: "white",
-        borderRadius: 20,
-    
+      image:{ width: 300, height: 300, marginTop: 30 },
+      textinputContainer:{
+        width: "100%",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        marginBottom: 30,
       },
-      registerButton: {
-        fontWeight: "700",
-    
-      },
-      loginButton: {
-        textDecorationLine: 'underline',
-        fontWeight: "700",
+      text:{
+        
+        fontSize: 22,
         color: "white",
-        marginTop: 20
-      }
+        marginBottom: 10,
+        textAlign: "left",
+      },
+      textinputIcon:{ width: "80%", marginTop: 20, backgroundColor: "white" },
+
+
+      
 })

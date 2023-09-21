@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity,Image,ScrollView } from "react-native";
+import { Text, View, TouchableOpacity, Image, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { styles } from "./UploadVideoStyle";
 import Header from "./Components/Header";
@@ -51,7 +51,6 @@ const UploadVideo = () => {
     if (!result.canceled) {
       setImageUri(result.assets[0].uri);
       setShowImage(true);
-      
     }
   };
   const uploadVideo = async () => {
@@ -141,7 +140,7 @@ const UploadVideo = () => {
           </TouchableOpacity>
         )}
         {showImage ? (
-          <Image style={styles.image} source={{uri:ImageUri}} />
+          <Image style={styles.image} source={{ uri: ImageUri }} />
         ) : (
           <TouchableOpacity
             style={styles.uploadButton}
