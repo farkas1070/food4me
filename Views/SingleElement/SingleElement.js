@@ -12,7 +12,6 @@ import {
   deleteDoc,
   getDocs,
 } from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "../../firebase-config";
 import { auth } from "../../firebase-config";
 import { Snackbar } from "react-native-paper";
@@ -29,7 +28,7 @@ const NewSingleElement = ({ route }) => {
   const onDismissSnackBar = () => setVisible(false);
 
   const [page, setPage] = useState(0);
-  const [modifiedIngredients, setModifiedIngredients] = useState([]);
+
   const [ingredients, setIngredients] = useState([]);
   const [types, setTypes] = useState([]);
   const [favourites, setFavourites] = useState([]);
@@ -40,46 +39,86 @@ const NewSingleElement = ({ route }) => {
 
   const recipeRef = doc(db, "Recipes", route.params.item.docid);
   const userRef = doc(db, "Users", auth.currentUser.uid);
-  const ingredientCollectionRef = collection(db, "Recipes_Ingredients");
 
-  const fetchDataFromFirestore = async (
-    collectionRef,
-    setState,
-    isfavoruitesquery
-  ) => {
+  const fetchDataFromFirestore = async (collectionRef, setState, queryType) => {
     try {
-      const generalQuery = query(collectionRef,where("Recipe_ID", "==", recipeRef));
-      const favouritesQuery = query(collectionRef,where("Recipe_ID", "==", recipeRef),where("User_ID", "==", userRef));
-      const ingredientsQuery = query(collectionRef, where("Recipe_ID", "==", recipeRef))
+      switch (queryType) {
+        case "generalQuery":
+          const generalQuery = query(
+            collectionRef,
+            where("Recipe_ID", "==", recipeRef)
+          );
+          const generalSnapshot = await getDocs(generalQuery);
+          const generalData = generalSnapshot.docs.map((doc) => {
+            const subdata = doc.data();
+            return { ...subdata };
+          });
 
-      const snapshot = isfavoruitesquery
-        ? await getDocs(favouritesQuery)
-        : await getDocs(generalQuery);
-      const newData = snapshot.docs.map((doc) => {
-        const subdata = doc.data();
-        return { ...subdata };
-      });
+          setState(generalData);
+          break;
+        case "favouriteQuery":
+          const favouritesQuery = query(
+            collectionRef,
+            where("Recipe_ID", "==", recipeRef),
+            where("User_ID", "==", userRef)
+          );
+          const favouriteSnapshot = await getDocs(favouritesQuery);
+          const favouriteData = favouriteSnapshot.docs.map((doc) => {
+            const subdata = doc.data();
+            return { ...subdata };
+          });
 
-      setState(newData);
+          setState(favouriteData);
+          break;
+        case "ingredientQuery":
+          // Define the ingredient query here, you can adapt it based on your data structure
+          const ingredientsQuery = query(
+            collectionRef,
+            where("Recipe_ID", "==", recipeRef)
+          );
+          const ingredientsSnapshot = await getDocs(ingredientsQuery);
+
+          let newarray = [];
+          await Promise.all(
+            ingredientsSnapshot.docs.map(async (ingredient) => {
+              const docSnap = await getDoc(ingredient.data().Ingredient_ID);
+              var subdata = { ...ingredient.data() };
+              subdata.name = docSnap.data().name;
+              newarray.push({ ...subdata });
+            })
+          );
+
+          setIngredients(newarray);
+          break;
+      }
     } catch (error) {
       console.error(error);
     }
   };
   useEffect(() => {
-    fetchDataFromFirestore(collection(db, "Recipe_Types"), setTypes, false);
-    fetchDataFromFirestore(collection(db, "Recipe_Nutrition"),setNutrients,false);
-    fetchDataFromFirestore(collection(db, "Steps"), setSteps, false);
-    fetchDataFromFirestore(collection(db, "Favourites"), setFavourites, true);
+    fetchDataFromFirestore(
+      collection(db, "Recipe_Types"),
+      setTypes,
+      "generalQuery"
+    );
+    fetchDataFromFirestore(
+      collection(db, "Recipe_Nutrition"),
+      setNutrients,
+      "generalQuery"
+    );
+    fetchDataFromFirestore(collection(db, "Steps"), setSteps, "generalQuery");
+    fetchDataFromFirestore(
+      collection(db, "Favourites"),
+      setFavourites,
+      "favouriteQuery"
+    );
+    fetchDataFromFirestore(
+      collection(db, "Recipes_Ingredients"),
+      setIngredients,
+      "ingredientQuery"
+    );
     setLoading(false);
   }, []);
-
-  const ingredientquery = query(
-    collection(db, "Recipes_Ingredients"),
-    where("Recipe_ID", "==", recipeRef)
-  );
-
-  const [ingredientSnapshot, ingredientSnapshotLoading] =
-    useCollectionData(ingredientquery);
 
   const getPaginatedData = () => {
     const startIndex = page * 4;
@@ -119,27 +158,6 @@ const NewSingleElement = ({ route }) => {
       );
     }
   };
-  useEffect(() => {
-    const getIngredientRef = async () => {
-      if (!ingredientSnapshotLoading) {
-        let newarray = [];
-        await Promise.all(
-          ingredientSnapshot.map(async (ingredient) => {
-            const docSnap = await getDoc(ingredient.Ingredient_ID);
-            var subdata = { ...ingredient };
-            subdata.name = docSnap.data().name;
-
-            newarray.push({ ...subdata });
-          })
-        );
-        setModifiedIngredients(newarray);
-      }
-    };
-
-    if (modifiedIngredients.length == 0) {
-      getIngredientRef();
-    }
-  });
 
   const [loaded] = useFonts({
     CustomFont: CustomFont,
@@ -151,7 +169,7 @@ const NewSingleElement = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      {modifiedIngredients.length == 0 || loading ? (
+      {loading ? (
         <LoadingScreen />
       ) : (
         <View style={{ width: "100%", height: "100%" }}>
@@ -214,7 +232,7 @@ const NewSingleElement = ({ route }) => {
                 </Text>
               </View>
 
-              <Ingredients modifiedIngredients={modifiedIngredients} />
+              <Ingredients modifiedIngredients={ingredients} />
 
               <View
                 style={{
