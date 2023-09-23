@@ -10,6 +10,7 @@ import {
   getDoc,
   setDoc,
   deleteDoc,
+  getDocs,
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "../../firebase-config";
@@ -24,72 +25,88 @@ import Ingredients from "./Components/Ingredients";
 import Steps from "./Components/Steps";
 import DataTableComponent from "./Components/DataTable";
 const NewSingleElement = ({ route }) => {
-  const { item } = route.params;
-
-  const [page, setPage] = useState(0);
-  const [modifiedIngredients, setModifiedIngredients] = useState([]);
-  const [modifiedTypes, setModifiedTypes] = useState([]);
-
-  const [visible, setVisible] = React.useState(false);
   const onToggleSnackBar = () => setVisible(!visible);
   const onDismissSnackBar = () => setVisible(false);
 
-  const ITEMS_PER_PAGE = 4;
-  console.log(item.docid);
-  const docid = item.docid;
-  const recipeRef = doc(db, "Recipes", docid);
-  const userRef = doc(db, "Users", auth.currentUser.uid);
+  const [page, setPage] = useState(0);
+  const [modifiedIngredients, setModifiedIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [favourites, setFavourites] = useState([]);
+  const [steps, setSteps] = useState([]);
+  const [nutrients, setNutrients] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [visible, setVisible] = React.useState(false);
 
-  const nutrientquery = query(
-    collection(db, "Recipe_Nutrition"),
-    where("Recipe_ID", "==", recipeRef)
-  );
-  const typequery = query(
-    collection(db, "Recipe_Types"),
-    where("Recipe_ID", "==", recipeRef)
-  );
+  const recipeRef = doc(db, "Recipes", route.params.item.docid);
+  const userRef = doc(db, "Users", auth.currentUser.uid);
+  const ingredientCollectionRef = collection(db, "Recipes_Ingredients");
+
+  const fetchDataFromFirestore = async (
+    collectionRef,
+    setState,
+    isfavoruitesquery
+  ) => {
+    try {
+      const generalQuery = query(collectionRef,where("Recipe_ID", "==", recipeRef));
+      const favouritesQuery = query(collectionRef,where("Recipe_ID", "==", recipeRef),where("User_ID", "==", userRef));
+      const ingredientsQuery = query(collectionRef, where("Recipe_ID", "==", recipeRef))
+
+      const snapshot = isfavoruitesquery
+        ? await getDocs(favouritesQuery)
+        : await getDocs(generalQuery);
+      const newData = snapshot.docs.map((doc) => {
+        const subdata = doc.data();
+        return { ...subdata };
+      });
+
+      setState(newData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchDataFromFirestore(collection(db, "Recipe_Types"), setTypes, false);
+    fetchDataFromFirestore(collection(db, "Recipe_Nutrition"),setNutrients,false);
+    fetchDataFromFirestore(collection(db, "Steps"), setSteps, false);
+    fetchDataFromFirestore(collection(db, "Favourites"), setFavourites, true);
+    setLoading(false);
+  }, []);
+
   const ingredientquery = query(
     collection(db, "Recipes_Ingredients"),
     where("Recipe_ID", "==", recipeRef)
   );
-  const stepsquery = query(
-    collection(db, "Steps"),
-    where("Recipe_ID", "==", recipeRef)
-  );
-  const favouritesquery = query(
-    collection(db, "Favourites"),
-    where("User_ID", "==", userRef),
-    where("Recipe_ID", "==", recipeRef)
-  );
 
-  const [nutritionSnapshot, nutritionSnapshotLoading, nutritionSnapshotError] =
-    useCollectionData(nutrientquery);
   const [ingredientSnapshot, ingredientSnapshotLoading] =
     useCollectionData(ingredientquery);
-  const [typeSnapshot, typeSnapshotLoading] = useCollectionData(typequery);
-  const [stepsSnapshot, stepsSnapshotLoading] = useCollectionData(stepsquery);
-  const [favouritesSnapshot, favouritesSnapshotLoading] =
-    useCollectionData(favouritesquery);
 
   const getPaginatedData = () => {
-    const startIndex = page * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    return nutritionSnapshot.slice(startIndex, endIndex);
+    const startIndex = page * 4;
+    const endIndex = startIndex + 4;
+    return nutrients.slice(startIndex, endIndex);
   };
-  if (!stepsSnapshotLoading) {
-    stepsSnapshot.sort(function (a, b) {
-      return a.number - b.number;
-    });
-  }
 
   const handleFavouriteChange = async () => {
-    if (favouritesSnapshot.length == 0) {
-      await setDoc(doc(db, "Favourites", `${docid}-${auth.currentUser.uid}`), {
-        Recipe_ID: doc(db, `Recipes/${docid}`),
-        User_ID: doc(db, `Users/${auth.currentUser.uid}`),
-      });
+    if (favourites.length == 0) {
+      await setDoc(
+        doc(
+          db,
+          "Favourites",
+          `${route.params.item.docid}-${auth.currentUser.uid}`
+        ),
+        {
+          Recipe_ID: doc(db, `Recipes/${route.params.item.docid}`),
+          User_ID: doc(db, `Users/${auth.currentUser.uid}`),
+        }
+      );
+      setFavourites([route.params.item]);
     } else {
-      const docRef = doc(db, "Favourites", `${docid}-${auth.currentUser.uid}`);
+      const docRef = doc(
+        db,
+        "Favourites",
+        `${route.params.item.docid}-${auth.currentUser.uid}`
+      );
       deleteDoc(docRef)
         .then(() => {
           console.log("Entire Document has been deleted successfully.");
@@ -97,6 +114,9 @@ const NewSingleElement = ({ route }) => {
         .catch((error) => {
           console.log(error);
         });
+      setFavourites(
+        favourites.filter((item) => item.docid !== route.params.item.docid)
+      );
     }
   };
   useEffect(() => {
@@ -115,23 +135,9 @@ const NewSingleElement = ({ route }) => {
         setModifiedIngredients(newarray);
       }
     };
-    const getTypeRef = () => {
-      if (!typeSnapshotLoading) {
-        let newarray = [];
 
-        typeSnapshot.map((type) => {
-          const typeName = type.name; // Get the "name" field value directly
-          newarray.push({ ...type, name: typeName });
-        });
-
-        setModifiedTypes(newarray);
-      }
-    };
     if (modifiedIngredients.length == 0) {
       getIngredientRef();
-    }
-    if (modifiedTypes.length == 0) {
-      getTypeRef();
     }
   });
 
@@ -143,22 +149,14 @@ const NewSingleElement = ({ route }) => {
     return null;
   }
 
-  if (nutritionSnapshotError) {
-    return <Text>Error: {nutritionError.message}</Text>;
-  }
-
   return (
     <View style={styles.container}>
-      {favouritesSnapshotLoading ||
-      nutritionSnapshotLoading ||
-      modifiedIngredients.length == 0 ||
-      modifiedTypes.length == 0 ||
-      stepsSnapshotLoading ? (
+      {modifiedIngredients.length == 0 || loading ? (
         <LoadingScreen />
       ) : (
         <View style={{ width: "100%", height: "100%" }}>
           <ScrollView style={{ width: "100%", flexGrow: 1 }}>
-            <Header item={item} />
+            <Header item={route.params.item} />
 
             <View
               style={{
@@ -169,10 +167,10 @@ const NewSingleElement = ({ route }) => {
               }}
             >
               <TopInfo
-                item={item}
-                nutritionSnapshot={nutritionSnapshot}
-                modifiedTypes={modifiedTypes}
-                favouritesSnapshot={favouritesSnapshot}
+                item={route.params.item}
+                nutritionSnapshot={nutrients}
+                modifiedTypes={types}
+                favouritesSnapshot={favourites}
                 handleFavouriteChange={handleFavouriteChange}
                 onToggleSnackBar={onToggleSnackBar}
               />
@@ -197,11 +195,11 @@ const NewSingleElement = ({ route }) => {
                     textAlign: "left",
                   }}
                 >
-                  {item.description}
+                  {route.params.item.description}
                 </Text>
               </View>
 
-              <GeneralInformation item={item} />
+              <GeneralInformation item={route.params.item} />
 
               <View style={{ width: "100%", padding: 20, marginBottom: 20 }}>
                 <Text
@@ -238,13 +236,13 @@ const NewSingleElement = ({ route }) => {
                 </Text>
               </View>
 
-              <Steps stepsSnapshot={stepsSnapshot} />
+              <Steps stepsSnapshot={steps} />
 
               <DataTableComponent
                 getPaginatedData={getPaginatedData}
                 page={page}
-                nutritionSnapshot={nutritionSnapshot}
-                ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+                nutritionSnapshot={nutrients}
+                ITEMS_PER_PAGE={4}
                 setPage={setPage}
               />
             </View>
@@ -260,7 +258,7 @@ const NewSingleElement = ({ route }) => {
               },
             }}
           >
-            {favouritesSnapshot.length == 0 ? (
+            {favourites.length == 0 ? (
               <Text
                 style={{
                   fontFamily: "CustomFont",
