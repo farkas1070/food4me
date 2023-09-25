@@ -172,18 +172,11 @@ const NewSingleElement = ({ route }) => {
       {loading ? (
         <LoadingScreen />
       ) : (
-        <View style={{ width: "100%", height: "100%" }}>
-          <ScrollView style={{ width: "100%", flexGrow: 1 }}>
+        <View style={styles.mainContainer}>
+          <ScrollView style={styles.scrollView}>
             <Header item={route.params.item} />
 
-            <View
-              style={{
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white",
-              }}
-            >
+            <View style={styles.innerContainer}>
               <TopInfo
                 item={route.params.item}
                 nutritionSnapshot={nutrients}
@@ -192,26 +185,14 @@ const NewSingleElement = ({ route }) => {
                 handleFavouriteChange={handleFavouriteChange}
                 onToggleSnackBar={onToggleSnackBar}
               />
-              <View style={{ width: "100%", marginBottom: 50, padding: 20 }}>
+              <View style={styles.descriptionContainer}>
                 <Text
-                  style={{
-                    fontFamily: "CustomFont",
-                    fontSize: 20,
-                    color: "rgba(253, 90, 67, 1)",
-                    marginBottom: 20,
-                    textAlign: "left",
-                  }}
+                  style={[styles.summaryText, { fontFamily: "CustomFont" }]}
                 >
                   Summary:
                 </Text>
                 <Text
-                  style={{
-                    fontFamily: "CustomFont",
-                    fontSize: 16,
-                    color: "grey",
-                    marginBottom: 20,
-                    textAlign: "left",
-                  }}
+                  style={[styles.descriptionText, { fontFamily: "CustomFont" }]}
                 >
                   {route.params.item.description}
                 </Text>
@@ -219,14 +200,9 @@ const NewSingleElement = ({ route }) => {
 
               <GeneralInformation item={route.params.item} />
 
-              <View style={{ width: "100%", padding: 20, marginBottom: 20 }}>
+              <View style={styles.ingredientsContainer}>
                 <Text
-                  style={{
-                    fontFamily: "CustomFont",
-                    fontSize: 20,
-                    color: "#fd5a43",
-                    textAlign: "left",
-                  }}
+                  style={[styles.ingredientsText, { fontFamily: "CustomFont" }]}
                 >
                   Ingredients:
                 </Text>
@@ -234,21 +210,12 @@ const NewSingleElement = ({ route }) => {
 
               <Ingredients modifiedIngredients={ingredients} />
 
-              <View
-                style={{
-                  width: "100%",
-                  padding: 20,
-                  marginBottom: 20,
-                  marginTop: 30,
-                }}
-              >
+              <View style={styles.instructionsContainer}>
                 <Text
-                  style={{
-                    fontFamily: "CustomFont",
-                    fontSize: 20,
-                    color: "#fd5a43",
-                    textAlign: "left",
-                  }}
+                  style={[
+                    styles.instructionsText,
+                    { fontFamily: "CustomFont" },
+                  ]}
                 >
                   Instructions:
                 </Text>
@@ -278,23 +245,13 @@ const NewSingleElement = ({ route }) => {
           >
             {favourites.length == 0 ? (
               <Text
-                style={{
-                  fontFamily: "CustomFont",
-                  fontSize: 16,
-                  color: "white",
-                  textAlign: "left",
-                }}
+                style={styles.snackText}
               >
                 Removed from favourites!
               </Text>
             ) : (
               <Text
-                style={{
-                  fontFamily: "CustomFont",
-                  fontSize: 16,
-                  color: "white",
-                  textAlign: "left",
-                }}
+                style={styles.snackText}
               >
                 Added to favourites!
               </Text>

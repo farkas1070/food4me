@@ -7,6 +7,8 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+  mainContainer: { width: "100%", height: "100%" },
+
   topRightIcon: {
     top: -10,
     right: -10,
@@ -59,5 +61,48 @@ export const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "white",
     opacity: 0.5,
+  },
+  scrollView: { width: "100%", flexGrow: 1 },
+  innerContainer: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+  },
+  descriptionContainer: { width: "100%", marginBottom: 50, padding: 20 },
+  summaryText: {
+    fontSize: 20,
+    color: "rgba(253, 90, 67, 1)",
+    marginBottom: 20,
+    textAlign: "left",
+  },
+  descriptionText: {
+    fontSize: 16,
+    color: "grey",
+    marginBottom: 20,
+    textAlign: "left",
+  },
+  ingredientsContainer: { width: "100%", padding: 20, marginBottom: 20 },
+  ingredientsText: {
+    fontSize: 20,
+    color: "#fd5a43",
+    textAlign: "left",
+  },
+  instructionsContainer: {
+    width: "100%",
+    padding: 20,
+    marginBottom: 20,
+    marginTop: 30,
+  },
+  instructionsText: {
+    fontSize: 20,
+    color: "#fd5a43",
+    textAlign: "left",
+  },
+  snackText: {
+    fontFamily: "CustomFont",
+    fontSize: 16,
+    color: "white",
+    textAlign: "left",
   },
 });
