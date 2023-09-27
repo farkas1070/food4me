@@ -3,7 +3,6 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   View,
-  Switch,
   ImageBackground,
 } from "react-native";
 import React from "react";
@@ -11,7 +10,6 @@ import { useContext } from "react";
 import { foodContext, themeContext } from "../../Context/GlobalContext.js";
 import { generateStyles } from "./RecipeFinderStyle.js";
 import recipebackground from "../../assets/recipebackground.jpg";
-import Header from "../../Components/Header.js";
 import NewHeader from "../../Components/NewHeader.js";
 const Homepage = ({ navigation }) => {
   const [foodarray] = useContext(foodContext);

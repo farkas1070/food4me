@@ -1,78 +1,54 @@
-import { StyleSheet } from 'react-native'
-
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#fd5a43",
-        padding: 20
-      },
-      overlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)', // dark overlay with 40% opacity
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-      },
-      image: {
+  mainContainer: {
+    flex: 1,
+    position: "relative",
+    justifyContent: "space-between",
+    alignItems: "center",
     
-        width: 300,
-        height: 300
-      },
-      topText: {
-        fontWeight: "700",
-        color: "white"
-      },
-      formContainer: {
-        width: "100%",
-        padding: 20,
-        marginTop: 10
-      },
-      input: {
-        height: 50,
-        width: "80%",
-        color: "#fd5a43",
-        fontWeight: "700",
-        backgroundColor: "white",
-        borderRadius: 15,
-        marginTop: 10,
-        marginBottom: 10,
-        paddingLeft: 20,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.6)", // dark overlay with 40% opacity
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  textInputsContainer:{
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 30,
+  },
+  video:{
+    width: "100%",
+    flex: 1,
+    height: "100%",
+    brightness: 0.7,
+    contrast: 0.7,
+    zIndex: -10,
+    position: "absolute",
+  },
+  mainIcon:{ width: 300, height: 300, marginTop: 30 },
+  loginText:{
     
-      },
-      topinput: {
-        height: 50,
-        width: "100%",
-        color: "#fd5a43",
-        fontWeight: "700",
-        backgroundColor: "white",
-        borderRadius: 15,
-        marginTop: 10,
-        marginBottom: 10,
-        paddingLeft: 20,
-      },
-      buttonContainer: {
-        marginTop: 50,
-        width: "50%",
-        height: 50,
-        backgroundColor: "white",
-        borderRadius: 20,
+    fontSize: 22,
+    color: "white",
+    marginBottom: 10,
+    textAlign: "left",
+  },
+  textInput:{ width: "80%", marginTop: 20, backgroundColor: "white" },
+  subText:{
     
-        justifyContent: "center",
-        alignItems: "center"
-      },
-      registerButton: {
-        fontWeight: "700",
-    
-      },
-      loginButton: {
-        textDecorationLine: 'underline',
-        fontWeight: "700",
-        color: "white",
-        marginTop: 20
-      }
-})
+    fontSize: 10,
+    color: "white",
+    marginTop: 60,
+    textAlign: "left",
+    textDecorationLine: "underline",
+  },
+  button:{ marginTop: 20, width: "60%" }
+
+});

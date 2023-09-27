@@ -1,12 +1,6 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-  maincontainer: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-  },
   AssetImage: {
     width: "100%",
     height: 250,
@@ -42,4 +36,35 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  innerView:{
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+  },
+  buttonsContainer:{
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "space-between",
+    justifyContent: "center",
+    padding: 15,
+    marginTop: 50,
+  },
+  leftButton:{
+    flex: 1,
+    marginRight: 10,
+    borderColor: "black",
+  },
+  rightButton:{
+    flex: 1,
+    marginLeft: 10,
+    borderColor: "black",
+  },
+  bottomContainer:{
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+  }
+
+
 });

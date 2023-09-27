@@ -3,8 +3,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:  "black",
-    
+    backgroundColor: "black",
   },
   headerContainer: {
     width: "100%",
@@ -13,7 +12,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#fd5a43",
-    borderBottomWidth:  0,
+    borderBottomWidth: 0,
     borderColor: "transparent",
   },
 

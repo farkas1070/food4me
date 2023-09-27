@@ -9,11 +9,11 @@ import SlideItem from "./Components/SlideItem";
 import { styles } from "./DiscoverStyle";
 
 const Discover = ({ route }) => {
-  const [singleVideo, setSingleVideo] = useContext(singleOrAllvideosContext);
+  const [singleVideo] = useContext(singleOrAllvideosContext);
   const singleUserVideo = route.params?.item || false;
   console.log(singleVideo);
 
-  const [videoURLs, setVideoURLs] = useContext(videosContext);
+  const [videoURLs] = useContext(videosContext);
   const pagerViewRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [isGlobalMuted, setIsGlobalMuted] = useState(false);

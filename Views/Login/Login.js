@@ -26,7 +26,7 @@ import { db } from "../../firebase-config";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("smarton0614@gmail.com");
   const [password, setPassword] = useState("farkas1070");
-  const [userData, setUserData] = useContext(userDataContext);
+  const [, setUserData] = useContext(userDataContext);
   const [, setUser] = useContext(userContext);
   const [visibility, setVisibility] = useState(true);
   const windowHeight = useWindowDimensions().height;
@@ -61,13 +61,12 @@ const LoginScreen = ({ navigation }) => {
         collection(db, "Users"),
         where("uid", "==", auth.currentUser.uid)
       );
-      
+
       const querySnapshot = await getDocs(userQuery);
-      
+
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        
-        setUserData(doc.data())
+        setUserData(doc.data());
       });
       navigation.navigate("Home");
       setIsAuthenticating(false);
@@ -87,13 +86,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View
-      style={{
-        flex: 1,
-        position: "relative",
-        justifyContent: "space-between",
-        alignItems: "center",
-        minHeight: Math.round(windowHeight),
-      }}
+      style={[styles.mainContainer, { minHeight: Math.round(windowHeight) }]}
     >
       {isAuthenticating && <LoadingOverlay />}
       <Video
@@ -101,42 +94,14 @@ const LoginScreen = ({ navigation }) => {
         shouldPlay={true}
         isLooping={true}
         resizeMode="cover"
-        style={{
-          width: "100%",
-          flex: 1,
-          height: "100%",
-          brightness: 0.7,
-          contrast: 0.7,
-          zIndex: -10,
-          position: "absolute",
-        }}
+        style={styles.video}
       />
 
       <View style={styles.overlay} />
-      <Image
-        style={{ width: 300, height: 300, marginTop: 30 }}
-        source={Logo}
-        resizeMode="contain"
-      />
-      <View
-        style={{
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: 30,
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: "CustomFont",
-            fontSize: 22,
-            color: "white",
-            marginBottom: 10,
-            textAlign: "left",
-          }}
-        >
-          {" "}
-          Login:{" "}
+      <Image style={styles.mainIcon} source={Logo} resizeMode="contain" />
+      <View style={styles.textInputsContainer}>
+        <Text style={[styles.loginText, { fontFamily: "CustomFont" }]}>
+          Login:
         </Text>
         <TextInput
           label="E-mail"
@@ -150,7 +115,7 @@ const LoginScreen = ({ navigation }) => {
             />
           }
           onChangeText={(email) => setEmail(email)}
-          style={{ width: "80%", marginTop: 20, backgroundColor: "white" }}
+          style={styles.textInput}
           theme={{
             colors: {
               primary: "#fd5a43",
@@ -180,7 +145,7 @@ const LoginScreen = ({ navigation }) => {
             />
           }
           onChangeText={(password) => setPassword(password)}
-          style={{ width: "80%", marginTop: 20, backgroundColor: "white" }}
+          style={styles.textInput}
           theme={{
             colors: {
               primary: "#fd5a43",
@@ -194,24 +159,15 @@ const LoginScreen = ({ navigation }) => {
           onPress={() => {
             login();
           }}
-          style={{ marginTop: 20, width: "60%" }}
+          style={styles.button}
         >
           Login
         </Button>
 
         <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text
-            style={{
-              fontFamily: "CustomFont",
-              fontSize: 10,
-              color: "white",
-              marginTop: 60,
-              textAlign: "left",
-              textDecorationLine: "underline",
-            }}
-          >
-            {" "}
-            Don't have an account yet? Click here and sign up!{" "}
+          <Text style={[styles.subText, { fontFamily: "CustomFont" }]}>
+            
+            Don't have an account yet? Click here and sign up!
           </Text>
         </TouchableOpacity>
       </View>
