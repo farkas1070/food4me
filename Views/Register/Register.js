@@ -25,9 +25,9 @@ import CustomFont from "../../fonts/myfont.otf";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { styles } from "./RegisterStyle";
 const WelcomeScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("Valaki10@gmail.com");
-  const [password, setPassword] = useState("Valaki10");
-  const [name, setName] = useState("Valaki10");
+  const [email, setEmail] = useState("example@gmail.com");
+  const [password, setPassword] = useState("example");
+  const [name, setName] = useState("Example");
   const [visibility, setVisibility] = useState(false);
   const [, setUser] = useState({});
   const windowHeight = useWindowDimensions().height;

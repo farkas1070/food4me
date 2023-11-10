@@ -24,8 +24,8 @@ import { styles } from "./LoginStyle";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../firebase-config";
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("smarton0614@gmail.com");
-  const [password, setPassword] = useState("farkas1070");
+  const [email, setEmail] = useState("example@gmail.com");
+  const [password, setPassword] = useState("example");
   const [, setUserData] = useContext(userDataContext);
   const [, setUser] = useContext(userContext);
   const [visibility, setVisibility] = useState(true);
@@ -73,6 +73,7 @@ const LoginScreen = ({ navigation }) => {
     } catch (error) {
       if (error) {
         createAlert();
+        setIsAuthenticating(false)
       }
     }
   };

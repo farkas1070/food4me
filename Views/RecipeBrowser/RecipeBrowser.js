@@ -192,7 +192,7 @@ const RecipeBrowser = ({ navigation }) => {
                             : data.name}
                         </Text>
                         <Text style={styles.kcalorietext(darkTheme)}>
-                          {data.kcalories} Kcal / 100g
+                          {data.kcalories} HealthScore: {data.healthscore} / 100
                         </Text>
                       </View>
                     </TouchableOpacity>

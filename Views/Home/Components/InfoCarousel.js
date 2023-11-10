@@ -6,6 +6,8 @@ import { foodContext } from "../../../Context/GlobalContext";
 import { useNavigation } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import CustomFont from "../../../fonts/Raleway-Bold.ttf";
+import { FontAwesome5 } from "@expo/vector-icons";
+
 const RecipeCard = ({ item }) => {
   const navigation = useNavigation();
   const [loaded] = useFonts({
@@ -27,7 +29,28 @@ const RecipeCard = ({ item }) => {
         <Text style={[styles.title, { fontFamily: "CustomFont" }]}>
           {item.name.length > 40 ? item.name.slice(0, 40) + "..." : item.name}
         </Text>
-        <Text style={[styles.title, { fontFamily: "CustomFont" }]}>{}</Text>
+        <View style={styles.servingsView}>
+          <FontAwesome5
+            name="utensils"
+            size={24}
+            color="black"
+            style={styles.utensil}
+          />
+          <Text style={[styles.servings, { fontFamily: "CustomFont" }]}>
+            {item.servings}
+          </Text>
+        </View>
+        <View style={styles.servingsView}>
+          <FontAwesome5
+            name="clock"
+            size={24}
+            color="black"
+            style={styles.utensil2}
+          />
+          <Text style={[styles.servings, { fontFamily: "CustomFont" }]}>
+            {item.ready}
+          </Text>
+        </View>
       </View>
     </TouchableOpacity>
   );

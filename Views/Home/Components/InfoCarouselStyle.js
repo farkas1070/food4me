@@ -7,12 +7,12 @@ export const styles = StyleSheet.create({
     paddingTop: 20,
   },
   listContainer: {
-    paddingBottom: 20,
+    
   },
   card: {
     borderRadius: 12,
 
-    marginBottom: 16,
+    
     marginLeft: 20,
     marginRight: 5,
     overflow: "hidden",
@@ -27,11 +27,27 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 20,
 
-    marginTop: 15,
+    
     marginLeft: 2,
+  },
+  servings:{
+    fontSize: 20,
+    color:'grey',
+    marginLeft: 10,
   },
   description: {
     fontSize: 16,
     color: "#777",
   },
+  servingsView:{
+    flexDirection:'row',
+    width:'100%',
+    marginTop:10
+  },
+  utensil:{
+    marginLeft:5
+  },
+  utensil2:{
+    marginLeft:2
+  }
 });

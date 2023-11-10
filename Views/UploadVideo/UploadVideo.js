@@ -86,7 +86,7 @@ const UploadVideo = () => {
           likes: 0,
           title: title,
           description: description,
-          comments: 0,
+
           timestamp: serverTimestamp(),
           thumbnail: ThumbnaildownloadURL,
         };
