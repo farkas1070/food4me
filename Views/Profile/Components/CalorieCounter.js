@@ -18,7 +18,11 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../../../firebase-config";
 import NoItem from "../../../assets/profileAssets/noItem.png";
+import { useNavigation } from "@react-navigation/native";
+
 const CalorieCounter = ({ userData }) => {
+  const navigation = useNavigation();
+
   const [isModalVisible, setModalVisible] = useState(false);
   const [userCalorie, setUserCalorie] = useState(0);
   const [UserFoodForToday, setUserFoodForToday] = useState([]);
@@ -30,9 +34,10 @@ const CalorieCounter = ({ userData }) => {
     const getUserData = async () => {
       const userRef = doc(db, "Users", auth.currentUser.uid);
       const today = new Date().toISOString().split("T")[0];
+      
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
+      
       let value = 0;
 
       const userCalorieQuery = query(
@@ -56,10 +61,7 @@ const CalorieCounter = ({ userData }) => {
             const recipeData = recipeDoc.data();
             fetchRecipeDataPromises.push({ ...data, recipeId: recipeData });
           }
-        } else if (
-          
-          consumedDate >= sevenDaysAgo.toISOString().split("T")[0]
-        ) {
+        } else if (consumedDate <= sevenDaysAgo.toISOString().split("T")[0]) {
           // Delete the document if it's older than 7 days
           await deleteDoc(item.ref);
         }
@@ -147,6 +149,15 @@ const CalorieCounter = ({ userData }) => {
             );
           })
         )}
+        <View style={styles.historyButtonContainer}>
+          <TouchableOpacity style={styles.historyButton} onPress={()=>{navigation.navigate("HistoryComponent")}}>
+            <Text
+              style={[styles.historyText, { fontFamily: "MontserratBold" }]}
+            >
+              See Last week
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

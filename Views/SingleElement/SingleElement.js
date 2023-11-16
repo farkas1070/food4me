@@ -71,7 +71,7 @@ const NewSingleElement = ({ route }) => {
           setState(favouriteData);
           break;
         case "ingredientQuery":
-          // Define the ingredient query here, you can adapt it based on your data structure
+          
           const ingredientsQuery = query(
             collectionRef,
             where("Recipe_ID", "==", recipeRef)

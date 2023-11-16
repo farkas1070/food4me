@@ -74,4 +74,22 @@ export const styles = StyleSheet.create({
     marginBottom: 30,
     color:'grey'
   },
+  historyButtonContainer:{
+    width:'100%',
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop:30
+  },
+  historyButton:{
+    backgroundColor:'#fd5a43',
+    width:'40%',
+    alignItems:'center',
+    justifyContent: "center",
+    paddingVertical:10,
+    paddingHorizontal:8,
+    borderRadius:10
+  },
+  historyText:{
+    color:"white"
+  }
 });
